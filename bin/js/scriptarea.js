@@ -6,11 +6,14 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Marmot;
 (function (Marmot) {
     var Panel = Laya.Panel;
+    var Event = Laya.Event;
     var ScriptArea = (function (_super) {
         __extends(ScriptArea, _super);
-        function ScriptArea(blockFactory) {
+        function ScriptArea(blockFactory, ide) {
             var _this = _super.call(this) || this;
             _this.blockFactory = blockFactory;
+            _this.ide = ide;
+            _this.on(Event.MOUSE_DOWN, _this, _this.onMouseDown);
             return _this;
         }
         ScriptArea.prototype.createBlockSet = function () {
@@ -69,6 +72,10 @@ var Marmot;
             blockPlay.pivot(0, 0);
             this.addChild(blockPlay);
             blockPlay.name = "blockPlay";
+        };
+        ScriptArea.prototype.onMouseDown = function (e) {
+            this.ide.blocksArea.visible = false;
+            this.ide.blocksCategory.selectedIndex = 9;
         };
         return ScriptArea;
     }(Panel));

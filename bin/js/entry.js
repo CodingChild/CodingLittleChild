@@ -1,72 +1,73 @@
-var Stage = Laya.Stage;
-var WebGL = Laya.WebGL;
 var Handler = Laya.Handler;
-var Block = Marmot.Block;
-var TextInput = Laya.TextInput;
-var VSlider = Laya.VSlider;
-// 不支持WebGL时自动切换至Canvas
-Laya.init(740, 400, WebGL);
-Laya.stage.alignV = Stage.ALIGN_MIDDLE;
-Laya.stage.alignH = Stage.ALIGN_CENTER;
-Laya.stage.scaleMode = "showall";
-Laya.stage.bgColor = "#90CAF9";
-Laya.loader.load([{ url: "res/atlas/comp.json", type: laya.net.Loader.ATLAS }, { url: "res/atlas/materials.json", type: laya.net.Loader.ATLAS }], Handler.create(this, this.createBlockFactory));
-function createBlockFactory() {
-    var blockFactory = new Marmot.BlockFactory();
-    var blockMove1 = blockFactory.create("Move");
-    blockMove1.pos(100, 100);
-    blockMove1.pivot(0, 0);
-    Laya.stage.addChild(blockMove1);
-    blockMove1.name = "blockMove1";
-    var blockMove2 = blockFactory.create("Move");
-    blockMove2.pos(150, 100);
-    blockMove2.pivot(0, 0);
-    Laya.stage.addChild(blockMove2);
-    blockMove2.name = "blockMove2";
-    var blockSetHeading1 = blockFactory.create("SetHeading");
-    blockSetHeading1.pos(200, 100);
-    blockSetHeading1.pivot(0, 0);
-    Laya.stage.addChild(blockSetHeading1);
-    blockSetHeading1.name = "blockSetHeading1";
-    var blockSetHeading2 = blockFactory.create("SetHeading");
-    blockSetHeading2.pos(250, 100);
-    blockSetHeading2.pivot(0, 0);
-    Laya.stage.addChild(blockSetHeading2);
-    blockSetHeading2.name = "blockSetHeading2";
-    var blockShow = blockFactory.create("Show");
-    blockShow.pos(300, 100);
-    blockShow.pivot(0, 0);
-    Laya.stage.addChild(blockShow);
-    blockShow.name = "blockShow";
-    var blockHide1 = blockFactory.create("Hide");
-    blockHide1.pos(350, 200);
-    blockHide1.pivot(0, 0);
-    Laya.stage.addChild(blockHide1);
-    blockHide1.name = "blockHide1";
-    var blockResize = blockFactory.create("Resize");
-    blockResize.pos(400, 200);
-    blockResize.pivot(0, 0);
-    Laya.stage.addChild(blockResize);
-    blockResize.name = "blockResize";
-    var blockWait1 = blockFactory.create("wait");
-    blockWait1.pos(450, 200);
-    blockWait1.pivot(0, 0);
-    Laya.stage.addChild(blockWait1);
-    blockWait1.name = "blockWait1";
-    var blockWait2 = blockFactory.create("wait");
-    blockWait2.pos(500, 200);
-    blockWait2.pivot(0, 0);
-    Laya.stage.addChild(blockWait2);
-    blockWait2.name = "blockWait2";
-    var blockHide2 = blockFactory.create("Hide");
-    blockHide2.pos(550, 200);
-    blockHide2.pivot(0, 0);
-    Laya.stage.addChild(blockHide2);
-    blockHide2.name = "blockHide2";
-    var blockPlay = blockFactory.create("play");
-    blockPlay.pos(600, 200);
-    blockPlay.pivot(0, 0);
-    Laya.stage.addChild(blockPlay);
-    blockPlay.name = "blockPlay";
+var Marmot;
+(function (Marmot) {
+    var WebGL = Laya.WebGL;
+    var Stage = Laya.Stage;
+    var Entry = (function () {
+        function Entry() {
+            //初始化舞台
+            Laya.init(1920, 1080, WebGL, Laya.Log);
+            Laya.stage.alignV = Stage.ALIGN_CENTER;
+            Laya.stage.alignH = Stage.ALIGN_MIDDLE;
+            Laya.stage.scaleMode = "full";
+            Laya.stage.bgColor = "#90CAF9";
+            //自动竖屏，让游戏的水平方向始终与浏览器显示屏幕的最长边保持垂直。
+            Laya.stage.screenMode = "horizontal";
+            //预加载资源，回调
+            Laya.loader.load([{ url: "res/atlas/comp.json", type: laya.net.Loader.ATLAS },
+                { url: "res/atlas/materials.json", type: laya.net.Loader.ATLAS }], Handler.create(this, this.createIDE));
+        }
+        Entry.prototype.createIDE = function () {
+            var ideFactory = new Marmot.IDEFactory();
+            var ide = ideFactory.getIDE("ide");
+            Laya.stage.addChild(ide);
+        };
+        return Entry;
+    }());
+    Marmot.Entry = Entry;
+})(Marmot || (Marmot = {}));
+new Marmot.Entry();
+function applyMixins(derivedCtor, baseCtors) {
+    baseCtors.forEach(function (baseCtor) {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(function (name) {
+            derivedCtor.prototype[name] = baseCtor.prototype[name];
+        });
+    });
 }
+/*
+class A{
+    a:number;
+    eat():void{
+        
+    }
+}
+class C{
+    b:number;
+    walk():void{
+        
+    }
+}
+class B implements A, C{
+    a:number;
+    b:number;
+    constructor(){
+
+    }
+    eat:()=> void;
+    walk:()=>void;
+}
+applyMixins(B, [A, C]);
+
+////////////////////////////////////////
+// In your runtime library somewhere
+////////////////////////////////////////
+
+function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+            derivedCtor.prototype[name] = baseCtor.prototype[name];
+        });
+    });
+}
+*/ 
 //# sourceMappingURL=entry.js.map

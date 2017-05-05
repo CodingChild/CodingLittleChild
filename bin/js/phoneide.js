@@ -1,0 +1,173 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Marmot;
+(function (Marmot) {
+    var Button = Laya.Button;
+    var Tab = Laya.Tab;
+    var BlockArea = Marmot.BlockArea;
+    var PhoneIDE = (function (_super) {
+        __extends(PhoneIDE, _super);
+        function PhoneIDE(name, width, height) {
+            return _super.call(this, name, width, height) || this;
+        }
+        PhoneIDE.prototype.buildIDE = function () {
+            this.createControlBar();
+            this.createScriptArea();
+            this.createBlocksArea();
+            this.createBlocksCategory();
+            this.createMaterialArea();
+            this.createMaterialCategory();
+            this.createStageArea();
+        };
+        PhoneIDE.prototype.createScriptArea = function () {
+            var blockFactory = new Marmot.BlockFactory();
+            this.scriptArea = new Marmot.ScriptArea(blockFactory, this);
+            this.scriptArea.createBlockSet();
+            this.scriptArea.top = 120;
+            this.scriptArea.left = 120;
+            this.scriptArea.right = 120;
+            this.scriptArea.bottom = 120;
+            this.scriptArea.name = "scriptArea";
+            this.addChild(this.scriptArea);
+        };
+        PhoneIDE.prototype.createControlBar = function () {
+            var btn_home = new Button("materials/btn_home.png");
+            btn_home.left = 0;
+            btn_home.top = 20;
+            btn_home.stateNum = 1;
+            btn_home.width = 100;
+            btn_home.height = 100;
+            //btn_home.clickHandler = laya.utils.Handler.create(this, this.onClickButton, [btn_home], false);
+            this.addChild(btn_home);
+            var tab = new Tab();
+            tab.right = 400;
+            tab.top = 20;
+            tab.space = 50;
+            tab.selectedIndex = 0;
+            tab.selectHandler = new Handler(this, this.chooseBlock);
+            this.addChild(tab);
+            this.controlBar = tab;
+            tab.name = "controlBar";
+            tab.initItems();
+            var btn_fullscreen = new Button("materials/btn_fullscreen.png");
+            btn_fullscreen.toggle = true;
+            btn_fullscreen.stateNum = 1;
+            btn_fullscreen.width = 100;
+            btn_fullscreen.height = 100;
+            btn_fullscreen.clickHandler = laya.utils.Handler.create(this, this.toggleFullScreen, [btn_fullscreen], false);
+            tab.addItem(btn_fullscreen);
+            var btn_play = new Button("materials/btn_play.png");
+            btn_play.toggle = true;
+            btn_play.stateNum = 1;
+            btn_play.width = 100;
+            btn_play.height = 100;
+            btn_play.clickHandler = laya.utils.Handler.create(this, this.pressStart, [btn_play], false);
+            tab.addItem(btn_play);
+        };
+        PhoneIDE.prototype.createMaterialArea = function () {
+        };
+        PhoneIDE.prototype.createMaterialCategory = function () {
+            var tab = new Tab();
+            tab.left = 0;
+            tab.top = 200;
+            tab.space = 50;
+            tab.selectedIndex = 0;
+            tab.selectHandler = new Handler(this, this.chooseMaterialArea);
+            this.addChild(tab);
+            this.controlBar = tab;
+            tab.name = "materialCategory";
+            tab.direction = "vertical";
+            tab.initItems();
+            var btn_sprite = new Button("materials/btn_sprite.png");
+            btn_sprite.toggle = true;
+            btn_sprite.stateNum = 1;
+            btn_sprite.width = 100;
+            btn_sprite.height = 100;
+            tab.addItem(btn_sprite);
+            var btn_stage = new Button("materials/btn_stage.png");
+            btn_stage.toggle = true;
+            btn_stage.stateNum = 1;
+            btn_stage.width = 100;
+            btn_stage.height = 100;
+            tab.addItem(btn_stage);
+            var btn_music = new Button("materials/btn_music_1.png");
+            btn_music.toggle = true;
+            btn_music.stateNum = 1;
+            btn_music.width = 100;
+            btn_music.height = 100;
+            tab.addItem(btn_music);
+        };
+        PhoneIDE.prototype.createBlocksArea = function () {
+            var blockFactory = new Marmot.BlockFactory();
+            var blockArea = new BlockArea(this.width, blockFactory, this, "blockArea");
+            this.blocksArea = blockArea;
+            this.addChild(blockArea);
+        };
+        PhoneIDE.prototype.createBlocksCategory = function () {
+            var tab = new Tab();
+            tab.left = 0;
+            tab.bottom = 0;
+            tab.space = (this.width - 900) / 8;
+            tab.selectedIndex = 0;
+            tab.selectHandler = new Handler(this, this.chooseBlock);
+            this.blocksCategory = tab;
+            this.addChild(tab);
+            tab.initItems();
+            var btn_control = new Button("materials/btn_control.png");
+            btn_control.stateNum = 2;
+            btn_control.width = 100;
+            btn_control.height = 100;
+            tab.addItem(btn_control);
+            var btn_event = new Button("materials/btn_event.png");
+            btn_event.stateNum = 2;
+            btn_event.width = 100;
+            btn_event.height = 100;
+            tab.addItem(btn_event);
+            var btn_pen = new Button("materials/btn_pen.png");
+            btn_pen.stateNum = 2;
+            btn_pen.width = 100;
+            btn_pen.height = 100;
+            tab.addItem(btn_pen);
+            var btn_math = new Button("materials/btn_math.png");
+            btn_math.stateNum = 2;
+            btn_math.width = 100;
+            btn_math.height = 100;
+            tab.addItem(btn_math);
+            var btn_music = new Button("materials/btn_music.png");
+            btn_music.stateNum = 2;
+            btn_music.width = 100;
+            btn_music.height = 100;
+            tab.addItem(btn_music);
+            var btn_motion = new Button("materials/btn_motion.png");
+            btn_motion.stateNum = 2;
+            btn_motion.width = 100;
+            btn_motion.height = 100;
+            tab.addItem(btn_motion);
+            var btn_look = new Button("materials/btn_look.png");
+            btn_look.stateNum = 2;
+            btn_look.width = 100;
+            btn_look.height = 100;
+            tab.addItem(btn_look);
+            var btn_variable = new Button("materials/btn_variable.png");
+            btn_variable.stateNum = 2;
+            btn_variable.width = 100;
+            btn_variable.height = 100;
+            tab.addItem(btn_variable);
+            var btn_sense = new Button("materials/btn_sense.png");
+            btn_sense.stateNum = 2;
+            btn_sense.width = 100;
+            btn_sense.height = 100;
+            tab.addItem(btn_sense);
+        };
+        PhoneIDE.prototype.createStageArea = function () {
+        };
+        PhoneIDE.prototype.fixIDELayout = function () {
+        };
+        return PhoneIDE;
+    }(Marmot.IDE));
+    Marmot.PhoneIDE = PhoneIDE;
+})(Marmot || (Marmot = {}));
+//# sourceMappingURL=phoneide.js.map

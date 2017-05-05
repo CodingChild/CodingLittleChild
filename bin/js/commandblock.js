@@ -19,24 +19,28 @@ var Marmot;
                     this.removeSelf();
                     target.removeSelf();
                     parent_1.addChild(target);
-                    target.x = target.actualWidth + 1;
+                    target.x = target.actualWidth + Marmot.Block.blockSetting.distanceBetweenBlocks;
                     target.y = 0;
-                    target.addChild(this);
+                    var tailBlock = target.getTailBlock();
+                    tailBlock.addChild(this);
+                    this.x = this.actualWidth + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    this.y = 0;
                 }
                 else {
+                    var tailBlock = target.getTailBlock();
+                    var blockSequence = target.getAllBlockChildren();
+                    var totalWidth_1 = target.actualWidth;
                     Point.EMPTY.setTo(this.x, this.y);
-                    console.log(Point.EMPTY.x.toString());
-                    console.log(Point.EMPTY.y.toString());
-                    Point.EMPTY.setTo(Point.EMPTY.x - target.actualWidth - 1, Point.EMPTY.y);
-                    console.log(Point.EMPTY.x.toString());
-                    console.log(Point.EMPTY.y.toString());
-                    target.removeSelf();
+                    blockSequence.forEach(function (block) {
+                        totalWidth_1 += block.actualWidth;
+                    });
+                    Point.EMPTY.setTo(Point.EMPTY.x - totalWidth_1 - Marmot.Block.blockSetting.distanceBetweenBlocks * (blockSequence.length + 1), Point.EMPTY.y);
                     parent_1.addChild(target);
                     target.x = Point.EMPTY.x;
                     target.y = Point.EMPTY.y;
                     this.removeSelf();
-                    target.addChild(this);
-                    this.x = target.actualWidth + 1;
+                    tailBlock.addChild(this);
+                    this.x = tailBlock.actualWidth + Marmot.Block.blockSetting.distanceBetweenBlocks;
                     this.y = 0;
                 }
             }
@@ -44,7 +48,7 @@ var Marmot;
                 var child = this.getNextBlockChild();
                 target.removeSelf();
                 this.addChild(target);
-                target.x = this.actualWidth + 1;
+                target.x = this.actualWidth + Marmot.Block.blockSetting.distanceBetweenBlocks;
                 target.y = 0;
                 if (child != null) {
                     target.addChild(child);
@@ -110,8 +114,8 @@ var Marmot;
             }
         };
         CommandBlock.prototype.onDragEnd = function (e) {
+            this.removeHighlight(this);
             if (this.lastAttachTarget != null) {
-                this.removeHighlight(this);
                 this.removeHighlight(this.lastAttachTarget.attachBlock);
                 this.lastAttachTarget.attachBlock.attachTarget(this, this.lastAttachTarget.attachHook.attachCoordinate);
                 this.lastAttachTarget = null;
@@ -120,10 +124,12 @@ var Marmot;
         CommandBlock.prototype.closestAttachTarget = function () {
             var _this = this;
             var targets = [];
+            var headTargets = [];
             this.parent._childs.forEach(function (child) {
                 if (child instanceof Marmot.Block && child.name != _this.name) {
                     targets.push(child);
                     targets = targets.concat(child.getAllBlockChildren());
+                    headTargets.push(child);
                 }
             });
             var minDistance = Marmot.Block.minimumHookDistance;
@@ -135,21 +141,59 @@ var Marmot;
                 }
             };
             var tempDistance = 0;
-            this.attachPoints.forEach(function (attachPoint) {
-                Point.TEMP.setTo(attachPoint.attachCoordinate.x, attachPoint.attachCoordinate.y);
-                _this.localToGlobal(Point.TEMP);
-                targets.forEach(function (child) {
-                    child.attachPoints.forEach(function (attachPoint) {
-                        Point.EMPTY.setTo(attachPoint.attachCoordinate.x, attachPoint.attachCoordinate.y);
-                        child.localToGlobal(Point.EMPTY);
-                        tempDistance = Point.TEMP.distance(Point.EMPTY.x, Point.EMPTY.y);
-                        if (minDistance > tempDistance) {
-                            minDistance = tempDistance;
-                            optimalTarget.attachBlock = child;
-                            optimalTarget.attachHook.attachCoordinate = attachPoint.attachCoordinate;
-                            optimalTarget.attachHook.isHook = attachPoint.isHook;
+            var tailBlock = this.getTailBlock();
+            Point.TEMP.setTo(this.attachPoints[0].attachCoordinate.x, this.attachPoints[0].attachCoordinate.y);
+            this.localToGlobal(Point.TEMP);
+            targets.forEach(function (child) {
+                var points = [];
+                if (child.getNextBlockChild() != null && (child.parent instanceof Marmot.Block) == true) {
+                    child.attachPoints.forEach(function (targetAttachPoint) {
+                        if (targetAttachPoint.isHook == false) {
+                            points.push(targetAttachPoint);
                         }
                     });
+                }
+                else if (child.getNextBlockChild() != null && (child.parent instanceof Marmot.Block) == false) {
+                }
+                else {
+                    points = child.attachPoints;
+                }
+                points.forEach(function (targetAttachPoint) {
+                    Point.EMPTY.setTo(targetAttachPoint.attachCoordinate.x, targetAttachPoint.attachCoordinate.y);
+                    child.localToGlobal(Point.EMPTY);
+                    tempDistance = Point.TEMP.distance(Point.EMPTY.x, Point.EMPTY.y);
+                    if (minDistance > tempDistance) {
+                        minDistance = tempDistance;
+                        optimalTarget.attachBlock = child;
+                        optimalTarget.attachHook.attachCoordinate = targetAttachPoint.attachCoordinate;
+                        optimalTarget.attachHook.isHook = targetAttachPoint.isHook;
+                    }
+                });
+            });
+            Point.TEMP.setTo(tailBlock.attachPoints[1].attachCoordinate.x, tailBlock.attachPoints[1].attachCoordinate.y);
+            tailBlock.localToGlobal(Point.TEMP);
+            headTargets.forEach(function (child) {
+                var points = [];
+                if (child.getNextBlockChild() != null) {
+                    child.attachPoints.forEach(function (targetAttachPoint) {
+                        if (targetAttachPoint.isHook == false) {
+                            points.push(targetAttachPoint);
+                        }
+                    });
+                }
+                else {
+                    points = child.attachPoints;
+                }
+                points.forEach(function (targetAttachPoint) {
+                    Point.EMPTY.setTo(targetAttachPoint.attachCoordinate.x, targetAttachPoint.attachCoordinate.y);
+                    child.localToGlobal(Point.EMPTY);
+                    tempDistance = Point.TEMP.distance(Point.EMPTY.x, Point.EMPTY.y);
+                    if (minDistance > tempDistance) {
+                        minDistance = tempDistance;
+                        optimalTarget.attachBlock = child;
+                        optimalTarget.attachHook.attachCoordinate = targetAttachPoint.attachCoordinate;
+                        optimalTarget.attachHook.isHook = targetAttachPoint.isHook;
+                    }
                 });
             });
             if (minDistance == Marmot.Block.minimumHookDistance) {

@@ -28,11 +28,11 @@ module Marmot {
 
         public attachTarget(block: Block, attachPoint: Point): void {
             let target = block;
-            
+
             if (this.attachPoints[0].attachCoordinate.x == attachPoint.x && this.attachPoints[0].attachCoordinate.y == attachPoint.y) {
                 target.removeSelf();
                 this.addChild(target);
-                target.x = this.actualWidth + 1;
+                target.x = this.actualWidth + Block.blockSetting.distanceBetweenBlocks;
                 target.y = 0;
             }
 
@@ -100,6 +100,63 @@ module Marmot {
 
             }
 
+        }
+
+        protected closestAttachTarget(): AttachTarget {
+            let targets: Array<Block> = [];
+            (this.parent._childs as Array<Block>).forEach((child) => {
+                if (child instanceof Block && child.name != this.name) {
+                    targets.push(child);
+                }
+            });
+            let minDistance = Block.minimumHookDistance;
+            let optimalTarget: AttachTarget = {
+                attachBlock: null,
+                attachHook: {
+                    attachCoordinate: null,
+                    isHook: false
+                }
+            };
+            let tempDistance = 0;
+            let tailBlock = this.getTailBlock();
+
+            if (tailBlock.attachPoints.length == 1) {
+                Point.TEMP.setTo(tailBlock.attachPoints[0].attachCoordinate.x, tailBlock.attachPoints[0].attachCoordinate.y);
+                tailBlock.localToGlobal(Point.TEMP);
+            }
+            else if (tailBlock.attachPoints.length == 2) {
+                Point.TEMP.setTo(tailBlock.attachPoints[1].attachCoordinate.x, tailBlock.attachPoints[1].attachCoordinate.y);
+                tailBlock.localToGlobal(Point.TEMP);
+            }
+            targets.forEach((child) => {
+                let points = [];
+                
+                child.attachPoints.forEach((targetAttachPoint) => {
+                    if (targetAttachPoint.isHook == false) {
+                        points.push(targetAttachPoint);
+                    }
+                })
+
+                points.forEach((targetAttachPoint) => {
+                    Point.EMPTY.setTo(targetAttachPoint.attachCoordinate.x, targetAttachPoint.attachCoordinate.y);
+                    child.localToGlobal(Point.EMPTY);
+                    tempDistance = Point.TEMP.distance(Point.EMPTY.x, Point.EMPTY.y);
+                    if (minDistance > tempDistance) {
+                        minDistance = tempDistance;
+                        optimalTarget.attachBlock = child;
+                        optimalTarget.attachHook.attachCoordinate = targetAttachPoint.attachCoordinate;
+                        optimalTarget.attachHook.isHook = targetAttachPoint.isHook;
+                    }
+                })
+            });
+
+
+            if (minDistance == Block.minimumHookDistance) {
+                return null;
+            }
+            else {
+                return optimalTarget;
+            }
         }
 
         protected getAttachPoints(): Array<AttachHook> {

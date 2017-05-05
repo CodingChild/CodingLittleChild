@@ -3,14 +3,17 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var LineInput = Marmot.LineInput;
+var TextInput = Laya.TextInput;
+var VSlider = Laya.VSlider;
+var Sprite = Laya.Sprite;
+var Texture = Laya.Texture;
+var HitArea = Laya.HitArea;
+var Point = Laya.Point;
+var Rectangle = Laya.Rectangle;
 var Marmot;
 (function (Marmot) {
     var Event = Laya.Event;
-    var TextInput = Laya.TextInput;
-    var VSlider = Laya.VSlider;
-    var Sprite = Laya.Sprite;
-    var HitArea = Laya.HitArea;
-    var Rectangle = Laya.Rectangle;
     var Block = (function (_super) {
         __extends(Block, _super);
         function Block(textureSettings, inputSettings, backgroundSetting, sliderSetting) {
@@ -56,12 +59,34 @@ var Marmot;
         *返回第一个子块节点。
         */
         Block.prototype.getNextBlockChild = function () {
-            this._childs.forEach(function (child) {
-                if (child instanceof Block) {
-                    return child;
+            for (var i = 0; i < this._childs.length; i++) {
+                if (this._childs[i] instanceof Block) {
+                    return this._childs[i];
                 }
-            });
+            }
             return null;
+        };
+        /**
+        *返回该块的头节点。
+        */
+        Block.prototype.getTopBlock = function () {
+            var topBlock = this;
+            while (topBlock.parent instanceof Block) {
+                topBlock = topBlock.parent;
+            }
+            return topBlock;
+        };
+        /**
+        *返回该块的尾节点。
+        */
+        Block.prototype.getTailBlock = function () {
+            var tailBlock = this;
+            var tempBlock = tailBlock.getNextBlockChild();
+            while (tempBlock != null) {
+                tailBlock = tempBlock;
+                tempBlock = tempBlock.getNextBlockChild();
+            }
+            return tailBlock;
         };
         Block.prototype.drawBackgroundNormal = function () {
             this.graphics.drawPath(0, 0, this.backgroundSetting.pathBackground, {
@@ -94,39 +119,30 @@ var Marmot;
         Block.prototype.drawInputs = function () {
             var _this = this;
             this.inputSettings.forEach(function (inputSetting) {
-                var ti = new TextInput();
-                ti.skin = inputSetting.resourceSetting.path;
-                ti.name = inputSetting.resourceSetting.name;
-                ti.sizeGrid = inputSetting.textInputSetting.sizeGrid;
-                ti.font = inputSetting.textInputSetting.font;
-                ti.fontSize = inputSetting.textInputSetting.fontSize;
-                ti.bold = inputSetting.textInputSetting.bold;
-                ti.color = inputSetting.textInputSetting.color;
-                ti.align = "center";
-                ti.restrict = inputSetting.textInputSetting.restrict;
-                ti.valign = "middle";
-                ti.pos(inputSetting.resourceSetting.x * Block.blockSetting.blockScale, inputSetting.resourceSetting.y * Block.blockSetting.blockScale);
-                ti.size(inputSetting.resourceSetting.width * Block.blockSetting.blockScale, inputSetting.resourceSetting.height * Block.blockSetting.blockScale);
-                _this.addChild(ti);
+                _this.addChild(new Marmot.LineInput(inputSetting));
             });
         };
         Block.prototype.onMouseDown = function (e) {
             this.updateLayer();
             if (this.hitTestPoint(e.stageX, e.stageY)) {
                 this.addHighlight(this);
-                Rectangle.TEMP.setTo(50, 50, 550, 200);
+                var scriptAreaHeight = Laya.stage.getChildByName("ide").scriptArea.height;
+                var scriptAreaWidth = Laya.stage.getChildByName("ide").scriptArea.width;
+                Laya.Log.print("scriptAreaHeight:" + scriptAreaHeight.toString());
+                Laya.Log.print("scriptAreaWidth" + scriptAreaWidth.toString());
+                Rectangle.TEMP.setTo(120, 120, scriptAreaWidth - 50 * Block.blockSetting.blockScale * 2, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
                 this.startDrag(Rectangle.TEMP, true, 100);
             }
         };
         Block.prototype.updateLayer = function () {
             var topValue = 0;
-            var num = this.parent.numChildren;
-            for (var i = 0; i < num; i++) {
-                var tempValue = this.parent.getChildAt(i).zOrder;
+            var tempValue = 0;
+            Laya.stage.getChildByName("ide").scriptArea.content._childs.forEach(function (child) {
+                tempValue = child.zOrder;
                 if (tempValue > topValue) {
                     topValue = tempValue;
                 }
-            }
+            });
             this.zOrder = topValue + 1;
             this.updateZOrder();
         };
@@ -186,12 +202,13 @@ var Marmot;
         return Block;
     }(Sprite));
     Block.blockSetting = {
-        blockScale: 1.5,
+        blockScale: 3,
         blockFillStyle: "#1976D2",
         blockStrokeStyleNormal: "#000000",
         blockStrokeStyleHighlight: "#fcff00",
         blockLineWidthHighlight: 8,
-        blockLineWidthNormal: 4
+        blockLineWidthNormal: 4,
+        distanceBetweenBlocks: 1
     };
     Block.minimumHookDistance = 50;
     Marmot.Block = Block;

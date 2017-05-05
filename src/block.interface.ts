@@ -7,7 +7,8 @@ module Marmot{
         blockStrokeStyleNormal: string;
         blockStrokeStyleHighlight: string;
         blockLineWidthHighlight: number;
-        blockLineWidthNormal: number
+        blockLineWidthNormal: number;
+        distanceBetweenBlocks:number;
     }
 
     export interface ResourceSetting {

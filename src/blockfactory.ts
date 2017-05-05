@@ -32,9 +32,9 @@ module Marmot {
             max: 100,
             initialValue: 50,
             tick: 1,
-            inputName:"input",
+            inputName: "input",
             onChange: function (value: number): void {
-                ((this as Block).getChildByName("input") as TextInput).text = value.toString();
+                (this.getChildByName("input") as LineInput).textinput.text = value.toString();
             }
         }
         private blockBackground1: BackgroundSetting = {
@@ -111,9 +111,9 @@ module Marmot {
         private textInputSetting1: TextInputSetting = {
             sizeGrid: "0,10,0,10",
             font: "Arial",
-            fontSize: 15,
+            fontSize: 30,
             bold: true,
-            color: "#606368",
+            color: "#000000",
             restrict: "0-9"
         }
 
@@ -122,200 +122,141 @@ module Marmot {
         }
 
         public create(type: string): Block {
+            let textureSettings: Array<ResourceSetting> = [];
+            let inputSettings: Array<InputSettings> = [];
+            let backgroundSetting: BackgroundSetting;
+
+            backgroundSetting = this.blockBackground1;
             if (type == "Move") {
-                return this.createBlockMove();
+                textureSettings.push(
+                    {
+                        name: "move",
+                        path: "materials/walk.png",
+                        x: 6,
+                        y: 6,
+                        width: 45,
+                        height: 30
+                    }
+                );
+                inputSettings.push(
+                    {
+                        resourceSetting: this.inputSetting1,
+                        textInputSetting: this.textInputSetting1
+                    }
+                )
+                return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
             else if (type == "SetHeading") {
-                return this.createBlockSetHeading();
+                textureSettings.push(
+                    {
+                        name: "anglepan",
+                        path: "materials/anglepan.png",
+                        x: 13,
+                        y: 3,
+                        width: 32,
+                        height: 32
+                    }
+                );
+                inputSettings.push(
+                    {
+                        resourceSetting: this.inputSetting1,
+                        textInputSetting: this.textInputSetting1
+                    }
+                )
+                return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
             else if (type == "Show") {
-                return this.createBlockShow();
+                textureSettings.push(
+                    {
+                        name: "show",
+                        path: "materials/show.png",
+                        x: 10,
+                        y: 14,
+                        width: 39,
+                        height: 17
+                    }
+                );
+                return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
             else if (type == "Hide") {
-                return this.createBlockHide();
+                textureSettings.push(
+                    {
+                        name: "hide",
+                        path: "materials/hide.png",
+                        x: 10,
+                        y: 14,
+                        width: 39,
+                        height: 17
+                    }
+                );
+                return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
             else if (type == "Resize") {
-                return this.createBlockResize();
+                let sliderSetting: SliderSetting;
+                textureSettings.push(
+                    {
+                        name: "setsize",
+                        path: "materials/setsize.png",
+                        x: 12,
+                        y: 2,
+                        width: 31,
+                        height: 31
+                    }
+                );
+                inputSettings.push(
+                    {
+                        resourceSetting: this.inputSetting1,
+                        textInputSetting: this.textInputSetting1
+                    }
+                )
+                sliderSetting = this.sliderSetting1;
+                let blockSize = new CommandBlock(textureSettings, inputSettings, backgroundSetting, sliderSetting);
+                let input: LineInput = blockSize.getChildByName("input") as LineInput;
+                let vslider: VSlider = blockSize.getChildByName("vslider") as VSlider;
+
+                input.textinput.editable = false;
+                input.textinput.on(Laya.Event.FOCUS, vslider, function () {
+                    vslider.visible = true;
+                });
+                vslider.on(Laya.Event.CHANGED, vslider, function () {
+                    this.visible = false;
+                });
+                return blockSize;
             }
-            else if(type == "wait"){
-                return this.createBlockWait();
+            else if (type == "wait") {
+                textureSettings.push(
+                    {
+                        name: "wait",
+                        path: "materials/wait.png",
+                        x: 12,
+                        y: 3,
+                        width: 30,
+                        height: 30
+                    }
+                );
+                inputSettings.push(
+                    {
+                        resourceSetting: this.inputSetting1,
+                        textInputSetting: this.textInputSetting1
+                    }
+                )
+                return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if(type == "play"){
-                return this.createBlockPlay();
+            else if (type == "play") {
+                textureSettings.push(
+                    {
+                        name: "play",
+                        path: "materials/play.png",
+                        x: 5,
+                        y: 5,
+                        width: 39,
+                        height: 39
+                    }
+                );
+                backgroundSetting = this.blockBackground2;
+                return new HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
 
-        }
-
-        private createBlockMove(): Block {
-            let textureSettings: Array<ResourceSetting> = [];
-            let inputSettings: Array<InputSettings> = [];
-            let backgroundSetting: BackgroundSetting;
-
-            textureSettings.push(
-                {
-                    name: "move",
-                    path: "materials/walk.png",
-                    x: 6,
-                    y: 6,
-                    width: 45,
-                    height: 30
-                }
-            );
-            inputSettings.push(
-                {
-                    resourceSetting: this.inputSetting1,
-                    textInputSetting: this.textInputSetting1
-                }
-            )
-            backgroundSetting = this.blockBackground1;
-            return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
-
-        }
-
-        private createBlockSetHeading(): Block {
-            let textureSettings: Array<ResourceSetting> = [];
-            let inputSettings: Array<InputSettings> = [];
-            let backgroundSetting: BackgroundSetting;
-
-            textureSettings.push(
-                {
-                    name: "anglepan",
-                    path: "materials/anglepan.png",
-                    x: 13,
-                    y: 3,
-                    width: 32,
-                    height: 32
-                }
-            );
-            inputSettings.push(
-                {
-                    resourceSetting: this.inputSetting1,
-                    textInputSetting: this.textInputSetting1
-                }
-            )
-            backgroundSetting = this.blockBackground1;
-            return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
-        }
-
-        private createBlockShow(): Block {
-            let textureSettings: Array<ResourceSetting> = [];
-            let inputSettings: Array<InputSettings> = [];
-            let backgroundSetting: BackgroundSetting;
-
-            textureSettings.push(
-                {
-                    name: "show",
-                    path: "materials/show.png",
-                    x: 10,
-                    y: 14,
-                    width: 39,
-                    height: 17
-                }
-            );
-            backgroundSetting = this.blockBackground1;
-            return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
-        }
-
-        private createBlockHide(): Block {
-            let textureSettings: Array<ResourceSetting> = [];
-            let inputSettings: Array<InputSettings> = [];
-            let backgroundSetting: BackgroundSetting;
-
-            textureSettings.push(
-                {
-                    name: "hide",
-                    path: "materials/hide.png",
-                    x: 10,
-                    y: 14,
-                    width: 39,
-                    height: 17
-                }
-            );
-            backgroundSetting = this.blockBackground1;
-            return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
-
-        }
-
-        private createBlockResize(): Block {
-            let textureSettings: Array<ResourceSetting> = [];
-            let inputSettings: Array<InputSettings> = [];
-            let backgroundSetting: BackgroundSetting;
-            let sliderSetting: SliderSetting;
-
-            textureSettings.push(
-                {
-                    name: "setsize",
-                    path: "materials/setsize.png",
-                    x: 12,
-                    y: 2,
-                    width: 31,
-                    height: 31
-                }
-            );
-            inputSettings.push(
-                {
-                    resourceSetting: this.inputSetting1,
-                    textInputSetting: this.textInputSetting1
-                }
-            )
-            backgroundSetting = this.blockBackground1;
-            sliderSetting = this.sliderSetting1;
-            let blockSize = new CommandBlock(textureSettings, inputSettings, backgroundSetting, sliderSetting);
-            let input:TextInput = blockSize.getChildByName("input") as TextInput;
-            let vslider:VSlider = blockSize.getChildByName("vslider") as VSlider;
-            input.editable = false;
-            input.on(Laya.Event.FOCUS, vslider, function(){
-                vslider.visible = true;
-            });
-            vslider.on(Laya.Event.CHANGED, vslider, function(){
-                this.visible = false;
-            });
-            return blockSize;
-        }
-
-        private createBlockWait(): Block {
-            let textureSettings: Array<ResourceSetting> = [];
-            let inputSettings: Array<InputSettings> = [];
-            let backgroundSetting: BackgroundSetting;
-
-            textureSettings.push(
-                {
-                    name: "wait",
-                    path: "materials/wait.png",
-                    x: 12,
-                    y: 3,
-                    width: 30,
-                    height: 30
-                }
-            );
-            inputSettings.push(
-                {
-                    resourceSetting: this.inputSetting1,
-                    textInputSetting: this.textInputSetting1
-                }
-            )
-            backgroundSetting = this.blockBackground1;
-            return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
-
-        }
-
-        private createBlockPlay(): Block {
-            let textureSettings: Array<ResourceSetting> = [];
-            let inputSettings: Array<InputSettings> = [];
-            let backgroundSetting: BackgroundSetting;
-
-            textureSettings.push(
-                {
-                    name: "play",
-                    path: "materials/play.png",
-                    x: 5,
-                    y: 5,
-                    width: 39,
-                    height: 39
-                }
-            );
-            backgroundSetting = this.blockBackground2;
-            return new HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
         }
     }
 }

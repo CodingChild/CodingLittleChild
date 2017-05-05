@@ -1,27 +1,29 @@
+import LineInput = Marmot.LineInput;
+import ResourceSetting = Marmot.ResourceSetting;
+import SliderSetting = Marmot.SliderSetting;
+import BackgroundSetting = Marmot.BackgroundSetting;
+import InputSettings = Marmot.InputSettings;
+import TextInput = Laya.TextInput;
+import VSlider = Laya.VSlider;
+import Sprite = Laya.Sprite;
+import Texture = Laya.Texture;
+import HitArea = Laya.HitArea;
+import BlockSetting = Marmot.BlockSetting;
+import Point = Laya.Point;
+import Rectangle = Laya.Rectangle;
 module Marmot {
     import Event = Laya.Event;
-    import ResourceSetting = Marmot.ResourceSetting;
-    import SliderSetting = Marmot.SliderSetting;
-    import BackgroundSetting = Marmot.BackgroundSetting;
-    import InputSettings = Marmot.InputSettings;
-    import TextInput = Laya.TextInput;
-    import VSlider = Laya.VSlider;
-    import Sprite = Laya.Sprite;
-    import Texture = Laya.Texture;
-    import HitArea = Laya.HitArea;
-    import BlockSetting = Marmot.BlockSetting;
-    import Point = Laya.Point;
-    import Rectangle = Laya.Rectangle;
 
     export abstract class Block extends Sprite {
 
         public static blockSetting: BlockSetting = {
-            blockScale: 1.5,
+            blockScale: 3,
             blockFillStyle: "#1976D2",
             blockStrokeStyleNormal: "#000000",
             blockStrokeStyleHighlight: "#fcff00",
             blockLineWidthHighlight: 8,
-            blockLineWidthNormal: 4
+            blockLineWidthNormal: 4,
+            distanceBetweenBlocks: 1
         }
 
         public actualWidth: number;
@@ -92,12 +94,36 @@ module Marmot {
 		*返回第一个子块节点。
 		*/
         public getNextBlockChild(): Block {
-            this._childs.forEach(function (child) {
-                if (child instanceof Block) {
-                    return child;
+            for (let i = 0; i < this._childs.length; i++) {
+                if (this._childs[i] instanceof Block) {
+                    return this._childs[i];
                 }
-            });
+            }
             return null;
+        }
+
+        /**
+		*返回该块的头节点。
+		*/
+        public getTopBlock(): Block {
+            let topBlock: any = this;
+            while (topBlock.parent instanceof Block) {
+                topBlock = topBlock.parent;
+            }
+            return topBlock;
+        }
+
+        /**
+		*返回该块的尾节点。
+		*/
+        public getTailBlock(): Block {
+            let tailBlock: Block = this;
+            let tempBlock = tailBlock.getNextBlockChild();
+            while (tempBlock != null) {
+                tailBlock = tempBlock;
+                tempBlock = tempBlock.getNextBlockChild();
+            }
+            return tailBlock;
         }
 
         public abstract attachTarget(block: Block, attachPoint: Point): void;
@@ -145,22 +171,7 @@ module Marmot {
 
         protected drawInputs(): void {
             this.inputSettings.forEach((inputSetting) => {
-                let ti = new TextInput();
-                ti.skin = inputSetting.resourceSetting.path;
-                ti.name = inputSetting.resourceSetting.name;
-                ti.sizeGrid = inputSetting.textInputSetting.sizeGrid;
-                ti.font = inputSetting.textInputSetting.font;
-                ti.fontSize = inputSetting.textInputSetting.fontSize;
-                ti.bold = inputSetting.textInputSetting.bold;
-                ti.color = inputSetting.textInputSetting.color;
-                ti.align = "center";
-                ti.restrict = inputSetting.textInputSetting.restrict;
-                ti.valign = "middle";
-                ti.pos(inputSetting.resourceSetting.x * Block.blockSetting.blockScale,
-                    inputSetting.resourceSetting.y * Block.blockSetting.blockScale);
-                ti.size(inputSetting.resourceSetting.width * Block.blockSetting.blockScale,
-                    inputSetting.resourceSetting.height * Block.blockSetting.blockScale);
-                this.addChild(ti);
+                this.addChild(new LineInput(inputSetting));
             })
         }
 
@@ -168,7 +179,11 @@ module Marmot {
             this.updateLayer();
             if (this.hitTestPoint(e.stageX, e.stageY)) {
                 this.addHighlight(this);
-                Rectangle.TEMP.setTo(50, 50, 550, 200);
+                let scriptAreaHeight = (Laya.stage.getChildByName("ide") as IDE).scriptArea.height;
+                let scriptAreaWidth = (Laya.stage.getChildByName("ide") as IDE).scriptArea.width;
+                Laya.Log.print("scriptAreaHeight:" + scriptAreaHeight.toString());
+                Laya.Log.print("scriptAreaWidth" + scriptAreaWidth.toString());
+                Rectangle.TEMP.setTo(120, 120, scriptAreaWidth - 50 * Block.blockSetting.blockScale * 2, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
                 this.startDrag(Rectangle.TEMP, true, 100);
 
             }
@@ -176,13 +191,13 @@ module Marmot {
 
         protected updateLayer(): void {
             let topValue = 0;
-            let num = this.parent.numChildren;
-            for (let i = 0; i < num; i++) {
-                let tempValue = (this.parent.getChildAt(i) as Sprite).zOrder;
+            let tempValue = 0;
+            (Laya.stage.getChildByName("ide") as IDE).scriptArea.content._childs.forEach((child) => {
+                tempValue = child.zOrder;
                 if (tempValue > topValue) {
                     topValue = tempValue;
                 }
-            }
+            });
             this.zOrder = topValue + 1;
             this.updateZOrder();
         }
@@ -195,6 +210,7 @@ module Marmot {
         protected onDragMove(e: Event): void {
             let target: AttachTarget = null;
             target = this.closestAttachTarget();
+
 
             if (target == null) {
                 if (this.lastAttachTarget != null) {
@@ -239,7 +255,7 @@ module Marmot {
             block.graphics.clear();
             block.drawBackgroundNormal();
             block.drawTextures();
-        }        
+        }
 
         protected abstract onDragStart(e: Event): void;
         protected abstract drawHook(attachPoint: Point): void;

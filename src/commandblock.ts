@@ -35,28 +35,34 @@ module Marmot {
                     this.removeSelf();
                     target.removeSelf();
                     parent.addChild(target);
-                    target.x = target.actualWidth + 1;
+                    target.x = target.actualWidth + Block.blockSetting.distanceBetweenBlocks;
                     target.y = 0;
-                    target.addChild(this);
-                } 
+
+                    let tailBlock = target.getTailBlock();
+
+                    tailBlock.addChild(this);
+                    this.x = this.actualWidth + Block.blockSetting.distanceBetweenBlocks;
+                    this.y = 0;
+                }
                 else {
+                    let tailBlock = target.getTailBlock();
+                    let blockSequence = target.getAllBlockChildren();
+                    let totalWidth = target.actualWidth;
                     Point.EMPTY.setTo(this.x, this.y);
-                    console.log(Point.EMPTY.x.toString());
-                    console.log(Point.EMPTY.y.toString());
+                    blockSequence.forEach((block) => {
+                        totalWidth += block.actualWidth;
+                    })
 
-                    Point.EMPTY.setTo(Point.EMPTY.x - target.actualWidth - 1, Point.EMPTY.y);
-                    console.log(Point.EMPTY.x.toString());
-                    console.log(Point.EMPTY.y.toString());
+                    Point.EMPTY.setTo(Point.EMPTY.x - totalWidth - Block.blockSetting.distanceBetweenBlocks * (blockSequence.length + 1), Point.EMPTY.y);
 
-                    target.removeSelf();
                     parent.addChild(target);
 
                     target.x = Point.EMPTY.x;
                     target.y = Point.EMPTY.y;
 
                     this.removeSelf();
-                    target.addChild(this);
-                    this.x = target.actualWidth + 1;
+                    tailBlock.addChild(this);
+                    this.x = tailBlock.actualWidth + Block.blockSetting.distanceBetweenBlocks;
                     this.y = 0;
 
                 }
@@ -65,11 +71,12 @@ module Marmot {
                 let child = this.getNextBlockChild();
                 target.removeSelf();
                 this.addChild(target);
-                target.x = this.actualWidth + 1;
+                target.x = this.actualWidth + Block.blockSetting.distanceBetweenBlocks;
                 target.y = 0;
                 if (child != null) {
                     target.addChild(child);
                 }
+                //this.attachPoints
             }
         }
 
@@ -192,6 +199,7 @@ module Marmot {
                     35 * Block.blockSetting.blockScale,
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
+
             }
             else {
 
@@ -200,8 +208,8 @@ module Marmot {
         }
 
         protected onDragEnd(e: Event): void {
+            this.removeHighlight(this);
             if (this.lastAttachTarget != null) {
-                this.removeHighlight(this);
                 this.removeHighlight(this.lastAttachTarget.attachBlock);
 
                 this.lastAttachTarget.attachBlock.attachTarget(this, this.lastAttachTarget.attachHook.attachCoordinate);
@@ -212,10 +220,12 @@ module Marmot {
 
         protected closestAttachTarget(): AttachTarget {
             let targets: Array<Block> = [];
+            let headTargets: Array<Block> = [];
             (this.parent._childs as Array<Block>).forEach((child) => {
                 if (child instanceof Block && child.name != this.name) {
                     targets.push(child);
                     targets = targets.concat(child.getAllBlockChildren());
+                    headTargets.push(child);
                 }
             });
             let minDistance = Block.minimumHookDistance;
@@ -227,25 +237,64 @@ module Marmot {
                 }
             };
             let tempDistance = 0;
+            let tailBlock = this.getTailBlock();
 
-            this.attachPoints.forEach((attachPoint) => {
-                Point.TEMP.setTo(attachPoint.attachCoordinate.x, attachPoint.attachCoordinate.y);
-                this.localToGlobal(Point.TEMP);
-
-                targets.forEach((child) => {
-                    child.attachPoints.forEach((attachPoint) => {
-                        Point.EMPTY.setTo(attachPoint.attachCoordinate.x, attachPoint.attachCoordinate.y);
-                        child.localToGlobal(Point.EMPTY);
-                        tempDistance = Point.TEMP.distance(Point.EMPTY.x, Point.EMPTY.y);
-                        if (minDistance > tempDistance) {
-                            minDistance = tempDistance;
-                            optimalTarget.attachBlock = child;
-                            optimalTarget.attachHook.attachCoordinate = attachPoint.attachCoordinate;
-                            optimalTarget.attachHook.isHook = attachPoint.isHook;
+            Point.TEMP.setTo(this.attachPoints[0].attachCoordinate.x, this.attachPoints[0].attachCoordinate.y);
+            this.localToGlobal(Point.TEMP);
+            targets.forEach((child) => {
+                let points = [];
+                if (child.getNextBlockChild() != null && (child.parent instanceof Block) == true) {
+                    child.attachPoints.forEach((targetAttachPoint) => {
+                        if (targetAttachPoint.isHook == false) {
+                            points.push(targetAttachPoint);
                         }
                     })
-                });
-            })
+                }
+                else if(child.getNextBlockChild() != null && (child.parent instanceof Block) == false){
+
+                }
+                else {
+                    points = child.attachPoints;
+                }
+                points.forEach((targetAttachPoint) => {
+                    Point.EMPTY.setTo(targetAttachPoint.attachCoordinate.x, targetAttachPoint.attachCoordinate.y);
+                    child.localToGlobal(Point.EMPTY);
+                    tempDistance = Point.TEMP.distance(Point.EMPTY.x, Point.EMPTY.y);
+                    if (minDistance > tempDistance) {
+                        minDistance = tempDistance;
+                        optimalTarget.attachBlock = child;
+                        optimalTarget.attachHook.attachCoordinate = targetAttachPoint.attachCoordinate;
+                        optimalTarget.attachHook.isHook = targetAttachPoint.isHook;
+                    }
+                })
+            });
+            Point.TEMP.setTo(tailBlock.attachPoints[1].attachCoordinate.x, tailBlock.attachPoints[1].attachCoordinate.y);
+            tailBlock.localToGlobal(Point.TEMP);
+
+            headTargets.forEach((child) => {
+                let points = [];
+                if (child.getNextBlockChild() != null) {
+                    child.attachPoints.forEach((targetAttachPoint) => {
+                        if (targetAttachPoint.isHook == false) {
+                            points.push(targetAttachPoint);
+                        }
+                    })
+                }
+                else {
+                    points = child.attachPoints;
+                }
+                points.forEach((targetAttachPoint) => {
+                    Point.EMPTY.setTo(targetAttachPoint.attachCoordinate.x, targetAttachPoint.attachCoordinate.y);
+                    child.localToGlobal(Point.EMPTY);
+                    tempDistance = Point.TEMP.distance(Point.EMPTY.x, Point.EMPTY.y);
+                    if (minDistance > tempDistance) {
+                        minDistance = tempDistance;
+                        optimalTarget.attachBlock = child;
+                        optimalTarget.attachHook.attachCoordinate = targetAttachPoint.attachCoordinate;
+                        optimalTarget.attachHook.isHook = targetAttachPoint.isHook;
+                    }
+                })
+            });
 
 
             if (minDistance == Block.minimumHookDistance) {

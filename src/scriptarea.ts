@@ -2,15 +2,21 @@ module Marmot {
     import Block = Marmot.Block;
     import Panel = Laya.Panel;
     import BlockFactory = Marmot.BlockFactory;
+    import Event = Laya.Event;
 
     export class ScriptArea extends Panel {
         private blockFactory: BlockFactory;
-        constructor(blockFactory: BlockFactory) {
+        private ide:IDE;
+        constructor(blockFactory: BlockFactory, ide:IDE) {
             super();
             this.blockFactory = blockFactory;
+            this.ide = ide;
+
+            this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
         }
 
         public createBlockSet(): void {
+            
             let blockMove1 = this.blockFactory.create("Move");
             blockMove1.pos(100, 100);
             blockMove1.pivot(0, 0);
@@ -76,6 +82,13 @@ module Marmot {
             blockPlay.pivot(0, 0);
             this.addChild(blockPlay);
             blockPlay.name = "blockPlay";
+            
+
+        }
+
+        private onMouseDown(e:Event):void{
+            this.ide.blocksArea.visible = false;
+            this.ide.blocksCategory.selectedIndex = 9;
         }
     }
 }

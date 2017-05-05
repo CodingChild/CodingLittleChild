@@ -16,7 +16,7 @@ var Marmot;
             if (this.attachPoints[0].attachCoordinate.x == attachPoint.x && this.attachPoints[0].attachCoordinate.y == attachPoint.y) {
                 target.removeSelf();
                 this.addChild(target);
-                target.x = this.actualWidth + 1;
+                target.x = this.actualWidth + Marmot.Block.blockSetting.distanceBetweenBlocks;
                 target.y = 0;
             }
         };
@@ -45,6 +45,58 @@ var Marmot;
                 this.graphics.drawLine(this.actualWidth + 5 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, this.actualWidth, 35 * Marmot.Block.blockSetting.blockScale, Marmot.Block.blockSetting.blockStrokeStyleHighlight, Marmot.Block.blockSetting.blockLineWidthHighlight);
             }
             else {
+            }
+        };
+        HeadCommandBlock.prototype.closestAttachTarget = function () {
+            var _this = this;
+            var targets = [];
+            this.parent._childs.forEach(function (child) {
+                if (child instanceof Marmot.Block && child.name != _this.name) {
+                    targets.push(child);
+                }
+            });
+            var minDistance = Marmot.Block.minimumHookDistance;
+            var optimalTarget = {
+                attachBlock: null,
+                attachHook: {
+                    attachCoordinate: null,
+                    isHook: false
+                }
+            };
+            var tempDistance = 0;
+            var tailBlock = this.getTailBlock();
+            if (tailBlock.attachPoints.length == 1) {
+                Point.TEMP.setTo(tailBlock.attachPoints[0].attachCoordinate.x, tailBlock.attachPoints[0].attachCoordinate.y);
+                tailBlock.localToGlobal(Point.TEMP);
+            }
+            else if (tailBlock.attachPoints.length == 2) {
+                Point.TEMP.setTo(tailBlock.attachPoints[1].attachCoordinate.x, tailBlock.attachPoints[1].attachCoordinate.y);
+                tailBlock.localToGlobal(Point.TEMP);
+            }
+            targets.forEach(function (child) {
+                var points = [];
+                child.attachPoints.forEach(function (targetAttachPoint) {
+                    if (targetAttachPoint.isHook == false) {
+                        points.push(targetAttachPoint);
+                    }
+                });
+                points.forEach(function (targetAttachPoint) {
+                    Point.EMPTY.setTo(targetAttachPoint.attachCoordinate.x, targetAttachPoint.attachCoordinate.y);
+                    child.localToGlobal(Point.EMPTY);
+                    tempDistance = Point.TEMP.distance(Point.EMPTY.x, Point.EMPTY.y);
+                    if (minDistance > tempDistance) {
+                        minDistance = tempDistance;
+                        optimalTarget.attachBlock = child;
+                        optimalTarget.attachHook.attachCoordinate = targetAttachPoint.attachCoordinate;
+                        optimalTarget.attachHook.isHook = targetAttachPoint.isHook;
+                    }
+                });
+            });
+            if (minDistance == Marmot.Block.minimumHookDistance) {
+                return null;
+            }
+            else {
+                return optimalTarget;
             }
         };
         HeadCommandBlock.prototype.getAttachPoints = function () {
