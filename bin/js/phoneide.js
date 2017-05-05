@@ -25,7 +25,6 @@ var Marmot;
         PhoneIDE.prototype.createScriptArea = function () {
             var blockFactory = new Marmot.BlockFactory();
             this.scriptArea = new Marmot.ScriptArea(blockFactory, this);
-            this.scriptArea.createBlockSet();
             this.scriptArea.top = 120;
             this.scriptArea.left = 120;
             this.scriptArea.right = 120;

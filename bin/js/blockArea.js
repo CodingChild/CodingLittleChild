@@ -65,7 +65,6 @@ var Marmot;
             this.updateIndex();
         };
         BlockArea.prototype.getBlockForSelector = function (blockName) {
-            Laya.Log.print("当前选择的索引：" + blockName);
             var block = this.blockFactory.create(blockName);
             this.ide.scriptArea.addChild(block);
             block.pos(this.ide.scriptArea.x, this.ide.scriptArea.y);

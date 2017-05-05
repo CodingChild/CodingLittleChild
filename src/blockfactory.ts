@@ -127,7 +127,7 @@ module Marmot {
             let backgroundSetting: BackgroundSetting;
 
             backgroundSetting = this.blockBackground1;
-            if (type == "Move") {
+            if (type == "move") {
                 textureSettings.push(
                     {
                         name: "move",
@@ -146,7 +146,7 @@ module Marmot {
                 )
                 return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if (type == "SetHeading") {
+            else if (type == "setHeading") {
                 textureSettings.push(
                     {
                         name: "anglepan",
@@ -165,7 +165,7 @@ module Marmot {
                 )
                 return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if (type == "Show") {
+            else if (type == "show") {
                 textureSettings.push(
                     {
                         name: "show",
@@ -178,7 +178,7 @@ module Marmot {
                 );
                 return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if (type == "Hide") {
+            else if (type == "hide") {
                 textureSettings.push(
                     {
                         name: "hide",
@@ -191,7 +191,7 @@ module Marmot {
                 );
                 return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if (type == "Resize") {
+            else if (type == "setsize") {
                 let sliderSetting: SliderSetting;
                 textureSettings.push(
                     {

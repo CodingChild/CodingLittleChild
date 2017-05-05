@@ -112,7 +112,7 @@ var Marmot;
             var inputSettings = [];
             var backgroundSetting;
             backgroundSetting = this.blockBackground1;
-            if (type == "Move") {
+            if (type == "move") {
                 textureSettings.push({
                     name: "move",
                     path: "materials/walk.png",
@@ -127,7 +127,7 @@ var Marmot;
                 });
                 return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if (type == "SetHeading") {
+            else if (type == "setHeading") {
                 textureSettings.push({
                     name: "anglepan",
                     path: "materials/anglepan.png",
@@ -142,7 +142,7 @@ var Marmot;
                 });
                 return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if (type == "Show") {
+            else if (type == "show") {
                 textureSettings.push({
                     name: "show",
                     path: "materials/show.png",
@@ -153,7 +153,7 @@ var Marmot;
                 });
                 return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if (type == "Hide") {
+            else if (type == "hide") {
                 textureSettings.push({
                     name: "hide",
                     path: "materials/hide.png",
@@ -164,7 +164,7 @@ var Marmot;
                 });
                 return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if (type == "Resize") {
+            else if (type == "setsize") {
                 var sliderSetting = void 0;
                 textureSettings.push({
                     name: "setsize",

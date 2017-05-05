@@ -26,6 +26,7 @@ var Marmot;
             _this.textinput.size(inputSetting.resourceSetting.width * Marmot.Block.blockSetting.blockScale, inputSetting.resourceSetting.height * Marmot.Block.blockSetting.blockScale);
             _this.name = inputSetting.resourceSetting.name;
             _this.addChild(_this.textinput);
+            _this.on;
             return _this;
         }
         return LineInput;

@@ -51,7 +51,7 @@ var Marmot;
             var _this = this;
             var targets = [];
             this.parent._childs.forEach(function (child) {
-                if (child instanceof Marmot.Block && child.name != _this.name) {
+                if (child instanceof Marmot.Block && child != _this) {
                     targets.push(child);
                 }
             });

@@ -126,7 +126,7 @@ var Marmot;
             var targets = [];
             var headTargets = [];
             this.parent._childs.forEach(function (child) {
-                if (child instanceof Marmot.Block && child.name != _this.name) {
+                if (child instanceof Marmot.Block && child != _this) {
                     targets.push(child);
                     targets = targets.concat(child.getAllBlockChildren());
                     headTargets.push(child);

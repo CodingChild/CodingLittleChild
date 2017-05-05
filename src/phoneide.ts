@@ -23,7 +23,6 @@ module Marmot {
         protected createScriptArea(): void {
             let blockFactory = new BlockFactory();
             this.scriptArea = new ScriptArea(blockFactory, this);
-            this.scriptArea.createBlockSet();
             this.scriptArea.top = 120;
             this.scriptArea.left = 120;
             this.scriptArea.right = 120;

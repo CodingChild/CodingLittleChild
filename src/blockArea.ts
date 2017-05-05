@@ -99,6 +99,7 @@ module Marmot {
         }
         public getBlockForSelector(blockName:string) {
             let block = this.blockFactory.create(blockName);
+            
             this.ide.scriptArea.addChild(block);
             block.pos(this.ide.scriptArea.x, this.ide.scriptArea.y);
         }

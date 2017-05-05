@@ -105,7 +105,7 @@ module Marmot {
         protected closestAttachTarget(): AttachTarget {
             let targets: Array<Block> = [];
             (this.parent._childs as Array<Block>).forEach((child) => {
-                if (child instanceof Block && child.name != this.name) {
+                if (child instanceof Block && child != this) {
                     targets.push(child);
                 }
             });

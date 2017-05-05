@@ -24,6 +24,7 @@ module Marmot {
                 inputSetting.resourceSetting.height * Block.blockSetting.blockScale);
             this.name = inputSetting.resourceSetting.name;
             this.addChild(this.textinput);
+            this.on
             
         }
 

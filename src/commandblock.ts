@@ -222,7 +222,7 @@ module Marmot {
             let targets: Array<Block> = [];
             let headTargets: Array<Block> = [];
             (this.parent._childs as Array<Block>).forEach((child) => {
-                if (child instanceof Block && child.name != this.name) {
+                if (child instanceof Block && child != this) {
                     targets.push(child);
                     targets = targets.concat(child.getAllBlockChildren());
                     headTargets.push(child);
