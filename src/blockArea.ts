@@ -6,14 +6,14 @@ module Marmot {
     import Event = Laya.Event;
 
     interface BlocksSetCache {
-        motion: List;
-        look: List;
-        event: List;
-        control: List;
-        math: List;
-        variable: List;
-        pen: List;
-        music: List;
+        motion: Array<BlockAttributes>;
+        look: Array<BlockAttributes>;
+        event: Array<BlockAttributes>;
+        control: Array<BlockAttributes>;
+        math: Array<BlockAttributes>;
+        variable: Array<BlockAttributes>;
+        pen: Array<BlockAttributes>;
+        music: Array<BlockAttributes>;
     }
 
     interface BlockAreaSetting {
@@ -41,7 +41,7 @@ module Marmot {
         }
     }
 
-    export class BlockArea extends Laya.Panel {
+    export class BlockArea extends List {
         public static blockAreaSetting: BlockAreaSetting = {
             height: 250,
             padding: 30,
@@ -50,14 +50,14 @@ module Marmot {
         }
         public currentCategory: string;
         private blocksSetCache: BlocksSetCache = {
-            motion: null,
-            look: null,
-            event: null,
-            control: null,
-            math: null,
-            variable: null,
-            pen: null,
-            music: null
+            motion: [],
+            look: [],
+            event: [],
+            control: [],
+            math: [],
+            variable: [],
+            pen: [],
+            music: []
         }
         private blockFactory: BlockFactory;
         private tab_index: Tab;
@@ -84,12 +84,7 @@ module Marmot {
             this.on(Event.MOUSE_UP, this, this.onMouseUp);
 
         }
-        /**
-         * name
-         */
-        public fixLayout(): void {
 
-        }
         /**
          * name
          */
@@ -97,88 +92,114 @@ module Marmot {
             if (this.visible == false) {
                 this.visible = true;
             }
-            if (this.currentCategory == blocksCategory) {
-                return;
-            }
-            
-            (this.blocksSetCache[this.currentCategory] as List).visible = false;
 
-            if (this.blocksSetCache[blocksCategory] == null) {
-                this.currentCategory = blocksCategory;
-                this.removeChildByName(blocksCategory);
-                let list = this.getBlockList(blocksCategory);
-                this.addChild(list);
-                (this.blocksSetCache[this.currentCategory] as List).visible = true;
-            }
-            else {
-                this.currentCategory = blocksCategory;
-                this.removeChildByName(blocksCategory);
-                this.addChild(this.blocksSetCache[blocksCategory]);
-                (this.blocksSetCache[this.currentCategory] as List).visible = true;
-            }
+            this.array = this.blocksSetCache[blocksCategory];
             this.updateIndex();
 
         }
-
-        private getBlockList(blocksCategory: string): List {
-            let list = new List();
-        
-            let data: Array<string> = [];
-            let blockSet: Array<BlockAttributes>;
-            blockSet = Marmot.blockSet[blocksCategory];
-            
-            if(blockSet.length == 0){
-                blockSet = [];
-            }
-            blockSet.forEach((block) => {
-                data.push(block.path);
-            });
-            list.array = data;
-            list.itemRender = Item;
-            list.selectEnable = true;
-            list.mouseHandler = new Handler(this, this.onMouse);
-            list.renderHandler = new Handler(this, this.updateItem);
-            list.spaceX = BlockArea.blockAreaSetting.spaceXOfBlocksSet;
-            list.repeatX = 5;
-            list.repeatY = 1;
-            list.startIndex = 0;
-            this.blocksSetCache[blocksCategory] = list;
-            list.name = blocksCategory;
-            list.pos(0, 0);
-            list.left = 0;
-            list.right = 0;
-            list.graphics.drawRect(0, 0, this.width, this.height, "#ffffff");
-            
-
-            return list;
-        }
-
-        public getBlockForSelector() {
-
+        public getBlockForSelector(blockName:string) {
+            let block = this.blockFactory.create(blockName);
+            this.ide.scriptArea.addChild(block);
+            block.pos(this.ide.scriptArea.x, this.ide.scriptArea.y);
         }
 
         private switchIndex(index: number) {
-            this.blocksSetCache[this.currentCategory].startIndex = index * 5;
-
+            this.startIndex = index * 5;
         }
         private buildContent() {
+            this.buildBackground();
             this.buildBlocksSet();
             this.buildIndex();
         }
+        private buildBackground() {
+            this.graphics.drawRect(0, 0, this.width, this.height, "#ffffff");
+        }
 
         private buildBlocksSet() {
-            let list = this.getBlockList("control");
+
+            let blockSet: Array<BlockAttributes>;
+            blockSet = Marmot.blockSet["motion"]; 
+            if(blockSet.length != 0){
+                blockSet.forEach((block) => {
+                    this.blocksSetCache["motion"].push(block);
+                });      
+            }
+
+            blockSet = Marmot.blockSet["look"]; 
+            if(blockSet.length != 0){
+                blockSet.forEach((block) => {
+                    this.blocksSetCache["look"].push(block);
+                });      
+            }
+
+            blockSet = Marmot.blockSet["control"]; 
+            if(blockSet.length != 0){
+                blockSet.forEach((block) => {
+                    this.blocksSetCache["control"].push(block);
+                });      
+            }
+
+            blockSet = Marmot.blockSet["event"]; 
+            if(blockSet.length != 0){
+                blockSet.forEach((block) => {
+                    this.blocksSetCache["event"].push(block);
+                });      
+            }
+
+            blockSet = Marmot.blockSet["pen"]; 
+            if(blockSet.length != 0){
+                blockSet.forEach((block) => {
+                    this.blocksSetCache["pen"].push(block);
+                });      
+            }
+
+            blockSet = Marmot.blockSet["music"]; 
+            if(blockSet.length != 0){
+                blockSet.forEach((block) => {
+                    this.blocksSetCache["music"].push(block);
+                });      
+            }
+
+            blockSet = Marmot.blockSet["variable"]; 
+            if(blockSet.length != 0){
+                blockSet.forEach((block) => {
+                    this.blocksSetCache["variable"].push(block);
+                });      
+            }            
+
+            blockSet = Marmot.blockSet["math"]; 
+            if(blockSet.length != 0){
+                blockSet.forEach((block) => {
+                    this.blocksSetCache["math"].push(block);
+                });      
+            }
+
+            blockSet = Marmot.blockSet["sense"]; 
+            if(blockSet.length != 0){
+                blockSet.forEach((block) => {
+                    this.blocksSetCache["sense"].push(block);
+                });      
+            }            
+
+            this.array = this.blocksSetCache["control"];
+            this.itemRender = Item;
+            this.selectEnable = true;
+            this.mouseHandler = new Handler(this, this.onMouse);
+            this.renderHandler = new Handler(this, this.updateItem);
+            this.spaceX = BlockArea.blockAreaSetting.spaceXOfBlocksSet;
+            this.repeatX = 5;
+            this.repeatY = 1;
+            this.startIndex = 0;
             this.currentCategory = "control";
-            this.addChild(this.blocksSetCache[this.currentCategory]);
         }
         private updateItem(cell: Item, index: number): void {
-            cell.setImg(cell.dataSource);
-            Laya.Log.print(cell.dataSource);
+            let xindex = index % this.repeatX;
+            cell.pos(xindex * Item.WID + BlockArea.blockAreaSetting.spaceXOfBlocksSet * (xindex + 1), BlockArea.blockAreaSetting.padding);
+            cell.setImg(cell.dataSource.path);
         }
-
-        private onMouse(e: Event, index: Number): void {
+        private onMouse(e: Event, index: number): void {
             if (e.type == Event.CLICK) {
-                Laya.Log.print("当前选择的索引：" + index);
+                this.getBlockForSelector(this.array[index].name);
             }
 
         }
@@ -190,9 +211,10 @@ module Marmot {
         }
         onMouseUp(e: Event): void {
             this.off(laya.events.Event.MOUSE_MOVE, this, this.onMouseMove);
-            if(this.blocksSetCache[this.currentCategory] == null){
+            if(this.totalPage < 2){
                 return;
             }
+            
             if (this.isMove) {
                 let moveLen = e.stageX - this.onMouseDownX;
                 let offsetY = Math.abs(this.onMouseDownY - e.stageY);
@@ -200,14 +222,13 @@ module Marmot {
                 {
                     if (moveLen > 10) {
                         if (this.tab_index.selectedIndex == 0) {
-                            this.tab_index.selectedIndex = 2;
+                            this.tab_index.selectedIndex = this.totalPage - 1;
                         }
                         else {
                             this.tab_index.selectedIndex--;
-
                         }
                     } else if (moveLen < -10) {
-                        if (this.tab_index.selectedIndex == 2) {
+                        if (this.tab_index.selectedIndex == this.totalPage - 1) {
                             this.tab_index.selectedIndex = 0;
                         }
                         else {
@@ -243,20 +264,29 @@ module Marmot {
         }
 
         private updateIndex(): void {
-            let list: List = this.blocksSetCache[this.currentCategory];
-            if(list == null){
-                return;
-            }
-            let numOfIndex = Math.ceil(list.length / 5);
-            if (numOfIndex == 1) {
+
+            let numOfIndex = Math.ceil(this.length / 5);
+            if (numOfIndex == 0) {
                 this.tab_index.labels = "";
+                this.totalPage = 0;
+                this.page = -1;
+                return;
+            }            
+            else if (numOfIndex == 1) {
+                this.tab_index.labels = "";
+                this.totalPage = 1;
+                this.page = 1;
                 return;
             }
             else if (numOfIndex == 2) {
                 this.tab_index.labels = ",";
+                this.totalPage = 2;
+                this.page = 1;
             }
             else if (numOfIndex == 3) {
                 this.tab_index.labels = ",,";
+                this.totalPage = 3;
+                this.page = 1;
             }
             this.tab_index.selectedIndex = 0;
 

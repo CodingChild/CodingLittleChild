@@ -23,52 +23,38 @@ var Marmot;
         IDE.prototype.chooseMaterialArea = function () {
         };
         IDE.prototype.chooseBlock = function (index) {
-            var blockArea = this.blocksArea;
-            var list = blockArea.blocksSetCache[blockArea.currentCategory];
-            var blockSet;
-            var blocksCategory = "look";
-            blockSet = Marmot.blockSet[blocksCategory];
-            var data = [];
-            if (blockSet.length == 0) {
-                blockSet = [];
-            }
-            blockSet.forEach(function (block) {
-                data.push(block.path);
-            });
-            list.array = data;
-            /*
-            let blocksCategory:string = "";
-            if(index == 0){
+            var blocksCategory = "";
+            if (index == 0) {
                 blocksCategory = "control";
             }
-            else if(index == 1){
+            else if (index == 1) {
                 blocksCategory = "event";
             }
-            else if(index == 2){
+            else if (index == 2) {
                 blocksCategory = "pen";
             }
-            else if(index == 3){
+            else if (index == 3) {
                 blocksCategory = "math";
             }
-            else if(index == 4){
+            else if (index == 4) {
                 blocksCategory = "music";
             }
-            else if(index == 5){
+            else if (index == 5) {
                 blocksCategory = "motion";
             }
-            else if(index == 6){
+            else if (index == 6) {
                 blocksCategory = "look";
             }
-            else if(index == 7){
+            else if (index == 7) {
                 blocksCategory = "variable";
             }
-            else if(index == 8){
+            else if (index == 8) {
                 blocksCategory = "sense";
             }
-            else{
+            else {
                 return;
             }
-            this.blocksArea.updateContent(blocksCategory);*/
+            this.blocksArea.updateContent(blocksCategory);
         };
         IDE.prototype.pressStart = function () {
         };

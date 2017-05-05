@@ -23,6 +23,18 @@ var Marmot;
             {
                 "name": "setSize",
                 "path": "materials/block_setSize.png"
+            },
+            {
+                "name": "show",
+                "path": "materials/block_show.png"
+            },
+            {
+                "name": "hide",
+                "path": "materials/block_hide.png"
+            },
+            {
+                "name": "setSize",
+                "path": "materials/block_setSize.png"
             }
         ],
         "control": [

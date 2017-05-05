@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":71,
-    "selecteID":71,
+    "selecteID":78,
     "props":{"y":0,"x":0,"width":1920,"sceneColor":"#71737c","height":1080},
     "nodeParent":-1,
     "label":"View",
@@ -15,13 +15,92 @@
         {
             "x":15,
             "type":"List",
-            "props":{"right":0,"left":0,"height":250,"bottom":100},
+            "props":{"spaceY":0,"spaceX":100,"right":0,"repeatY":1,"repeatX":6,"left":0,"height":250,"bottom":100},
             "nodeParent":1,
             "label":"List",
+            "isOpen":true,
+            "isDirectory":true,
+            "isAniNode":true,
+            "hasChild":true,
+            "compId":71,
+            "child":[
+                {
+                    "x":30,
+                    "type":"Image",
+                    "props":{"skin":"materials/block_hide.png"},
+                    "nodeParent":71,
+                    "label":"Image",
+                    "isDirectory":false,
+                    "isAniNode":false,
+                    "hasChild":false,
+                    "compId":73,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "props":{"skin":"materials/block_move.png"},
+                    "nodeParent":71,
+                    "label":"Image",
+                    "isDirectory":false,
+                    "isAniNode":false,
+                    "hasChild":false,
+                    "compId":74,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "props":{"skin":"materials/block_play.png"},
+                    "nodeParent":71,
+                    "label":"Image",
+                    "isDirectory":false,
+                    "isAniNode":false,
+                    "hasChild":false,
+                    "compId":75,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Image",
+                    "props":{"skin":"materials/block_setHeading.png"},
+                    "nodeParent":71,
+                    "label":"Image",
+                    "isDirectory":false,
+                    "isAniNode":false,
+                    "hasChild":false,
+                    "compId":76,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
+                    "type":"Tab",
+                    "props":{"y":172,"x":799,"width":296,"stateNum":2,"space":100,"skin":"materials/tab_index.png","labels":",,","height":66},
+                    "nodeParent":71,
+                    "label":"Tab",
+                    "isOpen":true,
+                    "isDirectory":false,
+                    "isAniNode":false,
+                    "hasChild":false,
+                    "compId":78,
+                    "child":[
+                        ]
+                }]
+        },
+        {
+            "x":15,
+            "type":"Rect",
+            "props":{"y":730.0000000000001,"x":0,"width":1924,"lineWidth":1,"height":260,"fillColor":"#ff0000"},
+            "nodeParent":1,
+            "label":"Rect",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
-            "compId":71,
+            "compId":72,
             "child":[
                 ]
         }],
