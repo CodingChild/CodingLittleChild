@@ -24,10 +24,10 @@ module Marmot {
         private sliderSetting1: SliderSetting = {
             name: "vslider",
             path: "comp/vslider.png",
-            x: 30,
-            y: 80,
-            width: 30,
-            height: 60,
+            x: Block.blockSetting.blockScale * 25,
+            y: Block.blockSetting.blockScale * 50,
+            width: Block.blockSetting.blockScale * 50,
+            height: Block.blockSetting.blockScale * 50,
             min: 0,
             max: 100,
             initialValue: 50,
@@ -191,7 +191,7 @@ module Marmot {
                 );
                 return new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if (type == "setsize") {
+            else if (type == "setSize") {
                 let sliderSetting: SliderSetting;
                 textureSettings.push(
                     {
@@ -219,7 +219,7 @@ module Marmot {
                     vslider.visible = true;
                 });
                 vslider.on(Laya.Event.CHANGED, vslider, function () {
-                    this.visible = false;
+                    vslider.visible = false;
                 });
                 return blockSize;
             }

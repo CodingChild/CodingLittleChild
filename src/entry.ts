@@ -1,5 +1,5 @@
 import Handler = Laya.Handler;
-module Marmot{
+module Marmot {
     import WebGL = Laya.WebGL;
     import Stage = Laya.Stage;
 
@@ -16,13 +16,15 @@ module Marmot{
             //自动竖屏，让游戏的水平方向始终与浏览器显示屏幕的最长边保持垂直。
             Laya.stage.screenMode = "horizontal";
             //预加载资源，回调
-            Laya.loader.load([{ url: "res/atlas/comp.json", type: laya.net.Loader.ATLAS }, 
-                              { url: "res/atlas/materials.json", type: laya.net.Loader.ATLAS }], Handler.create(this, this.createIDE));
+            Laya.loader.load([{ url: "res/atlas/comp.json", type: laya.net.Loader.ATLAS },
+            { url: "res/atlas/materials.json", type: laya.net.Loader.ATLAS },
+            { url: "res/pics/bg_1.png", type: laya.net.Loader.IMAGE }], Handler.create(this, this.createIDE));
         }
         private createIDE(): void {
             let ideFactory = new IDEFactory();
             let ide = ideFactory.getIDE("ide");
             Laya.stage.addChild(ide);
+
         }
     }
 }

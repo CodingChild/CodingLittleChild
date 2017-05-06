@@ -15,10 +15,10 @@ var Marmot;
             this.sliderSetting1 = {
                 name: "vslider",
                 path: "comp/vslider.png",
-                x: 30,
-                y: 80,
-                width: 30,
-                height: 60,
+                x: Marmot.Block.blockSetting.blockScale * 25,
+                y: Marmot.Block.blockSetting.blockScale * 50,
+                width: Marmot.Block.blockSetting.blockScale * 50,
+                height: Marmot.Block.blockSetting.blockScale * 50,
                 min: 0,
                 max: 100,
                 initialValue: 50,
@@ -164,7 +164,7 @@ var Marmot;
                 });
                 return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
-            else if (type == "setsize") {
+            else if (type == "setSize") {
                 var sliderSetting = void 0;
                 textureSettings.push({
                     name: "setsize",
@@ -187,7 +187,7 @@ var Marmot;
                     vslider_1.visible = true;
                 });
                 vslider_1.on(Laya.Event.CHANGED, vslider_1, function () {
-                    this.visible = false;
+                    vslider_1.visible = false;
                 });
                 return blockSize;
             }

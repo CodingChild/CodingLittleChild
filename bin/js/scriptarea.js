@@ -9,16 +9,24 @@ var Marmot;
     var Event = Laya.Event;
     var ScriptArea = (function (_super) {
         __extends(ScriptArea, _super);
-        function ScriptArea(blockFactory, ide) {
+        function ScriptArea(sprite) {
             var _this = _super.call(this) || this;
-            _this.blockFactory = blockFactory;
-            _this.ide = ide;
+            _this.blockFactory = new Marmot.BlockFactory();
+            _this.owner = sprite;
+            _this.name = "scriptArea";
+            _this.size(Marmot.IDE.WIDTH - 80, Marmot.IDE.HEIGHT - 80);
+            _this.pos(80, 80);
             _this.on(Event.MOUSE_DOWN, _this, _this.onMouseDown);
             return _this;
         }
         ScriptArea.prototype.onMouseDown = function (e) {
-            this.ide.blocksArea.visible = false;
-            this.ide.blocksCategory.selectedIndex = 9;
+            var ide = Marmot.IDE.getIDE();
+            ide.blocksArea.visible = false;
+            ide.blocksCategory.selectedIndex = 9;
+            ide.spriteList.visible = false;
+            ide.materialCategory.selectedIndex = -1;
+            ide.spriteList.costumesList.visible = false;
+            ide.spriteList.spriteDialog.close();
         };
         return ScriptArea;
     }(Panel));

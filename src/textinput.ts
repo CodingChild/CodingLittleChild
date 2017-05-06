@@ -1,6 +1,7 @@
 module Marmot {
     import TextInput = Laya.TextInput;
     import Sprite = Laya.Sprite;
+    import Event = Laya.Event;
 
     export class LineInput extends Sprite{
         public textinput: TextInput;
@@ -24,7 +25,6 @@ module Marmot {
                 inputSetting.resourceSetting.height * Block.blockSetting.blockScale);
             this.name = inputSetting.resourceSetting.name;
             this.addChild(this.textinput);
-            this.on
             
         }
 

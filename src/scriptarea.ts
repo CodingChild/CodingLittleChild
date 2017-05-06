@@ -1,23 +1,32 @@
 module Marmot {
-    import Block = Marmot.Block;
     import Panel = Laya.Panel;
-    import BlockFactory = Marmot.BlockFactory;
     import Event = Laya.Event;
+    import Tween = Laya.Tween;
+    import Handler = Laya.Handler;
 
     export class ScriptArea extends Panel {
         private blockFactory: BlockFactory;
-        private ide:IDE;
-        constructor(blockFactory: BlockFactory, ide:IDE) {
+        private owner:Sprite;
+        constructor(sprite:Sprite) {
             super();
-            this.blockFactory = blockFactory;
-            this.ide = ide;
+            this.blockFactory = new BlockFactory();
+            this.owner = sprite;
+            this.name = "scriptArea";
+            this.size(IDE.WIDTH - 80, IDE.HEIGHT - 80);
+            this.pos(80, 80);
 
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
         }
 
         private onMouseDown(e:Event):void{
-            this.ide.blocksArea.visible = false;
-            this.ide.blocksCategory.selectedIndex = 9;
+            let ide = IDE.getIDE();
+            ide.blocksArea.visible = false;
+            ide.blocksCategory.selectedIndex = 9;
+
+            ide.spriteList.visible = false;
+            ide.materialCategory.selectedIndex = -1;
+            ide.spriteList.costumesList.visible = false;
+            ide.spriteList.spriteDialog.close();            
         }
     }
 }

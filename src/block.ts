@@ -14,7 +14,7 @@ import Rectangle = Laya.Rectangle;
 module Marmot {
     import Event = Laya.Event;
 
-    export abstract class Block extends Sprite {
+    export abstract class Block extends Laya.Sprite {
 
         public static blockSetting: BlockSetting = {
             blockScale: 3,
@@ -181,9 +181,7 @@ module Marmot {
                 this.addHighlight(this);
                 let scriptAreaHeight = (Laya.stage.getChildByName("ide") as IDE).scriptArea.height;
                 let scriptAreaWidth = (Laya.stage.getChildByName("ide") as IDE).scriptArea.width;
-                Laya.Log.print("scriptAreaHeight:" + scriptAreaHeight.toString());
-                Laya.Log.print("scriptAreaWidth" + scriptAreaWidth.toString());
-                Rectangle.TEMP.setTo(120, 120, scriptAreaWidth - 50 * Block.blockSetting.blockScale * 2, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
+                Rectangle.TEMP.setTo(20, 20, scriptAreaWidth - 50 * Block.blockSetting.blockScale, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
                 this.startDrag(Rectangle.TEMP, true, 100);
 
             }
@@ -201,10 +199,9 @@ module Marmot {
             this.zOrder = topValue + 1;
             this.updateZOrder();
         }
-        protected onMouseUp(e: Event): void {
-            if (this.hitTestPoint(e.stageX, e.stageY)) {
-                this.removeHighlight(this);
-            }
+
+        protected onMouseOut(e: Event): void {
+            this.removeHighlight(this);
         }
 
         protected onDragMove(e: Event): void {
@@ -269,7 +266,7 @@ module Marmot {
             this.on(Event.DRAG_MOVE, this, this.onDragMove);
             this.on(Event.DRAG_END, this, this.onDragEnd);
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
-            this.on(Event.MOUSE_UP, this, this.onMouseUp);
+            this.on(Event.MOUSE_OUT, this, this.onMouseOut);
         }
     }
 }		

@@ -15,7 +15,8 @@ var Marmot;
             Laya.stage.screenMode = "horizontal";
             //预加载资源，回调
             Laya.loader.load([{ url: "res/atlas/comp.json", type: laya.net.Loader.ATLAS },
-                { url: "res/atlas/materials.json", type: laya.net.Loader.ATLAS }], Handler.create(this, this.createIDE));
+                { url: "res/atlas/materials.json", type: laya.net.Loader.ATLAS },
+                { url: "res/pics/bg_1.png", type: laya.net.Loader.IMAGE }], Handler.create(this, this.createIDE));
         }
         Entry.prototype.createIDE = function () {
             var ideFactory = new Marmot.IDEFactory();

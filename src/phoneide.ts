@@ -1,35 +1,31 @@
+import SpriteList = Marmot.SpriteList;
 module Marmot {
     import Button = Laya.Button;
     import Tab = Laya.Tab;
     import Event = Laya.Event;
     import BlockArea = Marmot.BlockArea;
+    import List = Laya.List;
+    import Box = Laya.Box;
 
     export class PhoneIDE extends IDE {
 
-        constructor(name: string, width:number, height:number) {
+        constructor(name: string, width: number, height: number) {
             super(name, width, height);
         }
 
         protected buildIDE(): void {
-            this.createControlBar();
             this.createScriptArea();
+            this.createStageArea();
+            this.createControlBar();
             this.createBlocksArea();
             this.createBlocksCategory();
             this.createMaterialArea();
             this.createMaterialCategory();
-            this.createStageArea();
         }
 
         protected createScriptArea(): void {
-            let blockFactory = new BlockFactory();
-            this.scriptArea = new ScriptArea(blockFactory, this);
-            this.scriptArea.top = 120;
-            this.scriptArea.left = 120;
-            this.scriptArea.right = 120;
-            this.scriptArea.bottom = 120;
-            this.scriptArea.name = "scriptArea";
+            this.scriptArea = this.currentSprite.scriptArea;
             this.addChild(this.scriptArea);
-
         }
         protected createControlBar(): void {
             let btn_home: Button = new Button("materials/btn_home.png");
@@ -38,76 +34,56 @@ module Marmot {
             btn_home.stateNum = 1;
             btn_home.width = 100;
             btn_home.height = 100;
-            //btn_home.clickHandler = laya.utils.Handler.create(this, this.onClickButton, [btn_home], false);
             this.addChild(btn_home);
 
-            let tab: Tab = new Tab();
+            let box: Box = new Box();
 
-            tab.right = 400;
-            tab.top = 20;
+            box.right = 400;
+            box.top = 20;
 
-            tab.space = 50;
-            tab.selectedIndex = 0;
-            tab.selectHandler = new Handler(this, this.chooseBlock);
-            this.addChild(tab);
-            this.controlBar = tab;
-            tab.name = "controlBar";
-            tab.initItems();
+            this.addChild(box);
+            this.controlBar = box;
+            box.name = "controlBar";
 
             let btn_fullscreen: Button = new Button("materials/btn_fullscreen.png");
-            btn_fullscreen.toggle = true;
+            btn_fullscreen.pos(0, 0);
             btn_fullscreen.stateNum = 1;
             btn_fullscreen.width = 100;
             btn_fullscreen.height = 100;
-            btn_fullscreen.clickHandler = laya.utils.Handler.create(this, this.toggleFullScreen, [btn_fullscreen], false);
-            tab.addItem(btn_fullscreen);
+            btn_fullscreen.clickHandler = Handler.create(this, this.toggleFullScreen, [btn_fullscreen], false);
+            box.addChild(btn_fullscreen);
+
+            let btn_coordinate: Button = new Button("materials/btn_coordinate.png");
+            btn_coordinate.pos(150, 0);
+            btn_coordinate.stateNum = 1;
+            btn_coordinate.width = 100;
+            btn_coordinate.height = 100;
+            btn_coordinate.clickHandler = Handler.create(this, this.toggleCoordinateSystem, [btn_coordinate], false);
+            box.addChild(btn_coordinate);
 
             let btn_play: Button = new Button("materials/btn_play.png");
-            btn_play.toggle = true;
+            btn_play.pos(300, 0);
             btn_play.stateNum = 1;
             btn_play.width = 100;
             btn_play.height = 100;
-            btn_play.clickHandler = laya.utils.Handler.create(this, this.pressStart, [btn_play], false);
-            tab.addItem(btn_play);
+            btn_play.clickHandler = Handler.create(this, this.pressStart, [btn_play], false);
+            box.addChild(btn_play);
         }
         protected createMaterialArea(): void {
+            let spriteList = new SpriteList(this);
+            this.addChild(spriteList);
+            this.spriteList = spriteList;
+            spriteList.visible = false;
+
+
 
         }
         protected createMaterialCategory(): void {
-            let tab: Tab = new Tab();
+            let materialCategory: MaterialCategory = new MaterialCategory(this);
+            this.addChild(materialCategory);
+            this.materialCategory = materialCategory;
 
-            tab.left = 0;
-            tab.top = 200;
 
-            tab.space = 50;
-            tab.selectedIndex = 0;
-            tab.selectHandler = new Handler(this, this.chooseMaterialArea);
-            this.addChild(tab);
-            this.controlBar = tab;
-            tab.name = "materialCategory";
-            tab.direction = "vertical";
-            tab.initItems();
-
-            let btn_sprite: Button = new Button("materials/btn_sprite.png");
-            btn_sprite.toggle = true;
-            btn_sprite.stateNum = 1;
-            btn_sprite.width = 100;
-            btn_sprite.height = 100;
-            tab.addItem(btn_sprite);
-
-            let btn_stage: Button = new Button("materials/btn_stage.png");
-            btn_stage.toggle = true;
-            btn_stage.stateNum = 1;
-            btn_stage.width = 100;
-            btn_stage.height = 100;
-            tab.addItem(btn_stage);
-
-            let btn_music: Button = new Button("materials/btn_music_1.png");
-            btn_music.toggle = true;
-            btn_music.stateNum = 1;
-            btn_music.width = 100;
-            btn_music.height = 100;
-            tab.addItem(btn_music);
         }
         protected createBlocksArea(): void {
             let blockFactory = new BlockFactory();
@@ -122,7 +98,7 @@ module Marmot {
             tab.bottom = 0;
 
             tab.space = (this.width - 900) / 8;
-            tab.selectedIndex = 0;
+            tab.selectedIndex = 9;
             tab.selectHandler = new Handler(this, this.chooseBlock);
             this.blocksCategory = tab;
             this.addChild(tab);
@@ -139,13 +115,13 @@ module Marmot {
             btn_event.width = 100;
             btn_event.height = 100;
             tab.addItem(btn_event);
-            
+
             let btn_pen: Button = new Button("materials/btn_pen.png");
             btn_pen.stateNum = 2;
             btn_pen.width = 100;
             btn_pen.height = 100;
             tab.addItem(btn_pen);
-            
+
             let btn_math: Button = new Button("materials/btn_math.png");
             btn_math.stateNum = 2;
             btn_math.width = 100;
@@ -186,6 +162,24 @@ module Marmot {
         }
 
         protected createStageArea(): void {
+            let stageArea = new Marmot.Stage(600, 400);
+            stageArea.pos(this.width, 120);
+            Laya.Log.print(stageArea.x + " " + stageArea.y);
+            let texture:Texture = Laya.loader.getRes("res/pics/bg_1.png");
+            stageArea.graphics.drawTexture(texture, 0, 0, 600, 400);
+            this.stageArea = stageArea;
+            this.addChild(stageArea);
+            stageArea.addChild(this.currentSprite);
+            this.currentSprite.pos(stageArea.width / 2, stageArea.height / 2);
+
+
+            this.toggleShowStage = new Button("materials/btn_showstage.png");
+            this.toggleShowStage.right = 0;
+            this.toggleShowStage.top = 120;
+            this.toggleShowStage.size(50, 383);
+            this.toggleShowStage.stateNum = 1;
+            this.toggleShowStage.clickHandler = new Handler(this, this.toggleStage);
+            this.addChild(this.toggleShowStage);
 
         }
 

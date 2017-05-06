@@ -82,6 +82,7 @@ module Marmot {
 
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
             this.on(Event.MOUSE_UP, this, this.onMouseUp);
+            this.visible = false;
 
         }
 

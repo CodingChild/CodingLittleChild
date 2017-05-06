@@ -128,9 +128,7 @@ var Marmot;
                 this.addHighlight(this);
                 var scriptAreaHeight = Laya.stage.getChildByName("ide").scriptArea.height;
                 var scriptAreaWidth = Laya.stage.getChildByName("ide").scriptArea.width;
-                Laya.Log.print("scriptAreaHeight:" + scriptAreaHeight.toString());
-                Laya.Log.print("scriptAreaWidth" + scriptAreaWidth.toString());
-                Rectangle.TEMP.setTo(120, 120, scriptAreaWidth - 50 * Block.blockSetting.blockScale * 2, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
+                Rectangle.TEMP.setTo(20, 20, scriptAreaWidth - 50 * Block.blockSetting.blockScale, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
                 this.startDrag(Rectangle.TEMP, true, 100);
             }
         };
@@ -146,10 +144,8 @@ var Marmot;
             this.zOrder = topValue + 1;
             this.updateZOrder();
         };
-        Block.prototype.onMouseUp = function (e) {
-            if (this.hitTestPoint(e.stageX, e.stageY)) {
-                this.removeHighlight(this);
-            }
+        Block.prototype.onMouseOut = function (e) {
+            this.removeHighlight(this);
         };
         Block.prototype.onDragMove = function (e) {
             var target = null;
@@ -197,10 +193,10 @@ var Marmot;
             this.on(Event.DRAG_MOVE, this, this.onDragMove);
             this.on(Event.DRAG_END, this, this.onDragEnd);
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
-            this.on(Event.MOUSE_UP, this, this.onMouseUp);
+            this.on(Event.MOUSE_OUT, this, this.onMouseOut);
         };
         return Block;
-    }(Sprite));
+    }(Laya.Sprite));
     Block.blockSetting = {
         blockScale: 3,
         blockFillStyle: "#1976D2",

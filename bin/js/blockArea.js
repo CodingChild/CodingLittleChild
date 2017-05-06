@@ -52,6 +52,7 @@ var Marmot;
             _this.buildContent();
             _this.on(Event.MOUSE_DOWN, _this, _this.onMouseDown);
             _this.on(Event.MOUSE_UP, _this, _this.onMouseUp);
+            _this.visible = false;
             return _this;
         }
         /**
