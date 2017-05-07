@@ -17,7 +17,7 @@ var Marmot;
         function Item() {
             var _this = _super.call(this) || this;
             _this.img = new Image();
-            _this.size(100, 100);
+            _this.size(Item.WIDTH, Item.HEIGHT);
             _this.addChild(_this.img);
             return _this;
         }
@@ -47,6 +47,8 @@ var Marmot;
             _this.size(500, 500);
             _this.chosenIndex = -1;
             _this.curItem = null;
+            Item.WIDTH = 100;
+            Item.HEIGHT = 100;
             _this.buildContent();
             _this.show();
             return _this;

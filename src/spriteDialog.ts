@@ -10,13 +10,15 @@ module Marmot {
     import Sprite = Marmot.Sprite;
 
     class Item extends Box {
+        public static WIDTH:number;
+        public static HEIGHT:number;
 
         private img: Image;
 
         constructor() {
             super();
             this.img = new Image();
-            this.size(100, 100);
+            this.size(Item.WIDTH, Item.HEIGHT);
 
             this.addChild(this.img);
         }
@@ -55,6 +57,8 @@ module Marmot {
             this.size(500, 500);
             this.chosenIndex = -1;
             this.curItem = null;
+            Item.WIDTH = 100;
+            Item.HEIGHT = 100;
 
             this.buildContent();
             this.show();

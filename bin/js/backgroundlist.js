@@ -55,9 +55,9 @@ var Marmot;
             _this.width = 100;
             _this.height = 400;
             _this.ide = ide;
-            _this.pos(100, 200);
+            _this.pos(350, 0);
             _this.array = [];
-            _this.ide.stageArea.costumes.forEach(function (costume) {
+            _this.ide.currentSprite.costumes.forEach(function (costume) {
                 _this.array.push(costume);
             });
             _this.vScrollBarSkin = "";
@@ -84,7 +84,7 @@ var Marmot;
             button.skin = "materials/plus.png";
             button.size(50, 50);
             button.pos(this.width / 2 - button.width / 2, this.height - button.height - 20);
-            button.on(Event.CLICK, this, this.importBackground);
+            button.on(Event.CLICK, this, this.importSprite);
             button.stateNum = 1;
             button.name = "addCostume";
             this.addChild(button);
@@ -98,7 +98,9 @@ var Marmot;
             if (e.type == Event.CLICK) {
             }
         };
-        BackgroundList.prototype.importBackground = function () {
+        BackgroundList.prototype.importSprite = function () {
+            this.ide.spriteList.curClickedBtn = "addCostume";
+            this.ide.spriteList.spriteDialog.show();
         };
         return BackgroundList;
     }(List));

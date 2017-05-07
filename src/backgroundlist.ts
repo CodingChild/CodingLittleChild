@@ -55,14 +55,15 @@ module Marmot {
 
         private ide: IDE;
         
+
         constructor(ide: IDE) {
             super();
             this.width = 100;
             this.height = 400;
             this.ide = ide;
-            this.pos(100, 200);
+            this.pos(350, 0);
             this.array = [];
-            this.ide.stageArea.costumes.forEach((costume) => {
+            this.ide.currentSprite.costumes.forEach((costume) => {
                 this.array.push(costume);
             })
             this.vScrollBarSkin = "";
@@ -91,7 +92,7 @@ module Marmot {
             button.skin = "materials/plus.png";
             button.size(50, 50);
             button.pos(this.width / 2 - button.width / 2, this.height - button.height - 20);
-            button.on(Event.CLICK, this, this.importBackground);
+            button.on(Event.CLICK, this, this.importSprite);
             button.stateNum = 1;
             button.name = "addCostume";
             this.addChild(button);
@@ -109,8 +110,9 @@ module Marmot {
             }
         }
 
-        private importBackground(): void {
-            
+        private importSprite(): void {
+            this.ide.spriteList.curClickedBtn = "addCostume";
+            this.ide.spriteList.spriteDialog.show();
         }
     }
 

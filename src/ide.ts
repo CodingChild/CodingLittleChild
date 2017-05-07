@@ -1,12 +1,8 @@
 module Marmot {
-    import Block = Marmot.Block;
-    import ScriptArea = Marmot.ScriptArea;
     import View = Laya.View;
     import Button = Laya.Button;
     import Tab = Laya.Tab;
-    import BlockArea = Marmot.BlockArea;
     import List = Laya.List;
-    import SpriteList = Marmot.SpriteList;
     import Sprite = Marmot.Sprite;
     import Stage = Marmot.Stage;
     import Tween = Laya.Tween;
@@ -30,10 +26,15 @@ module Marmot {
         public isStageVisible: boolean;
         public isPlayed: boolean;
         public spriteList: SpriteList;
+        public stageList: StageList;
         public toggleShowStage: Button;
+
+        public spriteMaterialList: SpriteMaterialList;
 
         constructor(name: string, width: number, height: number) {
             super();
+            this.stage.width;
+            this.stage.height;
             IDE.WIDTH = width;
             IDE.HEIGHT = height;
 
@@ -60,18 +61,8 @@ module Marmot {
 
         }
 
-        protected abstract buildIDE(): void;
-        protected abstract createMaterialArea(): void;
-        protected abstract createMaterialCategory(): void;
-        protected abstract createBlocksArea(): void
-        protected abstract createBlocksCategory(): void;
-        protected abstract createStageArea(): void;
-        protected abstract createControlBar(): void;
-        protected abstract createScriptArea(): void;
-
         public chooseMaterialArea(index: number): void {
             if (index == 0) {
-                this.spriteList.y = 200;
                 this.spriteList.visible = true;
             }
             else if (index == 1) {
@@ -134,61 +125,53 @@ module Marmot {
         protected toggleFullScreen(btn_fullscreen:Button): void {
             if(this.isFullScreen == false){
                 btn_fullscreen.skin = "materials/btn_normalscreen.png";
+                this.stageArea.toggleFullScreen();
                 this.isFullScreen = true;
             }
             else{
                 btn_fullscreen.skin = "materials/btn_fullscreen.png";
+                this.stageArea.toggleNormalScreen();
                 this.isFullScreen = false;            
             }
         }
         protected toggleCoordinateSystem(btn_coordinate:Button): void {
             if(this.isCoordinateSystemVisible == false){
+                this.stageArea.toggleShowCoordinate(true);
                 this.isCoordinateSystemVisible = true;
             }
             else{
-                //btn_coordinate.skin = "materials/btn_normalscreen.png";
+                this.stageArea.toggleShowCoordinate(false);
                 this.isCoordinateSystemVisible = false;            
             }
         }
-        protected toggleStage(): void {
+        protected toggleStageVisible(): void {
             if (this.isStageVisible == false) {
                 Tween.to(this.stageArea, { x: this.width - 650 }, 100);
                 this.isStageVisible = true;
-                Laya.Log.print(this.stageArea.x + " " + this.stageArea.y);
                 this.toggleShowStage.skin = "materials/btn_hidestage.png";
             }
             else {
                 Tween.to(this.stageArea, { x: this.width }, 100);
                 this.isStageVisible = false;
-                Laya.Log.print(this.stageArea.x + " " + this.stageArea.y);
                 this.toggleShowStage.skin = "materials/btn_showstage.png";
             }
         }
+
+        protected abstract buildIDE(): void;
+        protected abstract createMaterialArea(): void;
+        protected abstract createMaterialCategory(): void;
+        protected abstract createBlocksArea(): void
+        protected abstract createBlocksCategory(): void;
+        protected abstract createStageArea(): void;
+        protected abstract createControlBar(): void;
+        protected abstract createScriptArea(): void;
         protected abstract fixIDELayout(): void;
-        protected fixBlocksCategoryLayout(): void {
-
-        }
-
-
-        protected fixBlocksAreaLayout(): void {
-
-        }
-        protected fixMaterialCategoryLayout(): void {
-
-        }
-        protected fixMaterialAreaLayout(): void {
-
-        }
-        protected fixControlBarLayout(): void {
-
-        }
-
-        protected fixStageAreaLayout(): void {
-
-        }
-        protected switchBlocksAreaVisibility(): void {
-
-        }
+        protected abstract fixBlocksCategoryLayout(): void;
+        protected abstract fixBlocksAreaLayout(): void;
+        protected abstract fixMaterialCategoryLayout(): void;
+        protected abstract fixMaterialAreaLayout(): void;
+        protected abstract fixControlBarLayout(): void;
+        protected abstract fixStageAreaLayout(): void;
 
         public static getIDE():IDE{
             return Laya.stage.getChildByName("ide") as IDE;

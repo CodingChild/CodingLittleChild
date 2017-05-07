@@ -140,7 +140,6 @@ var Marmot;
         PhoneIDE.prototype.createStageArea = function () {
             var stageArea = new Marmot.Stage(600, 400);
             stageArea.pos(this.width, 120);
-            Laya.Log.print(stageArea.x + " " + stageArea.y);
             var texture = Laya.loader.getRes("res/pics/bg_1.png");
             stageArea.graphics.drawTexture(texture, 0, 0, 600, 400);
             this.stageArea = stageArea;
@@ -152,10 +151,22 @@ var Marmot;
             this.toggleShowStage.top = 120;
             this.toggleShowStage.size(50, 383);
             this.toggleShowStage.stateNum = 1;
-            this.toggleShowStage.clickHandler = new Handler(this, this.toggleStage);
+            this.toggleShowStage.clickHandler = new Handler(this, this.toggleStageVisible);
             this.addChild(this.toggleShowStage);
         };
         PhoneIDE.prototype.fixIDELayout = function () {
+        };
+        PhoneIDE.prototype.fixBlocksCategoryLayout = function () {
+        };
+        PhoneIDE.prototype.fixBlocksAreaLayout = function () {
+        };
+        PhoneIDE.prototype.fixMaterialCategoryLayout = function () {
+        };
+        PhoneIDE.prototype.fixMaterialAreaLayout = function () {
+        };
+        PhoneIDE.prototype.fixControlBarLayout = function () {
+        };
+        PhoneIDE.prototype.fixStageAreaLayout = function () {
         };
         return PhoneIDE;
     }(Marmot.IDE));

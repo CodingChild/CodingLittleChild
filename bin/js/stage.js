@@ -20,6 +20,14 @@ var Marmot;
          */
         Stage.prototype.fireStopAllEvent = function () {
         };
+        Stage.prototype.toggleFullScreen = function () {
+        };
+        Stage.prototype.toggleNormalScreen = function () {
+        };
+        Stage.prototype.toggleShowCoordinate = function (isVisible) {
+        };
+        Stage.prototype.addCostume = function (url) {
+        };
         return Stage;
     }(Laya.Panel));
     Marmot.Stage = Stage;

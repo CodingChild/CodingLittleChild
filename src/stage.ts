@@ -19,5 +19,23 @@ module Marmot{
         public fireStopAllEvent() {
             
         }
+
+        public toggleFullScreen():void{
+
+        }
+
+        public toggleNormalScreen():void{
+
+        }
+
+        public toggleShowCoordinate(isVisible:boolean):void{
+
+        }        
+
+        public addCostume(url:string){
+
+        }
+
     }
+
 }

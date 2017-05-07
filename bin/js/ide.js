@@ -11,6 +11,8 @@ var Marmot;
         __extends(IDE, _super);
         function IDE(name, width, height) {
             var _this = _super.call(this) || this;
+            _this.stage.width;
+            _this.stage.height;
             IDE.WIDTH = width;
             IDE.HEIGHT = height;
             _this.top = 0;
@@ -34,7 +36,6 @@ var Marmot;
         }
         IDE.prototype.chooseMaterialArea = function (index) {
             if (index == 0) {
-                this.spriteList.y = 200;
                 this.spriteList.visible = true;
             }
             else if (index == 1) {
@@ -91,49 +92,36 @@ var Marmot;
         IDE.prototype.toggleFullScreen = function (btn_fullscreen) {
             if (this.isFullScreen == false) {
                 btn_fullscreen.skin = "materials/btn_normalscreen.png";
+                this.stageArea.toggleFullScreen();
                 this.isFullScreen = true;
             }
             else {
                 btn_fullscreen.skin = "materials/btn_fullscreen.png";
+                this.stageArea.toggleNormalScreen();
                 this.isFullScreen = false;
             }
         };
         IDE.prototype.toggleCoordinateSystem = function (btn_coordinate) {
             if (this.isCoordinateSystemVisible == false) {
+                this.stageArea.toggleShowCoordinate(true);
                 this.isCoordinateSystemVisible = true;
             }
             else {
-                //btn_coordinate.skin = "materials/btn_normalscreen.png";
+                this.stageArea.toggleShowCoordinate(false);
                 this.isCoordinateSystemVisible = false;
             }
         };
-        IDE.prototype.toggleStage = function () {
+        IDE.prototype.toggleStageVisible = function () {
             if (this.isStageVisible == false) {
                 Tween.to(this.stageArea, { x: this.width - 650 }, 100);
                 this.isStageVisible = true;
-                Laya.Log.print(this.stageArea.x + " " + this.stageArea.y);
                 this.toggleShowStage.skin = "materials/btn_hidestage.png";
             }
             else {
                 Tween.to(this.stageArea, { x: this.width }, 100);
                 this.isStageVisible = false;
-                Laya.Log.print(this.stageArea.x + " " + this.stageArea.y);
                 this.toggleShowStage.skin = "materials/btn_showstage.png";
             }
-        };
-        IDE.prototype.fixBlocksCategoryLayout = function () {
-        };
-        IDE.prototype.fixBlocksAreaLayout = function () {
-        };
-        IDE.prototype.fixMaterialCategoryLayout = function () {
-        };
-        IDE.prototype.fixMaterialAreaLayout = function () {
-        };
-        IDE.prototype.fixControlBarLayout = function () {
-        };
-        IDE.prototype.fixStageAreaLayout = function () {
-        };
-        IDE.prototype.switchBlocksAreaVisibility = function () {
         };
         IDE.getIDE = function () {
             return Laya.stage.getChildByName("ide");
