@@ -7,7 +7,7 @@ module Marmot {
     export class ScriptArea extends Panel {
         private blockFactory: BlockFactory;
         private owner:Sprite;
-        constructor(sprite:Sprite) {
+        constructor(sprite:Sprite | Stage) {
             super();
             this.blockFactory = new BlockFactory();
             this.owner = sprite;
@@ -22,17 +22,14 @@ module Marmot {
             let ide = IDE.getIDE();
             ide.blocksArea.visible = false;
             ide.blocksCategory.selectedIndex = 9;
-        /*
-            ide.spriteList.visible = false;
-            ide.materialCategory.selectedIndex = -1;
-            ide.spriteList.costumesList.visible = false;
-            ide.spriteList.spriteDialog.close();    
-            */
             
             ide.spriteMaterialList.visible = false;
             ide.materialCategory.selectedIndex = -1;
             ide.spriteMaterialList.costumeMaterialList.visible = false;
-            ide.spriteMaterialList.spriteLibraryDialog.close();  
+            ide.spriteMaterialList.spriteLibraryDialog.close();
+
+            ide.backgroundMaterialList.visible = false;
+            ide.backgroundMaterialList.backgroundLibraryDialog.close();              
             
         }
     }

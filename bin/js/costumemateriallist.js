@@ -22,26 +22,16 @@ var Marmot;
             CostumeMaterialListItem.WIDTH = costumeMaterialListItemSetting.width;
             CostumeMaterialListItem.HEIGHT = costumeMaterialListItemSetting.height;
             _this.itemRender = CostumeMaterialListItem;
-            _this.array = [];
-            _this.vScrollBarSkin = "";
-            Laya.Log.print(_this.vScrollBarSkin);
-            //this.itemRender = MaterialListItem;
-            _this.selectEnable = true;
-            _this.selectHandler = new Handler(_this, _this.onSelect);
-            _this.renderHandler = new Handler(_this, _this.updateItem);
-            _this.repeatX = 1;
-            _this.startIndex = 0;
-            _this.curItem = null;
             return _this;
         }
         CostumeMaterialList.prototype.initializeMaterialItems = function () {
             var _this = this;
-            //let ide: IDE = IDE.getIDE();
-            var ide = Laya.stage.getChildByName("ide");
+            var ide = Marmot.IDE.getIDE();
             this.array = [];
             ide.currentSprite.costumes.forEach(function (costume) {
                 _this.array.push(costume);
             });
+            this.refresh();
         };
         CostumeMaterialList.prototype.onSelect = function (index) {
         };

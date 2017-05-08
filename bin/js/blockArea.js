@@ -28,7 +28,7 @@ var Marmot;
     Item.HEI = 154;
     var BlockArea = (function (_super) {
         __extends(BlockArea, _super);
-        function BlockArea(width, blockFactory, ide, name) {
+        function BlockArea(width, blockFactory, name) {
             var _this = _super.call(this) || this;
             _this.blocksSetCache = {
                 motion: [],
@@ -44,7 +44,6 @@ var Marmot;
             _this.width = width;
             _this.blockFactory = blockFactory;
             _this.height = BlockArea.blockAreaSetting.height;
-            _this.ide = ide;
             _this.name = name;
             _this.bottom = 100;
             _this.left = 0;
@@ -67,8 +66,9 @@ var Marmot;
         };
         BlockArea.prototype.getBlockForSelector = function (blockName) {
             var block = this.blockFactory.create(blockName);
-            this.ide.scriptArea.addChild(block);
-            block.pos(this.ide.scriptArea.x, this.ide.scriptArea.y);
+            var ide = Marmot.IDE.getIDE();
+            ide.scriptArea.addChild(block);
+            block.pos(ide.scriptArea.x, ide.scriptArea.y);
         };
         BlockArea.prototype.switchIndex = function (index) {
             this.startIndex = index * 5;

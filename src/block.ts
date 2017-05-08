@@ -179,8 +179,9 @@ module Marmot {
             this.updateLayer();
             if (this.hitTestPoint(e.stageX, e.stageY)) {
                 this.addHighlight(this);
-                let scriptAreaHeight = (Laya.stage.getChildByName("ide") as IDE).scriptArea.height;
-                let scriptAreaWidth = (Laya.stage.getChildByName("ide") as IDE).scriptArea.width;
+                let ide = IDE.getIDE();
+                let scriptAreaHeight = ide.scriptArea.height;
+                let scriptAreaWidth = ide.scriptArea.width;
                 Rectangle.TEMP.setTo(20, 20, scriptAreaWidth - 50 * Block.blockSetting.blockScale, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
                 this.startDrag(Rectangle.TEMP, true, 100);
 
@@ -190,7 +191,8 @@ module Marmot {
         protected updateLayer(): void {
             let topValue = 0;
             let tempValue = 0;
-            (Laya.stage.getChildByName("ide") as IDE).scriptArea.content._childs.forEach((child) => {
+            let ide = IDE.getIDE();
+            ide.scriptArea.content._childs.forEach((child) => {
                 tempValue = child.zOrder;
                 if (tempValue > topValue) {
                     topValue = tempValue;

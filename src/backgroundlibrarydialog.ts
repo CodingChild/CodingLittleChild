@@ -60,6 +60,7 @@ module Marmot {
                 "materials/bg_2.jpg",
                 "materials/bg_2.jpg"
             ];
+            this.list.refresh();
         }
         protected onClose(e: Event): void {
             if (e.target.name == Dialog.OK) {
@@ -67,8 +68,7 @@ module Marmot {
                 let item = this.list.selectedItem;
                 ide.stageArea.addCostume(item);
                 ide.stageArea.costumes.push(item);
-                //ide.stageList.array.push(item);
-                //ide.stageList.refresh();
+                ide.backgroundMaterialList.initializeMaterialItems();
             }
         }
     }

@@ -51,7 +51,6 @@ var Marmot;
             this.list = list;
             this.initializeLibrayItems();
             list.vScrollBarSkin = this.libraryDialogSetting.vScrollBarSkin;
-            Laya.Log.print(list.vScrollBarSkin);
             list.itemRender = libraryDialogItem;
             list.selectEnable = true;
             list.spaceY = this.libraryDialogSetting.spaceY;

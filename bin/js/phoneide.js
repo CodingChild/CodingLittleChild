@@ -3,12 +3,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var SpriteList = Marmot.SpriteList;
 var Marmot;
 (function (Marmot) {
     var Button = Laya.Button;
     var Tab = Laya.Tab;
-    var BlockArea = Marmot.BlockArea;
     var Box = Laya.Box;
     var PhoneIDE = (function (_super) {
         __extends(PhoneIDE, _super);
@@ -65,12 +63,6 @@ var Marmot;
             box.addChild(btn_play);
         };
         PhoneIDE.prototype.createMaterialArea = function () {
-            /*
-            let spriteList = new SpriteList(this);
-            this.addChild(spriteList);
-            this.spriteList = spriteList;
-            spriteList.visible = false;
-*/
             var spriteMaterialListSetting;
             var spriteMaterialListItemSetting;
             spriteMaterialListSetting = {
@@ -140,7 +132,7 @@ var Marmot;
             costumeMaterialList.visible = false;
             spriteMaterialList.addChild(costumeMaterialList);
             var spriteLibraryDialogSetting;
-            var libraryDialogItemSetting;
+            var libraryDialogItemSettingForSprite;
             spriteLibraryDialogSetting = {
                 width: 500,
                 height: 500,
@@ -165,7 +157,7 @@ var Marmot;
                 cancelButtonX: 400,
                 cancelButtonY: 430
             };
-            libraryDialogItemSetting = {
+            libraryDialogItemSettingForSprite = {
                 width: 100,
                 height: 100,
                 backgroundNormal: "#ffffff",
@@ -174,19 +166,89 @@ var Marmot;
                 imageWidth: 100,
                 imageHeight: 100
             };
-            var spriteLibraryDialog = new Marmot.SpriteLibraryDialog(spriteLibraryDialogSetting, libraryDialogItemSetting);
+            var spriteLibraryDialog = new Marmot.SpriteLibraryDialog(spriteLibraryDialogSetting, libraryDialogItemSettingForSprite);
             spriteMaterialList.addChild(spriteLibraryDialog);
             spriteMaterialList.spriteLibraryDialog = spriteLibraryDialog;
             spriteLibraryDialog.close(Dialog.CANCEL);
+            var backgroundMaterialListSetting;
+            var backgroundMaterialListItemSetting;
+            backgroundMaterialListSetting = {
+                width: 350,
+                height: 400,
+                fillStyle: "#a8b4f1",
+                vScrollBarSkin: "",
+                spaceY: 40,
+                repeatY: 3,
+                plusButtonWidth: 50,
+                plusButtonHeight: 50,
+                plusButtonStateNum: 1,
+                plusButtonX: 150,
+                plusButtonY: 330,
+                plusButtonSkin: "materials/plus.png",
+                plusButtonName: "addBackground"
+            };
+            backgroundMaterialListItemSetting = {
+                width: 310,
+                height: 100,
+                backgroundNormal: "#ffffff",
+                backgroundHighlight: "#979494",
+                imageX: 0,
+                imageY: 0,
+                imageWidth: 100,
+                imageHeight: 100
+            };
+            var backgroundMaterialList = new Marmot.BackgroundMaterialList(backgroundMaterialListSetting, backgroundMaterialListItemSetting);
+            this.addChild(backgroundMaterialList);
+            this.backgroundMaterialList = backgroundMaterialList;
+            backgroundMaterialList.visible = false;
+            var backgroundLibraryDialogSetting;
+            var libraryDialogItemSettingForBackground;
+            backgroundLibraryDialogSetting = {
+                width: 500,
+                height: 500,
+                fillStyle: "#ffffff",
+                strokeStyle: "#000000",
+                listX: 10,
+                listY: 10,
+                lineWidth: 6,
+                vScrollBarSkin: "",
+                spaceX: 20,
+                spaceY: 20,
+                repeatX: 4,
+                repeatY: 3,
+                buttonWidth: 50,
+                buttonHeight: 50,
+                okButtonSkin: "materials/btn_yes.png",
+                okButtonStateNum: 1,
+                okButtonX: 100,
+                okButtonY: 430,
+                cancelButtonSkin: "materials/btn_cancel.png",
+                cancelButtonStateNum: 1,
+                cancelButtonX: 400,
+                cancelButtonY: 430
+            };
+            libraryDialogItemSettingForBackground = {
+                width: 100,
+                height: 100,
+                backgroundNormal: "#ffffff",
+                backgroundHighlight: "#979494",
+                imagePadding: 10,
+                imageWidth: 80,
+                imageHeight: 80
+            };
+            var backgroundLibraryDialog = new Marmot.BackgroundLibraryDialog(spriteLibraryDialogSetting, libraryDialogItemSettingForBackground);
+            backgroundMaterialList.addChild(backgroundLibraryDialog);
+            backgroundMaterialList.backgroundLibraryDialog = backgroundLibraryDialog;
+            backgroundLibraryDialog.close(Dialog.CANCEL);
         };
         PhoneIDE.prototype.createMaterialCategory = function () {
-            var materialCategory = new Marmot.MaterialCategory(this);
+            var materialCategory = new Marmot.MaterialCategory();
             this.addChild(materialCategory);
             this.materialCategory = materialCategory;
         };
         PhoneIDE.prototype.createBlocksArea = function () {
             var blockFactory = new Marmot.BlockFactory();
-            var blockArea = new BlockArea(this.width, blockFactory, this, "blockArea");
+            var blockArea = new Marmot.BlockArea(this.width, blockFactory, "blockArea");
             this.blocksArea = blockArea;
             this.addChild(blockArea);
         };
@@ -275,6 +337,7 @@ var Marmot;
         PhoneIDE.prototype.fixMaterialAreaLayout = function () {
             this.spriteMaterialList.pos(100, 200);
             this.spriteMaterialList.costumeMaterialList.pos(350, 0);
+            this.backgroundMaterialList.pos(100, 200);
         };
         PhoneIDE.prototype.fixControlBarLayout = function () {
         };

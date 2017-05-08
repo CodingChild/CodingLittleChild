@@ -63,47 +63,13 @@ module Marmot {
 
             SpriteMaterialListItem.WIDTH = spriteMaterialListItemSetting.width;
             SpriteMaterialListItem.HEIGHT = spriteMaterialListItemSetting.height;
-            this.array = [];
-            this.vScrollBarSkin = "";
-            this.curClickedBtn = "";
+
             this.itemRender = SpriteMaterialListItem;
-            Laya.Log.print(this.vScrollBarSkin);
-            //this.itemRender = MaterialListItem;
-            this.selectEnable = true;
-            this.selectHandler = new Handler(this, this.onSelect);
-            this.renderHandler = new Handler(this, this.updateItem);
-            this.spaceY = 40;
-            this.repeatX = 1;
-            this.repeatY = 3;
-            this.startIndex = 0;
-            this.startIndex = 0;
-            this.curItem = null;
-
-            /*
-            this.array = [];
-            this.ide.sprites.forEach((sprite) => {
-                this.array.push(sprite.costume);
-            })
-            this.vScrollBarSkin = "";
-            Laya.Log.print(this.vScrollBarSkin);
-            this.itemRender = Item;
-            this.selectEnable = true;
-            this.selectHandler = new Handler(this, this.onSelect);
-            this.renderHandler = new Handler(this, this.updateItem);
-            this.spaceY = 40;
-            this.repeatX = 1;
-            this.repeatY = 3;
-            this.startIndex = 0;
-
-            this.curItem = null;
-            this.curClickedBtn = "";
-            */
 
         }
 
         protected updateItem(cell: SpriteMaterialListItem, index: number): void {
             let spriteMaterialListItemSetting: SpriteMaterialListItemSetting = this.materialListItemSetting as SpriteMaterialListItemSetting;
-            this.scrollBar
             cell.setImg(cell.dataSource,
                 spriteMaterialListItemSetting.imageX,
                 spriteMaterialListItemSetting.imageY,
@@ -127,13 +93,13 @@ module Marmot {
             ide.sprites.forEach((sprite) => {
                 this.array.push(sprite.costume);
             })
+            this.refresh();
 
         }
 
         protected onSelect(index: number): void {
             let spriteMaterialListItemSetting: SpriteMaterialListItemSetting = this.materialListItemSetting as SpriteMaterialListItemSetting;
             let ide: IDE = IDE.getIDE();
-            Laya.Log.print(this.selectedIndex.toString());
 
             if (this.curItem != null) {
                 (this.curItem as SpriteMaterialListItem).setBackground(false,

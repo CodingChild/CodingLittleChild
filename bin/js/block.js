@@ -126,8 +126,9 @@ var Marmot;
             this.updateLayer();
             if (this.hitTestPoint(e.stageX, e.stageY)) {
                 this.addHighlight(this);
-                var scriptAreaHeight = Laya.stage.getChildByName("ide").scriptArea.height;
-                var scriptAreaWidth = Laya.stage.getChildByName("ide").scriptArea.width;
+                var ide = Marmot.IDE.getIDE();
+                var scriptAreaHeight = ide.scriptArea.height;
+                var scriptAreaWidth = ide.scriptArea.width;
                 Rectangle.TEMP.setTo(20, 20, scriptAreaWidth - 50 * Block.blockSetting.blockScale, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
                 this.startDrag(Rectangle.TEMP, true, 100);
             }
@@ -135,7 +136,8 @@ var Marmot;
         Block.prototype.updateLayer = function () {
             var topValue = 0;
             var tempValue = 0;
-            Laya.stage.getChildByName("ide").scriptArea.content._childs.forEach(function (child) {
+            var ide = Marmot.IDE.getIDE();
+            ide.scriptArea.content._childs.forEach(function (child) {
                 tempValue = child.zOrder;
                 if (tempValue > topValue) {
                     topValue = tempValue;

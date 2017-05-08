@@ -28,28 +28,16 @@ module Marmot {
             CostumeMaterialListItem.WIDTH = costumeMaterialListItemSetting.width;
             CostumeMaterialListItem.HEIGHT = costumeMaterialListItemSetting.height;
             this.itemRender = CostumeMaterialListItem;
-
-            this.array = [];
-            this.vScrollBarSkin = "";
-            Laya.Log.print(this.vScrollBarSkin);
-            //this.itemRender = MaterialListItem;
-            this.selectEnable = true;
-            this.selectHandler = new Handler(this, this.onSelect);
-            this.renderHandler = new Handler(this, this.updateItem);
-            this.repeatX = 1;
-            this.startIndex = 0;
-            this.curItem = null;
-
             
         }
 
         public initializeMaterialItems(): void {
-            //let ide: IDE = IDE.getIDE();
-            let ide:IDE = Laya.stage.getChildByName("ide") as IDE;
+            let ide: IDE = IDE.getIDE();
             this.array = [];
             ide.currentSprite.costumes.forEach((costume) => {
                 this.array.push(costume);
             })
+            this.refresh();
         }
         protected onSelect(index: number): void {
 

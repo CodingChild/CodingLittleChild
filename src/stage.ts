@@ -3,10 +3,12 @@ module Marmot{
 
         public costumes:Array<string>;
         public costume:string;
+        public scriptArea:ScriptArea;
         constructor(width:number, height:number){
             super();
             this.width = width;
             this.height = height;
+            this.scriptArea = new ScriptArea(this);
         }
 
         public fireGreenFlagEvent():void{

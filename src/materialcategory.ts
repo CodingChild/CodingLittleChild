@@ -35,14 +35,13 @@ module Marmot {
     }
 
     export class MaterialCategory extends List {
-        private ide: IDE;
         private curIndex: number;
 
-        constructor(ide: IDE) {
+        constructor() {
             super();
             this.width = 100;
             this.height = 400;
-            this.ide = ide;
+
             this.pos(0, 200);
             this.array = [
                 "materials/btn_sprite.png",
@@ -77,7 +76,8 @@ module Marmot {
                 }
                 newCell.setBackground(true);
                 this.curIndex = index;
-                (this.ide as IDE).chooseMaterialArea(index);
+                let ide = IDE.getIDE();
+                ide.chooseMaterialArea(index);
             }
             else{
                 if (this.curIndex > -1) {

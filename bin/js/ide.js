@@ -36,22 +36,17 @@ var Marmot;
             return _this;
         }
         IDE.prototype.chooseMaterialArea = function (index) {
-            /*
             if (index == 0) {
-                this.spriteList.visible = true;
-            }
-            else if (index == 1) {
-
-            }
-            else if (index == 2) {
-
-            }
-            */
-            if (index == 0) {
+                this.backgroundMaterialList.visible = false;
                 this.spriteMaterialList.initializeMaterialItems();
                 this.spriteMaterialList.visible = true;
             }
             else if (index == 1) {
+                this.spriteMaterialList.visible = false;
+                this.stageArea.costume = "materials/bg_2.jpg";
+                this.stageArea.costumes = ["materials/bg_2.jpg"];
+                this.backgroundMaterialList.initializeMaterialItems();
+                this.backgroundMaterialList.visible = true;
             }
             else if (index == 2) {
             }

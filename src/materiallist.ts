@@ -25,7 +25,7 @@ module Marmot {
         plusButtonName: string;
     }
 
-    export interface MaterialListItemSetting extends ListItemSetting{
+    export interface MaterialListItemSetting extends ListItemSetting {
 
     }
 
@@ -44,21 +44,17 @@ module Marmot {
 
 
         protected materialListSetting: MaterialListSetting;
-        protected materialListItemSetting:MaterialListItemSetting;
+        protected materialListItemSetting: MaterialListItemSetting;
 
-        constructor(materialListSetting: MaterialListSetting, materialListItemSetting:MaterialListItemSetting) {
+        constructor(materialListSetting: MaterialListSetting, materialListItemSetting: MaterialListItemSetting) {
             super();
             this.materialListSetting = materialListSetting;
             this.materialListItemSetting = materialListItemSetting;
             this.width = materialListSetting.width;
             this.height = materialListSetting.height;
-                        this.spaceY = materialListSetting.spaceY;
-                                    this.repeatY = materialListSetting.repeatY;
-            /*
             this.array = [];
             this.vScrollBarSkin = "";
-            Laya.Log.print(this.vScrollBarSkin);
-            //this.itemRender = MaterialListItem;
+            this.itemRender = MaterialListItem;
             this.selectEnable = true;
             this.selectHandler = new Handler(this, this.onSelect);
             this.renderHandler = new Handler(this, this.updateItem);
@@ -67,7 +63,6 @@ module Marmot {
             this.repeatY = materialListSetting.repeatY;
             this.startIndex = 0;
             this.curItem = null;
-            */
 
             this.buildContent();
         }

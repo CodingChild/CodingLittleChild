@@ -61,18 +61,16 @@ module Marmot {
         }
         private blockFactory: BlockFactory;
         private tab_index: Tab;
-        private ide: IDE;
         private onMouseDownX: number;
         private onMouseDownY: number;
         private isMove: boolean = false;
 
 
-        constructor(width: number, blockFactory: BlockFactory, ide: IDE, name: string) {
+        constructor(width: number, blockFactory: BlockFactory, name: string) {
             super();
             this.width = width;
             this.blockFactory = blockFactory;
             this.height = BlockArea.blockAreaSetting.height;
-            this.ide = ide;
             this.name = name;
             this.bottom = 100;
             this.left = 0;
@@ -100,9 +98,10 @@ module Marmot {
         }
         public getBlockForSelector(blockName:string) {
             let block = this.blockFactory.create(blockName);
+            let ide: IDE = IDE.getIDE();
             
-            this.ide.scriptArea.addChild(block);
-            block.pos(this.ide.scriptArea.x, this.ide.scriptArea.y);
+            ide.scriptArea.addChild(block);
+            block.pos(ide.scriptArea.x, ide.scriptArea.y);
         }
 
         private switchIndex(index: number) {

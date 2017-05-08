@@ -61,6 +61,7 @@ module Marmot {
                 "materials/sp_marmot.png",
                 "materials/sp_monkey.png"
             ];
+            this.list.refresh();
         }
         protected onClose(e: Event): void {
             if (e.target.name == Dialog.OK) {

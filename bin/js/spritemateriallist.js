@@ -38,45 +38,11 @@ var Marmot;
             var _this = _super.call(this, spriteMaterialListSetting, spriteMaterialListItemSetting) || this;
             SpriteMaterialListItem.WIDTH = spriteMaterialListItemSetting.width;
             SpriteMaterialListItem.HEIGHT = spriteMaterialListItemSetting.height;
-            _this.array = [];
-            _this.vScrollBarSkin = "";
-            _this.curClickedBtn = "";
             _this.itemRender = SpriteMaterialListItem;
-            Laya.Log.print(_this.vScrollBarSkin);
-            //this.itemRender = MaterialListItem;
-            _this.selectEnable = true;
-            _this.selectHandler = new Handler(_this, _this.onSelect);
-            _this.renderHandler = new Handler(_this, _this.updateItem);
-            _this.spaceY = 40;
-            _this.repeatX = 1;
-            _this.repeatY = 3;
-            _this.startIndex = 0;
-            _this.startIndex = 0;
-            _this.curItem = null;
             return _this;
-            /*
-            this.array = [];
-            this.ide.sprites.forEach((sprite) => {
-                this.array.push(sprite.costume);
-            })
-            this.vScrollBarSkin = "";
-            Laya.Log.print(this.vScrollBarSkin);
-            this.itemRender = Item;
-            this.selectEnable = true;
-            this.selectHandler = new Handler(this, this.onSelect);
-            this.renderHandler = new Handler(this, this.updateItem);
-            this.spaceY = 40;
-            this.repeatX = 1;
-            this.repeatY = 3;
-            this.startIndex = 0;
-
-            this.curItem = null;
-            this.curClickedBtn = "";
-            */
         }
         SpriteMaterialList.prototype.updateItem = function (cell, index) {
             var spriteMaterialListItemSetting = this.materialListItemSetting;
-            this.scrollBar;
             cell.setImg(cell.dataSource, spriteMaterialListItemSetting.imageX, spriteMaterialListItemSetting.imageY, spriteMaterialListItemSetting.imageWidth, spriteMaterialListItemSetting.imageHeight);
             cell.setBackground(false, spriteMaterialListItemSetting.backgroundHighlight, spriteMaterialListItemSetting.backgroundNormal);
             cell.setBtn(spriteMaterialListItemSetting.costumebuttonSkin, spriteMaterialListItemSetting.costumebuttonStateNum, spriteMaterialListItemSetting.costumebuttonWidth, spriteMaterialListItemSetting.costumebuttonHeight, spriteMaterialListItemSetting.costumebuttonX, spriteMaterialListItemSetting.costumebuttonY);
@@ -88,11 +54,11 @@ var Marmot;
             ide.sprites.forEach(function (sprite) {
                 _this.array.push(sprite.costume);
             });
+            this.refresh();
         };
         SpriteMaterialList.prototype.onSelect = function (index) {
             var spriteMaterialListItemSetting = this.materialListItemSetting;
             var ide = Marmot.IDE.getIDE();
-            Laya.Log.print(this.selectedIndex.toString());
             if (this.curItem != null) {
                 this.curItem.setBackground(false, spriteMaterialListItemSetting.backgroundHighlight, spriteMaterialListItemSetting.backgroundNormal);
             }

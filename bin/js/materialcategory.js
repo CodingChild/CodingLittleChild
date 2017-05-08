@@ -32,11 +32,10 @@ var Marmot;
     }(Box));
     var MaterialCategory = (function (_super) {
         __extends(MaterialCategory, _super);
-        function MaterialCategory(ide) {
+        function MaterialCategory() {
             var _this = _super.call(this) || this;
             _this.width = 100;
             _this.height = 400;
-            _this.ide = ide;
             _this.pos(0, 200);
             _this.array = [
                 "materials/btn_sprite.png",
@@ -70,7 +69,8 @@ var Marmot;
                 }
                 newCell.setBackground(true);
                 this.curIndex = index;
-                this.ide.chooseMaterialArea(index);
+                var ide = Marmot.IDE.getIDE();
+                ide.chooseMaterialArea(index);
             }
             else {
                 if (this.curIndex > -1) {

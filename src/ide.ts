@@ -9,8 +9,8 @@ module Marmot {
     import Box = Laya.Box;
 
     export abstract class IDE extends View {
-        public static WIDTH:number;
-        public static HEIGHT:number;
+        public static WIDTH: number;
+        public static HEIGHT: number;
 
         public globalVariables;
         public scriptArea: ScriptArea;
@@ -25,11 +25,12 @@ module Marmot {
         public isCoordinateSystemVisible: boolean;
         public isStageVisible: boolean;
         public isPlayed: boolean;
-        public spriteList: SpriteList;
-        public stageList: StageList;
+
         public toggleShowStage: Button;
 
         public spriteMaterialList: SpriteMaterialList;
+        public backgroundMaterialList: BackgroundMaterialList;
+
 
         constructor(name: string, width: number, height: number) {
             super();
@@ -56,36 +57,30 @@ module Marmot {
 
             this.sprites = [];
             this.sprites.push(this.currentSprite);
-            
+
             this.buildIDE();
             this.fixIDELayout();
 
         }
 
         public chooseMaterialArea(index: number): void {
-            /*
-            if (index == 0) {
-                this.spriteList.visible = true;
-            }
-            else if (index == 1) {
 
-            }
-            else if (index == 2) {
-
-            }
-            */
-            
             if (index == 0) {
+                this.backgroundMaterialList.visible = false;
                 this.spriteMaterialList.initializeMaterialItems();
                 this.spriteMaterialList.visible = true;
             }
             else if (index == 1) {
-
+                this.spriteMaterialList.visible = false;
+                this.stageArea.costume = "materials/bg_2.jpg";
+                this.stageArea.costumes = ["materials/bg_2.jpg"];
+                this.backgroundMaterialList.initializeMaterialItems();
+                this.backgroundMaterialList.visible = true;
             }
             else if (index == 2) {
 
             }
-            
+
 
         }
         protected chooseBlock(index: number): void {
@@ -124,39 +119,39 @@ module Marmot {
             this.blocksArea.updateContent(blocksCategory);
 
         }
-        protected pressStart(btn_play:Button): void {
-            if(this.isPlayed == false){
+        protected pressStart(btn_play: Button): void {
+            if (this.isPlayed == false) {
                 this.stageArea.fireGreenFlagEvent();
                 btn_play.skin = "materials/btn_stop.png";
                 this.isPlayed = true;
             }
-            else{
+            else {
                 this.stageArea.fireStopAllEvent();
                 btn_play.skin = "materials/btn_play.png";
-                this.isPlayed = false;                
+                this.isPlayed = false;
             }
         }
 
-        protected toggleFullScreen(btn_fullscreen:Button): void {
-            if(this.isFullScreen == false){
+        protected toggleFullScreen(btn_fullscreen: Button): void {
+            if (this.isFullScreen == false) {
                 btn_fullscreen.skin = "materials/btn_normalscreen.png";
                 this.stageArea.toggleFullScreen();
                 this.isFullScreen = true;
             }
-            else{
+            else {
                 btn_fullscreen.skin = "materials/btn_fullscreen.png";
                 this.stageArea.toggleNormalScreen();
-                this.isFullScreen = false;            
+                this.isFullScreen = false;
             }
         }
-        protected toggleCoordinateSystem(btn_coordinate:Button): void {
-            if(this.isCoordinateSystemVisible == false){
+        protected toggleCoordinateSystem(btn_coordinate: Button): void {
+            if (this.isCoordinateSystemVisible == false) {
                 this.stageArea.toggleShowCoordinate(true);
                 this.isCoordinateSystemVisible = true;
             }
-            else{
+            else {
                 this.stageArea.toggleShowCoordinate(false);
-                this.isCoordinateSystemVisible = false;            
+                this.isCoordinateSystemVisible = false;
             }
         }
         protected toggleStageVisible(): void {
@@ -188,7 +183,7 @@ module Marmot {
         protected abstract fixControlBarLayout(): void;
         protected abstract fixStageAreaLayout(): void;
 
-        public static getIDE():IDE{
+        public static getIDE(): IDE {
             return Laya.stage.getChildByName("ide") as IDE;
         }
     }

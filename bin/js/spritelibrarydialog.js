@@ -61,6 +61,7 @@ var Marmot;
                 "materials/sp_marmot.png",
                 "materials/sp_monkey.png"
             ];
+            this.list.refresh();
         };
         SpriteLibraryDialog.prototype.onClose = function (e) {
             if (e.target.name == Dialog.OK) {

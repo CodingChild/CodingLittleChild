@@ -61,6 +61,7 @@ var Marmot;
                 "materials/bg_2.jpg",
                 "materials/bg_2.jpg"
             ];
+            this.list.refresh();
         };
         BackgroundLibraryDialog.prototype.onClose = function (e) {
             if (e.target.name == Dialog.OK) {
@@ -68,6 +69,7 @@ var Marmot;
                 var item = this.list.selectedItem;
                 ide.stageArea.addCostume(item);
                 ide.stageArea.costumes.push(item);
+                ide.backgroundMaterialList.initializeMaterialItems();
             }
         };
         return BackgroundLibraryDialog;

@@ -8,6 +8,7 @@ var Marmot;
     var List = Laya.List;
     var Event = Laya.Event;
     var Button = Laya.Button;
+    var Handler = Laya.Handler;
     var MaterialListItem = (function (_super) {
         __extends(MaterialListItem, _super);
         function MaterialListItem() {
@@ -24,22 +25,17 @@ var Marmot;
             _this.materialListItemSetting = materialListItemSetting;
             _this.width = materialListSetting.width;
             _this.height = materialListSetting.height;
+            _this.array = [];
+            _this.vScrollBarSkin = "";
+            _this.itemRender = MaterialListItem;
+            _this.selectEnable = true;
+            _this.selectHandler = new Handler(_this, _this.onSelect);
+            _this.renderHandler = new Handler(_this, _this.updateItem);
             _this.spaceY = materialListSetting.spaceY;
+            _this.repeatX = 1;
             _this.repeatY = materialListSetting.repeatY;
-            /*
-            this.array = [];
-            this.vScrollBarSkin = "";
-            Laya.Log.print(this.vScrollBarSkin);
-            //this.itemRender = MaterialListItem;
-            this.selectEnable = true;
-            this.selectHandler = new Handler(this, this.onSelect);
-            this.renderHandler = new Handler(this, this.updateItem);
-            this.spaceY = materialListSetting.spaceY;
-            this.repeatX = 1;
-            this.repeatY = materialListSetting.repeatY;
-            this.startIndex = 0;
-            this.curItem = null;
-            */
+            _this.startIndex = 0;
+            _this.curItem = null;
             _this.buildContent();
             return _this;
         }

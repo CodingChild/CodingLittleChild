@@ -1,9 +1,7 @@
-import SpriteList = Marmot.SpriteList;
 module Marmot {
     import Button = Laya.Button;
     import Tab = Laya.Tab;
     import Event = Laya.Event;
-    import BlockArea = Marmot.BlockArea;
     import List = Laya.List;
     import Box = Laya.Box;
 
@@ -70,12 +68,6 @@ module Marmot {
             box.addChild(btn_play);
         }
         protected createMaterialArea(): void {
-            /*
-            let spriteList = new SpriteList(this);
-            this.addChild(spriteList);
-            this.spriteList = spriteList;
-            spriteList.visible = false;
-*/
 
             let spriteMaterialListSetting: SpriteMaterialListSetting;
             let spriteMaterialListItemSetting: SpriteMaterialListItemSetting;
@@ -155,7 +147,7 @@ module Marmot {
             spriteMaterialList.addChild(costumeMaterialList);
 
             let spriteLibraryDialogSetting: SpriteLibraryDialogSetting;
-            let libraryDialogItemSetting: LibraryDialogItemSetting;
+            let libraryDialogItemSettingForSprite: LibraryDialogItemSetting;
 
             spriteLibraryDialogSetting = {
                 width: 500,
@@ -182,7 +174,7 @@ module Marmot {
                 cancelButtonY: 430
             }
 
-            libraryDialogItemSetting = {
+            libraryDialogItemSettingForSprite = {
                 width: 100,
                 height: 100,
                 backgroundNormal: "#ffffff",
@@ -191,13 +183,91 @@ module Marmot {
                 imageWidth: 100,
                 imageHeight: 100
             }
-            let spriteLibraryDialog = new SpriteLibraryDialog(spriteLibraryDialogSetting, libraryDialogItemSetting);
+            let spriteLibraryDialog = new SpriteLibraryDialog(spriteLibraryDialogSetting, libraryDialogItemSettingForSprite);
             spriteMaterialList.addChild(spriteLibraryDialog);
             spriteMaterialList.spriteLibraryDialog = spriteLibraryDialog;
             spriteLibraryDialog.close(Dialog.CANCEL);
+
+            let backgroundMaterialListSetting: BackgroundMaterialListSetting;
+            let backgroundMaterialListItemSetting: BackgroundMaterialListItemSetting;
+
+            backgroundMaterialListSetting = {
+                width: 350,
+                height: 400,
+                fillStyle: "#a8b4f1",
+                vScrollBarSkin: "",
+                spaceY: 40,
+                repeatY: 3,
+                plusButtonWidth: 50,
+                plusButtonHeight: 50,
+                plusButtonStateNum: 1,
+                plusButtonX: 150,
+                plusButtonY: 330,
+                plusButtonSkin: "materials/plus.png",
+                plusButtonName: "addBackground"
+            };
+
+            backgroundMaterialListItemSetting = {
+                width: 310,
+                height: 100,
+                backgroundNormal: "#ffffff",
+                backgroundHighlight: "#979494",
+                imageX: 0,
+                imageY: 0,
+                imageWidth: 100,
+                imageHeight: 100
+            }
+
+            let backgroundMaterialList = new BackgroundMaterialList(backgroundMaterialListSetting, backgroundMaterialListItemSetting);
+            this.addChild(backgroundMaterialList);
+            this.backgroundMaterialList = backgroundMaterialList;
+            backgroundMaterialList.visible = false; 
+
+            let backgroundLibraryDialogSetting: BackgroundLibraryDialogSetting;
+            let libraryDialogItemSettingForBackground: LibraryDialogItemSetting;
+
+            backgroundLibraryDialogSetting = {
+                width: 500,
+                height: 500,
+                fillStyle: "#ffffff",
+                strokeStyle: "#000000",
+                listX: 10,
+                listY: 10,
+                lineWidth: 6,
+                vScrollBarSkin: "",
+                spaceX: 20,
+                spaceY: 20,
+                repeatX: 4,
+                repeatY: 3,
+                buttonWidth: 50,
+                buttonHeight: 50,
+                okButtonSkin: "materials/btn_yes.png",
+                okButtonStateNum: 1,
+                okButtonX: 100,
+                okButtonY: 430,
+                cancelButtonSkin: "materials/btn_cancel.png",
+                cancelButtonStateNum: 1,
+                cancelButtonX: 400,
+                cancelButtonY: 430
+            }
+
+            libraryDialogItemSettingForBackground = {
+                width: 100,
+                height: 100,
+                backgroundNormal: "#ffffff",
+                backgroundHighlight: "#979494",
+                imagePadding: 10,
+                imageWidth: 80,
+                imageHeight: 80
+            }
+            let backgroundLibraryDialog = new BackgroundLibraryDialog(spriteLibraryDialogSetting, libraryDialogItemSettingForBackground);
+            backgroundMaterialList.addChild(backgroundLibraryDialog);
+            backgroundMaterialList.backgroundLibraryDialog = backgroundLibraryDialog;
+            backgroundLibraryDialog.close(Dialog.CANCEL);           
+            
         }
         protected createMaterialCategory(): void {
-            let materialCategory: MaterialCategory = new MaterialCategory(this);
+            let materialCategory: MaterialCategory = new MaterialCategory();
             this.addChild(materialCategory);
             this.materialCategory = materialCategory;
 
@@ -205,7 +275,7 @@ module Marmot {
         }
         protected createBlocksArea(): void {
             let blockFactory = new BlockFactory();
-            let blockArea = new BlockArea(this.width, blockFactory, this, "blockArea");
+            let blockArea = new BlockArea(this.width, blockFactory, "blockArea");
             this.blocksArea = blockArea;
             this.addChild(blockArea);
         }
@@ -302,7 +372,6 @@ module Marmot {
 
         protected fixIDELayout(): void {
             this.fixMaterialAreaLayout();
-
         }
         protected fixBlocksCategoryLayout(): void {
 
@@ -316,6 +385,7 @@ module Marmot {
         protected fixMaterialAreaLayout(): void {
             this.spriteMaterialList.pos(100, 200);
             this.spriteMaterialList.costumeMaterialList.pos(350, 0);
+            this.backgroundMaterialList.pos(100, 200);
         }
         protected fixControlBarLayout(): void {
 

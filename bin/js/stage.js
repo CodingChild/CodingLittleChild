@@ -11,6 +11,7 @@ var Marmot;
             var _this = _super.call(this) || this;
             _this.width = width;
             _this.height = height;
+            _this.scriptArea = new Marmot.ScriptArea(_this);
             return _this;
         }
         Stage.prototype.fireGreenFlagEvent = function () {
