@@ -2,6 +2,10 @@
 # http://git-scm.com/docs/gitignore
 
 release/
+bin/js/
+bin/libs/
+libs/
+
 
 
 
