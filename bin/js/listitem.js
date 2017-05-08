@@ -12,7 +12,8 @@ var Marmot;
         function ListItem() {
             var _this = _super.call(this) || this;
             _this.img = new Image();
-            _this.size(Marmot.LibraryItem.WIDTH, Marmot.LibraryItem.HEIGHT);
+            if (ListItem.WIDTH != undefined && ListItem.HEIGHT != undefined)
+                _this.size(ListItem.WIDTH, ListItem.HEIGHT);
             _this.addChild(_this.img);
             return _this;
         }

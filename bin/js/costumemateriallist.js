@@ -5,11 +5,13 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Marmot;
 (function (Marmot) {
-    var Event = Laya.Event;
     var CostumeMaterialListItem = (function (_super) {
         __extends(CostumeMaterialListItem, _super);
         function CostumeMaterialListItem() {
-            return _super.call(this) || this;
+            var _this = _super.call(this) || this;
+            if (CostumeMaterialListItem.WIDTH != undefined && CostumeMaterialListItem.HEIGHT != undefined)
+                _this.size(CostumeMaterialListItem.WIDTH, CostumeMaterialListItem.HEIGHT);
+            return _this;
         }
         return CostumeMaterialListItem;
     }(Marmot.MaterialListItem));
@@ -17,19 +19,31 @@ var Marmot;
         __extends(CostumeMaterialList, _super);
         function CostumeMaterialList(costumeMaterialListSetting, costumeMaterialListItemSetting) {
             var _this = _super.call(this, costumeMaterialListSetting, costumeMaterialListItemSetting) || this;
+            CostumeMaterialListItem.WIDTH = costumeMaterialListItemSetting.width;
+            CostumeMaterialListItem.HEIGHT = costumeMaterialListItemSetting.height;
             _this.itemRender = CostumeMaterialListItem;
+            _this.array = [];
+            _this.vScrollBarSkin = "";
+            Laya.Log.print(_this.vScrollBarSkin);
+            //this.itemRender = MaterialListItem;
+            _this.selectEnable = true;
+            _this.selectHandler = new Handler(_this, _this.onSelect);
+            _this.renderHandler = new Handler(_this, _this.updateItem);
+            _this.repeatX = 1;
+            _this.startIndex = 0;
+            _this.curItem = null;
             return _this;
         }
         CostumeMaterialList.prototype.initializeMaterialItems = function () {
             var _this = this;
-            var ide = Marmot.IDE.getIDE();
+            //let ide: IDE = IDE.getIDE();
+            var ide = Laya.stage.getChildByName("ide");
+            this.array = [];
             ide.currentSprite.costumes.forEach(function (costume) {
                 _this.array.push(costume);
             });
         };
-        CostumeMaterialList.prototype.onMouse = function (e, index) {
-            if (e.type == Event.CLICK) {
-            }
+        CostumeMaterialList.prototype.onSelect = function (index) {
         };
         CostumeMaterialList.prototype.onPlusBtnClicked = function () {
             var ide = Marmot.IDE.getIDE();

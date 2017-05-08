@@ -10,24 +10,28 @@ var Marmot;
     var Button = Laya.Button;
     var Handler = Laya.Handler;
     var Event = Laya.Event;
-    var LibraryItem = (function (_super) {
-        __extends(LibraryItem, _super);
-        function LibraryItem() {
-            return _super.call(this) || this;
+    var libraryDialogItem = (function (_super) {
+        __extends(libraryDialogItem, _super);
+        function libraryDialogItem() {
+            var _this = _super.call(this) || this;
+            if (libraryDialogItem.WIDTH != undefined && libraryDialogItem.HEIGHT != undefined)
+                _this.size(libraryDialogItem.WIDTH, libraryDialogItem.HEIGHT);
+            return _this;
         }
-        return LibraryItem;
+        return libraryDialogItem;
     }(Marmot.ListItem));
-    Marmot.LibraryItem = LibraryItem;
+    Marmot.libraryDialogItem = libraryDialogItem;
     var LibraryDialog = (function (_super) {
         __extends(LibraryDialog, _super);
-        function LibraryDialog(libraryDialogSetting) {
+        function LibraryDialog(libraryDialogSetting, libraryDialogItemSetting) {
             var _this = _super.call(this) || this;
             _this.size(libraryDialogSetting.width, libraryDialogSetting.height);
             _this.libraryDialogSetting = libraryDialogSetting;
+            _this.libraryDialogItemSetting = libraryDialogItemSetting;
             _this.chosenIndex = -1;
             _this.curItem = null;
-            LibraryItem.WIDTH = libraryDialogSetting.libraryItemSetting.width;
-            LibraryItem.HEIGHT = libraryDialogSetting.libraryItemSetting.height;
+            libraryDialogItem.WIDTH = libraryDialogItemSetting.width;
+            libraryDialogItem.HEIGHT = libraryDialogItemSetting.height;
             _this.buildContent();
             _this.show();
             return _this;
@@ -43,10 +47,12 @@ var Marmot;
         };
         LibraryDialog.prototype.buildlist = function () {
             var list = new List();
-            //list.pos(this.libraryDialogSetting.listX, this.libraryDialogSetting.listY);
+            list.pos(this.libraryDialogSetting.listX, this.libraryDialogSetting.listY);
+            this.list = list;
             this.initializeLibrayItems();
             list.vScrollBarSkin = this.libraryDialogSetting.vScrollBarSkin;
-            list.itemRender = LibraryItem;
+            Laya.Log.print(list.vScrollBarSkin);
+            list.itemRender = libraryDialogItem;
             list.selectEnable = true;
             list.spaceY = this.libraryDialogSetting.spaceY;
             list.spaceX = this.libraryDialogSetting.spaceX;
@@ -54,20 +60,19 @@ var Marmot;
             list.repeatY = this.libraryDialogSetting.repeatY;
             list.startIndex = 0;
             this.addChild(list);
-            this.list = list;
             list.selectHandler = new Handler(this, this.onSelect);
             list.renderHandler = new Handler(this, this.updateItem);
         };
         LibraryDialog.prototype.onSelect = function (index) {
-            this.list.selection.setBackground(true, this.libraryDialogSetting.libraryItemSetting.backgroundHighlight, this.libraryDialogSetting.libraryItemSetting.backgroundNormal);
+            this.list.selection.setBackground(true, this.libraryDialogItemSetting.backgroundHighlight, this.libraryDialogItemSetting.backgroundNormal);
             if (this.curItem != null) {
-                this.curItem.setBackground(false, this.libraryDialogSetting.libraryItemSetting.backgroundHighlight, this.libraryDialogSetting.libraryItemSetting.backgroundNormal);
+                this.curItem.setBackground(false, this.libraryDialogItemSetting.backgroundHighlight, this.libraryDialogItemSetting.backgroundNormal);
             }
             this.curItem = this.list.selection;
         };
         LibraryDialog.prototype.updateItem = function (cell, index) {
-            cell.setImg(cell.dataSource, this.libraryDialogSetting.libraryItemSetting.imagePadding, this.libraryDialogSetting.libraryItemSetting.imagePadding, this.libraryDialogSetting.libraryItemSetting.imageWidth, this.libraryDialogSetting.libraryItemSetting.imageHeight);
-            cell.setBackground(false, this.libraryDialogSetting.libraryItemSetting.backgroundHighlight, this.libraryDialogSetting.libraryItemSetting.backgroundNormal);
+            cell.setImg(cell.dataSource, this.libraryDialogItemSetting.imagePadding, this.libraryDialogItemSetting.imagePadding, this.libraryDialogItemSetting.imageWidth, this.libraryDialogItemSetting.imageHeight);
+            cell.setBackground(false, this.libraryDialogItemSetting.backgroundHighlight, this.libraryDialogItemSetting.backgroundNormal);
         };
         LibraryDialog.prototype.buildOkButton = function () {
             var okButton = new Button();

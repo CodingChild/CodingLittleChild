@@ -3,16 +3,22 @@ module Marmot {
     import Button = Laya.Button;
 
     export class SpriteMaterialListItem extends MaterialListItem {
+        public static WIDTH: number;
+        public static HEIGHT: number;
 
         private btn: Button;
         constructor() {
             super();
+            if (SpriteMaterialListItem.WIDTH != undefined && SpriteMaterialListItem.HEIGHT != undefined) {
+                this.size(SpriteMaterialListItem.WIDTH, SpriteMaterialListItem.HEIGHT);
+            }
 
             this.btn = new Button();
 
-            this.btn.clickHandler = Handler.create(this, this.editCostume, [this.btn], false);
+            this.btn.clickHandler = new Handler(this, this.editCostume, [this.btn], false);
 
             this.addChild(this.btn);
+
         }
         public setBtn(skin: string, stateNum: number, width: number, height: number, x: number, y: number) {
             this.btn.skin = skin;
@@ -24,19 +30,17 @@ module Marmot {
 
         private editCostume(btn: Button): void {
             let spList: SpriteMaterialList = (this.parent.parent as SpriteMaterialList);
-            let ide: IDE = IDE.getIDE();
             spList.costumeMaterialList.visible = true;
-            ide.currentSprite = ide.sprites[spList.selectedIndex];
         }
 
 
     }
 
-    interface SpriteMaterialListSetting extends MaterialListSetting {
+    export interface SpriteMaterialListSetting extends MaterialListSetting {
 
     }
 
-    interface SpriteMaterialListItemSetting extends MaterialListItemSetting {
+    export interface SpriteMaterialListItemSetting extends MaterialListItemSetting {
         costumebuttonWidth: number;
         costumebuttonHeight: number;
         costumebuttonSkin: string;
@@ -57,20 +61,49 @@ module Marmot {
         constructor(spriteMaterialListSetting: SpriteMaterialListSetting, spriteMaterialListItemSetting: SpriteMaterialListItemSetting) {
             super(spriteMaterialListSetting, spriteMaterialListItemSetting);
 
+            SpriteMaterialListItem.WIDTH = spriteMaterialListItemSetting.width;
+            SpriteMaterialListItem.HEIGHT = spriteMaterialListItemSetting.height;
+            this.array = [];
+            this.vScrollBarSkin = "";
             this.curClickedBtn = "";
             this.itemRender = SpriteMaterialListItem;
+            Laya.Log.print(this.vScrollBarSkin);
+            //this.itemRender = MaterialListItem;
+            this.selectEnable = true;
+            this.selectHandler = new Handler(this, this.onSelect);
+            this.renderHandler = new Handler(this, this.updateItem);
+            this.spaceY = 40;
+            this.repeatX = 1;
+            this.repeatY = 3;
+            this.startIndex = 0;
+            this.startIndex = 0;
+            this.curItem = null;
+
             /*
-            this.costumeMaterialList = new CostumeMaterialList();
-            this.costumeMaterialList.visible = false;
-            this.addChild(this.costumeMaterialList);
-            this.spriteDialog = new SpriteDialog(ide);
-            this.addChild(this.spriteDialog);
-            this.spriteDialog.close(Dialog.CANCEL);
+            this.array = [];
+            this.ide.sprites.forEach((sprite) => {
+                this.array.push(sprite.costume);
+            })
+            this.vScrollBarSkin = "";
+            Laya.Log.print(this.vScrollBarSkin);
+            this.itemRender = Item;
+            this.selectEnable = true;
+            this.selectHandler = new Handler(this, this.onSelect);
+            this.renderHandler = new Handler(this, this.updateItem);
+            this.spaceY = 40;
+            this.repeatX = 1;
+            this.repeatY = 3;
+            this.startIndex = 0;
+
+            this.curItem = null;
+            this.curClickedBtn = "";
             */
+
         }
 
         protected updateItem(cell: SpriteMaterialListItem, index: number): void {
             let spriteMaterialListItemSetting: SpriteMaterialListItemSetting = this.materialListItemSetting as SpriteMaterialListItemSetting;
+            this.scrollBar
             cell.setImg(cell.dataSource,
                 spriteMaterialListItemSetting.imageX,
                 spriteMaterialListItemSetting.imageY,
@@ -88,40 +121,37 @@ module Marmot {
                 spriteMaterialListItemSetting.costumebuttonY);
         }
 
-        protected initializeMaterialItems(): void {
+        public initializeMaterialItems(): void {
             this.array = [];
             let ide: IDE = IDE.getIDE();
             ide.sprites.forEach((sprite) => {
-                this.array.push(sprite);
+                this.array.push(sprite.costume);
             })
 
         }
 
-        protected onMouse(e: Event, index: number): void {
-            if (e.type == Event.CLICK) {
-                let spriteMaterialListItemSetting: SpriteMaterialListItemSetting = this.materialListItemSetting as SpriteMaterialListItemSetting;
-                let ide: IDE = IDE.getIDE();
+        protected onSelect(index: number): void {
+            let spriteMaterialListItemSetting: SpriteMaterialListItemSetting = this.materialListItemSetting as SpriteMaterialListItemSetting;
+            let ide: IDE = IDE.getIDE();
+            Laya.Log.print(this.selectedIndex.toString());
 
-                (this.selection as SpriteMaterialListItem).setBackground(true,
+            if (this.curItem != null) {
+                (this.curItem as SpriteMaterialListItem).setBackground(false,
                     spriteMaterialListItemSetting.backgroundHighlight,
                     spriteMaterialListItemSetting.backgroundNormal);
-                if (this.curItem != null) {
-                    (this.selection as SpriteMaterialListItem).setBackground(false,
-                        spriteMaterialListItemSetting.backgroundHighlight,
-                        spriteMaterialListItemSetting.backgroundNormal);
-                }
-                this.curItem = this.selection as SpriteMaterialListItem;
-                ide.currentSprite = ide.sprites[index];
-                this.costumeMaterialList.array = [];
-                ide.currentSprite.costumes.forEach((costume) => {
-                    this.costumeMaterialList.array.push(costume);
-                })
-                ide.spriteMaterialList.costumeMaterialList.refresh();
-                let scriptAreaIndex: number = ide.getChildIndex(ide.scriptArea);
-                ide.removeChildAt(scriptAreaIndex);
-                ide.addChildAt(ide.currentSprite.scriptArea, scriptAreaIndex);
-                ide.scriptArea = ide.currentSprite.scriptArea;
             }
+            (this.selection as SpriteMaterialListItem).setBackground(true,
+                spriteMaterialListItemSetting.backgroundHighlight,
+                spriteMaterialListItemSetting.backgroundNormal);
+            this.curItem = this.selection as SpriteMaterialListItem;
+            ide.currentSprite = ide.sprites[index];
+
+            this.costumeMaterialList.initializeMaterialItems();
+
+            let scriptAreaIndex: number = ide.getChildIndex(ide.scriptArea);
+            ide.removeChildAt(scriptAreaIndex);
+            ide.addChildAt(ide.currentSprite.scriptArea, scriptAreaIndex);
+            ide.scriptArea = ide.currentSprite.scriptArea;
         }
         protected onPlusBtnClicked(): void {
             this.curClickedBtn = "addSprite";

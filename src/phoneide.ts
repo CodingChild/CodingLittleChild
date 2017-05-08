@@ -70,13 +70,131 @@ module Marmot {
             box.addChild(btn_play);
         }
         protected createMaterialArea(): void {
+            /*
             let spriteList = new SpriteList(this);
             this.addChild(spriteList);
             this.spriteList = spriteList;
             spriteList.visible = false;
+*/
 
+            let spriteMaterialListSetting: SpriteMaterialListSetting;
+            let spriteMaterialListItemSetting: SpriteMaterialListItemSetting;
 
+            spriteMaterialListSetting = {
+                width: 350,
+                height: 400,
+                fillStyle: "#a8b4f1",
+                vScrollBarSkin: "",
+                spaceY: 40,
+                repeatY: 3,
+                plusButtonWidth: 50,
+                plusButtonHeight: 50,
+                plusButtonStateNum: 1,
+                plusButtonX: 150,
+                plusButtonY: 330,
+                plusButtonSkin: "materials/plus.png",
+                plusButtonName: "addSprite"
+            };
 
+            spriteMaterialListItemSetting = {
+                width: 310,
+                height: 100,
+                backgroundNormal: "#ffffff",
+                backgroundHighlight: "#979494",
+                imageX: 0,
+                imageY: 0,
+                imageWidth: 100,
+                imageHeight: 100,
+                costumebuttonWidth: 80,
+                costumebuttonHeight: 80,
+                costumebuttonSkin: "materials/costume.png",
+                costumebuttonStateNum: 1,
+                costumebuttonX: 220,
+                costumebuttonY: 10
+            }
+
+            let spriteMaterialList = new SpriteMaterialList(spriteMaterialListSetting, spriteMaterialListItemSetting);
+            this.addChild(spriteMaterialList);
+            this.spriteMaterialList = spriteMaterialList;
+            spriteMaterialList.visible = false;
+
+            let costumeMaterialListSetting: CostumeMaterialListSetting;
+            let costumeMaterialListItemSetting: CostumeMaterialListItemSetting;
+
+            costumeMaterialListSetting = {
+                width: 100,
+                height: 400,
+                fillStyle: "#c4cdf8",
+                vScrollBarSkin: "",
+                spaceY: 20,
+                repeatY: 3,
+                plusButtonWidth: 50,
+                plusButtonHeight: 50,
+                plusButtonStateNum: 1,
+                plusButtonX: 25,
+                plusButtonY: 330,
+                plusButtonSkin: "materials/plus.png",
+                plusButtonName: "addCostume"
+            };
+
+            costumeMaterialListItemSetting = {
+                width: 150,
+                height: 100,
+                backgroundNormal: "#ffffff",
+                backgroundHighlight: "#ffffff",
+                imageX: 10,
+                imageY: 10,
+                imageWidth: 80,
+                imageHeight: 80
+            }
+
+            let costumeMaterialList = new CostumeMaterialList(costumeMaterialListSetting, costumeMaterialListItemSetting);
+
+            spriteMaterialList.costumeMaterialList = costumeMaterialList;
+            costumeMaterialList.visible = false;
+            spriteMaterialList.addChild(costumeMaterialList);
+
+            let spriteLibraryDialogSetting: SpriteLibraryDialogSetting;
+            let libraryDialogItemSetting: LibraryDialogItemSetting;
+
+            spriteLibraryDialogSetting = {
+                width: 500,
+                height: 500,
+                fillStyle: "#ffffff",
+                strokeStyle: "#000000",
+                listX: 10,
+                listY: 10,
+                lineWidth: 6,
+                vScrollBarSkin: "",
+                spaceX: 20,
+                spaceY: 20,
+                repeatX: 4,
+                repeatY: 3,
+                buttonWidth: 50,
+                buttonHeight: 50,
+                okButtonSkin: "materials/btn_yes.png",
+                okButtonStateNum: 1,
+                okButtonX: 100,
+                okButtonY: 430,
+                cancelButtonSkin: "materials/btn_cancel.png",
+                cancelButtonStateNum: 1,
+                cancelButtonX: 400,
+                cancelButtonY: 430
+            }
+
+            libraryDialogItemSetting = {
+                width: 100,
+                height: 100,
+                backgroundNormal: "#ffffff",
+                backgroundHighlight: "#979494",
+                imagePadding: 0,
+                imageWidth: 100,
+                imageHeight: 100
+            }
+            let spriteLibraryDialog = new SpriteLibraryDialog(spriteLibraryDialogSetting, libraryDialogItemSetting);
+            spriteMaterialList.addChild(spriteLibraryDialog);
+            spriteMaterialList.spriteLibraryDialog = spriteLibraryDialog;
+            spriteLibraryDialog.close(Dialog.CANCEL);
         }
         protected createMaterialCategory(): void {
             let materialCategory: MaterialCategory = new MaterialCategory(this);
@@ -164,7 +282,7 @@ module Marmot {
         protected createStageArea(): void {
             let stageArea = new Marmot.Stage(600, 400);
             stageArea.pos(this.width, 120);
-            let texture:Texture = Laya.loader.getRes("res/pics/bg_1.png");
+            let texture: Texture = Laya.loader.getRes("res/pics/bg_1.png");
             stageArea.graphics.drawTexture(texture, 0, 0, 600, 400);
             this.stageArea = stageArea;
             this.addChild(stageArea);
@@ -182,25 +300,27 @@ module Marmot {
 
         }
 
-        protected  fixIDELayout(): void{
+        protected fixIDELayout(): void {
+            this.fixMaterialAreaLayout();
 
         }
-        protected  fixBlocksCategoryLayout(): void{
+        protected fixBlocksCategoryLayout(): void {
 
         }
-        protected  fixBlocksAreaLayout(): void{
+        protected fixBlocksAreaLayout(): void {
 
         }
-        protected  fixMaterialCategoryLayout(): void{
+        protected fixMaterialCategoryLayout(): void {
 
         }
-        protected  fixMaterialAreaLayout(): void{
+        protected fixMaterialAreaLayout(): void {
+            this.spriteMaterialList.pos(100, 200);
+            this.spriteMaterialList.costumeMaterialList.pos(350, 0);
+        }
+        protected fixControlBarLayout(): void {
 
         }
-        protected  fixControlBarLayout(): void{
-
-        }
-        protected  fixStageAreaLayout(): void{
+        protected fixStageAreaLayout(): void {
 
         }
     }

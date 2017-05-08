@@ -7,8 +7,8 @@ var Marmot;
 (function (Marmot) {
     var BackgroundLibraryDialog = (function (_super) {
         __extends(BackgroundLibraryDialog, _super);
-        function BackgroundLibraryDialog(libraryDialogSetting) {
-            return _super.call(this, libraryDialogSetting) || this;
+        function BackgroundLibraryDialog(backgroundLibraryDialogSetting, libraryDialogItemSetting) {
+            return _super.call(this, backgroundLibraryDialogSetting, libraryDialogItemSetting) || this;
         }
         BackgroundLibraryDialog.prototype.initializeLibrayItems = function () {
             this.list.array = [

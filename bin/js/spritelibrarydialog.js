@@ -7,8 +7,8 @@ var Marmot;
 (function (Marmot) {
     var SpriteLibraryDialog = (function (_super) {
         __extends(SpriteLibraryDialog, _super);
-        function SpriteLibraryDialog(libraryDialogSetting) {
-            return _super.call(this, libraryDialogSetting) || this;
+        function SpriteLibraryDialog(spriteLibraryDialogSetting, libraryDialogItemSetting) {
+            return _super.call(this, spriteLibraryDialogSetting, libraryDialogItemSetting) || this;
         }
         SpriteLibraryDialog.prototype.initializeLibrayItems = function () {
             this.list.array = [
@@ -65,21 +65,19 @@ var Marmot;
         SpriteLibraryDialog.prototype.onClose = function (e) {
             if (e.target.name == Dialog.OK) {
                 var ide = Marmot.IDE.getIDE();
-                if (ide.spriteList.curClickedBtn == "addCostume") {
+                if (ide.spriteMaterialList.curClickedBtn == "addCostume") {
                     var item = this.list.selectedItem;
                     ide.currentSprite.addCostume(item);
                     ide.currentSprite.costumes.push(item);
-                    ide.spriteList.costumesList.array.push(item);
-                    ide.spriteList.costumesList.refresh();
+                    ide.spriteMaterialList.costumeMaterialList.initializeMaterialItems();
                 }
-                else if (ide.spriteList.curClickedBtn == "addSprite") {
+                else if (ide.spriteMaterialList.curClickedBtn == "addSprite") {
                     var newSprite = new Marmot.Sprite();
                     newSprite.addCostume(this.list.selectedItem);
                     newSprite.costume = this.list.selectedItem;
                     newSprite.costumes = [newSprite.costume];
                     ide.sprites.push(newSprite);
-                    ide.spriteList.array.push(newSprite.costume);
-                    ide.spriteList.refresh();
+                    ide.spriteMaterialList.initializeMaterialItems();
                 }
             }
         };

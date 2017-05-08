@@ -1,9 +1,12 @@
 module Marmot {
     import Event = Laya.Event;
+    export interface BackgroundLibraryDialogSetting extends LibraryDialogSetting {
+
+    }
 
     export class BackgroundLibraryDialog extends LibraryDialog {
-        constructor(libraryDialogSetting: LibraryDialogSetting) {
-            super(libraryDialogSetting);
+        constructor(backgroundLibraryDialogSetting: BackgroundLibraryDialogSetting, libraryDialogItemSetting:LibraryDialogItemSetting) {
+            super(backgroundLibraryDialogSetting, libraryDialogItemSetting);
         }
 
         protected initializeLibrayItems(): void {

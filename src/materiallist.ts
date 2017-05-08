@@ -10,8 +10,6 @@ module Marmot {
         width: number;
         height: number;
         fillStyle: string;
-
-        listY: number;
         vScrollBarSkin: string;
 
         spaceY: number;
@@ -35,6 +33,7 @@ module Marmot {
 
         constructor() {
             super();
+
         }
 
     }
@@ -50,21 +49,25 @@ module Marmot {
         constructor(materialListSetting: MaterialListSetting, materialListItemSetting:MaterialListItemSetting) {
             super();
             this.materialListSetting = materialListSetting;
+            this.materialListItemSetting = materialListItemSetting;
             this.width = materialListSetting.width;
             this.height = materialListSetting.height;
+                        this.spaceY = materialListSetting.spaceY;
+                                    this.repeatY = materialListSetting.repeatY;
+            /*
             this.array = [];
-            this.vScrollBarSkin = this.materialListSetting.vScrollBarSkin;
-            MaterialListItem.WIDTH = this.materialListItemSetting.width;
-            MaterialListItem.HEIGHT = this.materialListItemSetting.height;
-            this.itemRender = MaterialListItem;
+            this.vScrollBarSkin = "";
+            Laya.Log.print(this.vScrollBarSkin);
+            //this.itemRender = MaterialListItem;
             this.selectEnable = true;
-            this.mouseHandler = new Handler(this, this.onMouse);
+            this.selectHandler = new Handler(this, this.onSelect);
             this.renderHandler = new Handler(this, this.updateItem);
             this.spaceY = materialListSetting.spaceY;
             this.repeatX = 1;
             this.repeatY = materialListSetting.repeatY;
             this.startIndex = 0;
             this.curItem = null;
+            */
 
             this.buildContent();
         }
@@ -101,7 +104,7 @@ module Marmot {
         }
 
         protected abstract initializeMaterialItems(): void;
-        protected abstract onMouse(e: Event, index: number): void;
+        protected abstract onSelect(index: number): void;
         protected abstract onPlusBtnClicked(): void;
     }
 

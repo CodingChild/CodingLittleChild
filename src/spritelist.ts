@@ -80,6 +80,7 @@ module Marmot {
                 this.array.push(sprite.costume);
             })
             this.vScrollBarSkin = "";
+            Laya.Log.print(this.vScrollBarSkin);
             this.itemRender = Item;
             this.selectEnable = true;
             this.selectHandler = new Handler(this, this.onSelect);

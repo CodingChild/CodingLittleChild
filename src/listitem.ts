@@ -24,7 +24,8 @@ module Marmot {
         constructor() {
             super();
             this.img = new Image();
-            this.size(LibraryItem.WIDTH, LibraryItem.HEIGHT);
+            if(ListItem.WIDTH != undefined && ListItem.HEIGHT != undefined)
+                this.size(ListItem.WIDTH, ListItem.HEIGHT);
 
             this.addChild(this.img);
         }

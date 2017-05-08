@@ -58,10 +58,12 @@ module Marmot {
             this.sprites.push(this.currentSprite);
             
             this.buildIDE();
+            this.fixIDELayout();
 
         }
 
         public chooseMaterialArea(index: number): void {
+            /*
             if (index == 0) {
                 this.spriteList.visible = true;
             }
@@ -71,6 +73,19 @@ module Marmot {
             else if (index == 2) {
 
             }
+            */
+            
+            if (index == 0) {
+                this.spriteMaterialList.initializeMaterialItems();
+                this.spriteMaterialList.visible = true;
+            }
+            else if (index == 1) {
+
+            }
+            else if (index == 2) {
+
+            }
+            
 
         }
         protected chooseBlock(index: number): void {

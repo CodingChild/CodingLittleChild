@@ -66,6 +66,7 @@ var Marmot;
                 _this.array.push(sprite.costume);
             });
             _this.vScrollBarSkin = "";
+            Laya.Log.print(_this.vScrollBarSkin);
             _this.itemRender = Item;
             _this.selectEnable = true;
             _this.selectHandler = new Handler(_this, _this.onSelect);

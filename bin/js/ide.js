@@ -32,11 +32,24 @@ var Marmot;
             _this.sprites = [];
             _this.sprites.push(_this.currentSprite);
             _this.buildIDE();
+            _this.fixIDELayout();
             return _this;
         }
         IDE.prototype.chooseMaterialArea = function (index) {
+            /*
             if (index == 0) {
                 this.spriteList.visible = true;
+            }
+            else if (index == 1) {
+
+            }
+            else if (index == 2) {
+
+            }
+            */
+            if (index == 0) {
+                this.spriteMaterialList.initializeMaterialItems();
+                this.spriteMaterialList.visible = true;
             }
             else if (index == 1) {
             }
