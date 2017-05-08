@@ -5,8 +5,8 @@ module Marmot {
     import Handler = Laya.Handler;
 
     export class ScriptArea extends Panel {
+        public owner:Sprite;
         private blockFactory: BlockFactory;
-        private owner:Sprite;
         constructor(sprite:Sprite | Stage) {
             super();
             this.blockFactory = new BlockFactory();

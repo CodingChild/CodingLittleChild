@@ -1,20 +1,14 @@
-import LineInput = Marmot.LineInput;
-import ResourceSetting = Marmot.ResourceSetting;
-import SliderSetting = Marmot.SliderSetting;
-import BackgroundSetting = Marmot.BackgroundSetting;
-import InputSettings = Marmot.InputSettings;
-import TextInput = Laya.TextInput;
-import VSlider = Laya.VSlider;
-import Sprite = Laya.Sprite;
-import Texture = Laya.Texture;
-import HitArea = Laya.HitArea;
-import BlockSetting = Marmot.BlockSetting;
-import Point = Laya.Point;
-import Rectangle = Laya.Rectangle;
 module Marmot {
+    import TextInput = Laya.TextInput;
+    import VSlider = Laya.VSlider;
+    import Sprite = Laya.Sprite;
+    import Texture = Laya.Texture;
+    import HitArea = Laya.HitArea;
+    import Point = Laya.Point;
+    import Rectangle = Laya.Rectangle;
     import Event = Laya.Event;
 
-    export abstract class Block extends Laya.Sprite {
+    export abstract class Block extends SyntaxElement {
 
         public static blockSetting: BlockSetting = {
             blockScale: 3,
@@ -26,9 +20,9 @@ module Marmot {
             distanceBetweenBlocks: 1
         }
 
-        public actualWidth: number;
-        public actualHeight: number;
         public attachPoints: Array<AttachHook>;
+
+        public action:string;
 
         protected static minimumHookDistance: number = 50;
 
@@ -48,8 +42,8 @@ module Marmot {
             this.inputSettings = inputSettings;
             this.backgroundSetting = backgroundSetting;
             this.sliderSetting = sliderSetting;
-            this.actualWidth = 50 * Block.blockSetting.blockScale;
-            this.actualHeight = 50 * Block.blockSetting.blockScale;
+            this.width = 50 * Block.blockSetting.blockScale;
+            this.height = 50 * Block.blockSetting.blockScale;
             this.lastAttachTarget = null;
             this.drawBackgroundNormal();
 
@@ -69,6 +63,15 @@ module Marmot {
             this.attachPoints = this.getAttachPoints();
             this.setEventListening();
 
+        }
+
+        public evaluate(){
+
+        }
+
+        public receiver():Marmot.Sprite|Marmot.Stage{
+            let headBlock = this.getTopBlock();
+            return (headBlock.parent.parent as ScriptArea).owner;
         }
 
 

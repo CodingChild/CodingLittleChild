@@ -6,7 +6,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Marmot;
 (function (Marmot) {
     var TextInput = Laya.TextInput;
-    var Sprite = Laya.Sprite;
     var LineInput = (function (_super) {
         __extends(LineInput, _super);
         function LineInput(inputSetting) {
@@ -28,8 +27,16 @@ var Marmot;
             _this.addChild(_this.textinput);
             return _this;
         }
+        LineInput.prototype.evaluate = function () {
+            if (this.textinput.restrict == "0-9") {
+                return Number(this.textinput.text);
+            }
+            else {
+                return this.textinput.text;
+            }
+        };
         return LineInput;
-    }(Sprite));
+    }(Marmot.Argument));
     Marmot.LineInput = LineInput;
 })(Marmot || (Marmot = {}));
 //# sourceMappingURL=textinput.js.map

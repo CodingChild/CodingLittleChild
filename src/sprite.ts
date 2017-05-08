@@ -1,4 +1,6 @@
 module Marmot{
+    import Texture = Laya.Texture;
+    
     export class Sprite extends Laya.Sprite{
         public costume:string;
         public scriptArea:ScriptArea;

@@ -1,15 +1,10 @@
 module Marmot {
     import Event = Laya.Event;
-    import ResourceSetting = Marmot.ResourceSetting;
-    import SliderSetting = Marmot.SliderSetting;
-    import BackgroundSetting = Marmot.BackgroundSetting;
-    import InputSettings = Marmot.InputSettings;
     import TextInput = Laya.TextInput;
     import VSlider = Laya.VSlider;
     import Sprite = Laya.Sprite;
     import Texture = Laya.Texture;
     import HitArea = Laya.HitArea;
-    import BlockSetting = Marmot.BlockSetting;
     import Point = Laya.Point;
     import Rectangle = Laya.Rectangle;
 
@@ -35,22 +30,22 @@ module Marmot {
                     this.removeSelf();
                     target.removeSelf();
                     parent.addChild(target);
-                    target.x = target.actualWidth + Block.blockSetting.distanceBetweenBlocks;
+                    target.x = target.width + Block.blockSetting.distanceBetweenBlocks;
                     target.y = 0;
 
                     let tailBlock = target.getTailBlock();
 
                     tailBlock.addChild(this);
-                    this.x = this.actualWidth + Block.blockSetting.distanceBetweenBlocks;
+                    this.x = this.width + Block.blockSetting.distanceBetweenBlocks;
                     this.y = 0;
                 }
                 else {
                     let tailBlock = target.getTailBlock();
                     let blockSequence = target.getAllBlockChildren();
-                    let totalWidth = target.actualWidth;
+                    let totalWidth = target.width;
                     Point.EMPTY.setTo(this.x, this.y);
                     blockSequence.forEach((block) => {
-                        totalWidth += block.actualWidth;
+                        totalWidth += block.width;
                     })
 
                     Point.EMPTY.setTo(Point.EMPTY.x - totalWidth - Block.blockSetting.distanceBetweenBlocks * (blockSequence.length + 1), Point.EMPTY.y);
@@ -62,7 +57,7 @@ module Marmot {
 
                     this.removeSelf();
                     tailBlock.addChild(this);
-                    this.x = tailBlock.actualWidth + Block.blockSetting.distanceBetweenBlocks;
+                    this.x = tailBlock.width + Block.blockSetting.distanceBetweenBlocks;
                     this.y = 0;
 
                 }
@@ -71,7 +66,7 @@ module Marmot {
                 let child = this.getNextBlockChild();
                 target.removeSelf();
                 this.addChild(target);
-                target.x = this.actualWidth + Block.blockSetting.distanceBetweenBlocks;
+                target.x = this.width + Block.blockSetting.distanceBetweenBlocks;
                 target.y = 0;
                 if (child != null) {
                     target.addChild(child);
@@ -149,9 +144,9 @@ module Marmot {
             }
             else if (this.attachPoints[1].attachCoordinate.x == attachPoint.x && this.attachPoints[1].attachCoordinate.y == attachPoint.y) {
                 this.graphics.drawLine(
-                    this.actualWidth,
+                    this.width,
                     15 * Block.blockSetting.blockScale,
-                    this.actualWidth + 5 * Block.blockSetting.blockScale,
+                    this.width + 5 * Block.blockSetting.blockScale,
                     15 * Block.blockSetting.blockScale,
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
@@ -160,20 +155,20 @@ module Marmot {
                     0,
                     0,
                     [
-                        this.actualWidth + 5 * Block.blockSetting.blockScale,
+                        this.width + 5 * Block.blockSetting.blockScale,
                         15 * Block.blockSetting.blockScale,
-                        this.actualWidth + 7 * Block.blockSetting.blockScale,
+                        this.width + 7 * Block.blockSetting.blockScale,
                         15 * Block.blockSetting.blockScale,
-                        this.actualWidth + 7 * Block.blockSetting.blockScale,
+                        this.width + 7 * Block.blockSetting.blockScale,
                         17 * Block.blockSetting.blockScale
                     ],
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
 
                 this.graphics.drawLine(
-                    this.actualWidth + 7 * Block.blockSetting.blockScale,
+                    this.width + 7 * Block.blockSetting.blockScale,
                     17 * Block.blockSetting.blockScale,
-                    this.actualWidth + 7 * Block.blockSetting.blockScale,
+                    this.width + 7 * Block.blockSetting.blockScale,
                     33 * Block.blockSetting.blockScale,
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
@@ -182,20 +177,20 @@ module Marmot {
                     0,
                     0,
                     [
-                        this.actualWidth + 7 * Block.blockSetting.blockScale,
+                        this.width + 7 * Block.blockSetting.blockScale,
                         33 * Block.blockSetting.blockScale,
-                        this.actualWidth + 7 * Block.blockSetting.blockScale,
+                        this.width + 7 * Block.blockSetting.blockScale,
                         35 * Block.blockSetting.blockScale,
-                        this.actualWidth + 5 * Block.blockSetting.blockScale,
+                        this.width + 5 * Block.blockSetting.blockScale,
                         35 * Block.blockSetting.blockScale,
                     ],
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
 
                 this.graphics.drawLine(
-                    this.actualWidth + 5 * Block.blockSetting.blockScale,
+                    this.width + 5 * Block.blockSetting.blockScale,
                     35 * Block.blockSetting.blockScale,
-                    this.actualWidth,
+                    this.width,
                     35 * Block.blockSetting.blockScale,
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
@@ -312,7 +307,7 @@ module Marmot {
                     isHook: false
                 },
                 {
-                    attachCoordinate: new Point(this.actualWidth + 7 * Block.blockSetting.blockScale, 25 * Block.blockSetting.blockScale),
+                    attachCoordinate: new Point(this.width + 7 * Block.blockSetting.blockScale, 25 * Block.blockSetting.blockScale),
                     isHook: true
                 }
             ]

@@ -3,7 +3,7 @@ module Marmot {
     import Sprite = Laya.Sprite;
     import Event = Laya.Event;
 
-    export class LineInput extends Sprite{
+    export class LineInput extends Argument{
         public textinput: TextInput;
 
         constructor(inputSetting: InputSettings) {
@@ -26,6 +26,15 @@ module Marmot {
             this.name = inputSetting.resourceSetting.name;
             this.addChild(this.textinput);
             
+        }
+
+        public evaluate():number|string{
+            if(this.textinput.restrict == "0-9"){
+                return  Number(this.textinput.text);
+            }
+            else{
+                return this.textinput.text;
+            }
         }
 
     }

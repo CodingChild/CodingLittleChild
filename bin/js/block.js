@@ -3,16 +3,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var LineInput = Marmot.LineInput;
-var TextInput = Laya.TextInput;
-var VSlider = Laya.VSlider;
-var Sprite = Laya.Sprite;
-var Texture = Laya.Texture;
-var HitArea = Laya.HitArea;
-var Point = Laya.Point;
-var Rectangle = Laya.Rectangle;
 var Marmot;
 (function (Marmot) {
+    var VSlider = Laya.VSlider;
+    var HitArea = Laya.HitArea;
+    var Rectangle = Laya.Rectangle;
     var Event = Laya.Event;
     var Block = (function (_super) {
         __extends(Block, _super);
@@ -22,8 +17,8 @@ var Marmot;
             _this.inputSettings = inputSettings;
             _this.backgroundSetting = backgroundSetting;
             _this.sliderSetting = sliderSetting;
-            _this.actualWidth = 50 * Block.blockSetting.blockScale;
-            _this.actualHeight = 50 * Block.blockSetting.blockScale;
+            _this.width = 50 * Block.blockSetting.blockScale;
+            _this.height = 50 * Block.blockSetting.blockScale;
             _this.lastAttachTarget = null;
             _this.drawBackgroundNormal();
             _this.drawHitArea();
@@ -40,6 +35,8 @@ var Marmot;
             _this.setEventListening();
             return _this;
         }
+        Block.prototype.evaluate = function () {
+        };
         /**
         *返回所有子孙块节点。
         */
@@ -198,7 +195,7 @@ var Marmot;
             this.on(Event.MOUSE_OUT, this, this.onMouseOut);
         };
         return Block;
-    }(Laya.Sprite));
+    }(Marmot.SyntaxElement));
     Block.blockSetting = {
         blockScale: 3,
         blockFillStyle: "#1976D2",

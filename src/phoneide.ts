@@ -4,6 +4,7 @@ module Marmot {
     import Event = Laya.Event;
     import List = Laya.List;
     import Box = Laya.Box;
+    import Texture = Laya.Texture;
 
     export class PhoneIDE extends IDE {
 
@@ -73,11 +74,11 @@ module Marmot {
             let spriteMaterialListItemSetting: SpriteMaterialListItemSetting;
 
             spriteMaterialListSetting = {
-                width: 350,
+                width: 310,
                 height: 400,
                 fillStyle: "#a8b4f1",
                 vScrollBarSkin: "",
-                spaceY: 40,
+                spaceY: 20,
                 repeatY: 3,
                 plusButtonWidth: 50,
                 plusButtonHeight: 50,
@@ -192,11 +193,11 @@ module Marmot {
             let backgroundMaterialListItemSetting: BackgroundMaterialListItemSetting;
 
             backgroundMaterialListSetting = {
-                width: 350,
+                width: 310,
                 height: 400,
                 fillStyle: "#a8b4f1",
                 vScrollBarSkin: "",
-                spaceY: 40,
+                spaceY: 10,
                 repeatY: 3,
                 plusButtonWidth: 50,
                 plusButtonHeight: 50,
@@ -212,10 +213,10 @@ module Marmot {
                 height: 100,
                 backgroundNormal: "#ffffff",
                 backgroundHighlight: "#979494",
-                imageX: 0,
-                imageY: 0,
-                imageWidth: 100,
-                imageHeight: 100
+                imageX: 20,
+                imageY: 10,
+                imageWidth: 270,
+                imageHeight: 80
             }
 
             let backgroundMaterialList = new BackgroundMaterialList(backgroundMaterialListSetting, backgroundMaterialListItemSetting);
