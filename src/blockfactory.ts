@@ -23,11 +23,11 @@ module Marmot {
         }
         private sliderSetting1: SliderSetting = {
             name: "vslider",
-            path: "comp/vslider.png",
-            x: Block.blockSetting.blockScale * 25,
-            y: Block.blockSetting.blockScale * 50,
+            path: "materials/hslider_1.png",
+            x: 0,
+            y: Block.blockSetting.blockScale * 50 + 30,
             width: Block.blockSetting.blockScale * 50,
-            height: Block.blockSetting.blockScale * 50,
+            height: 0,
             min: 0,
             max: 100,
             initialValue: 50,
@@ -109,6 +109,14 @@ module Marmot {
             ]
         }
         private textInputSetting1: TextInputSetting = {
+            sizeGrid: "0,10,0,10",
+            font: "Arial",
+            fontSize: 30,
+            bold: true,
+            color: "#000000",
+            restrict: "-0-9"
+        }
+        private textInputSetting2: TextInputSetting = {
             sizeGrid: "0,10,0,10",
             font: "Arial",
             fontSize: 30,
@@ -206,7 +214,7 @@ module Marmot {
                 inputSettings.push(
                     {
                         resourceSetting: this.inputSetting1,
-                        textInputSetting: this.textInputSetting1
+                        textInputSetting: this.textInputSetting2
                     }
                 )
                 sliderSetting = this.sliderSetting1;

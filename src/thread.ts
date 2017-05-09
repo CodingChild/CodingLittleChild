@@ -1,11 +1,8 @@
-import HeadBlock = Marmot.HeadBlock;
-import Context = Marmot.Context;
-//import Block = Marmot.Block;
 module Marmot{
     export class Thread{
 
         public timeout: number;
-        private headBlock: HeadBlock;
+        private headBlock: HeadCommandBlock;
         private readyToYield: boolean;//boolean indicating whether to yield control to another process
         private readyToTerminate: boolean;//boolean indicating whether the stop method has been called
         private isDead: boolean;//????????
@@ -14,7 +11,7 @@ module Marmot{
         private lastYield: number;//?????????
         private frameCount: number;
 
-        constructor(headBlock: HeadBlock = null){
+        constructor(headBlock: HeadCommandBlock = null){
             this.headBlock = headBlock;
             this.readyToYield = false;
             this.readyToTerminate = false;
@@ -36,10 +33,10 @@ module Marmot{
 
         public run(){
             this.readyToYield = false;
+            this.lastYield = Date.now();
             while(!this.readyToYield && this.context && (Date.now() - this.lastYield < this.timeout)){
                 this.evaluateContext();
             }
-            this.lastYield = Date.now();
             if(this.readyToTerminate){
                 while(this.context){
                     this.popContext();
@@ -72,7 +69,7 @@ module Marmot{
 
         private evaluateBlock(block: Block, argCount: number){
             let action = block.action;
-            let rcvr = this.context.receiver || this.headBlock.receiver();
+            let rcvr:Sprite | StagePanel | Thread = this.context.receiver || this.headBlock.receiver();
             let inputs = this.context.inputs;
 
             if(argCount > inputs.length){
@@ -133,7 +130,7 @@ module Marmot{
 
         }
 
-        public doWait(secs: number){
+        public wait(secs: number){
             if(!this.context.startTime){
                 this.context.startTime = Date.now();
             }

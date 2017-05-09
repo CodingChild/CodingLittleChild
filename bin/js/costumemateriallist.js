@@ -29,7 +29,7 @@ var Marmot;
             var ide = Marmot.IDE.getIDE();
             this.array = [];
             ide.currentSprite.costumes.forEach(function (costume) {
-                _this.array.push(costume);
+                _this.array.push(costume.url);
             });
             this.refresh();
         };

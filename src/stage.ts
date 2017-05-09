@@ -1,5 +1,5 @@
 
-module Marmot{
+module Marmot {
     import Browser = Laya.Browser;
     import Button = Laya.Button;
     import Event = Laya.Event;
@@ -8,70 +8,90 @@ module Marmot{
     import Handler = Laya.Handler;
     import Texture = Laya.Texture;
 
-    export interface StagePanelSetting{
+    export interface StagePanelSetting {
         normalWidth: number;
         normalHeight: number;//normalScale = 1
         fullScreenScale: number;//>1
     }
 
-    export class StagePanel extends Laya.Panel{
+    export class StagePanel extends Laya.Panel {
         public threadManager: ThreadManager;
         public variables;
-        public scripts;
-        public costumes: Array<Texture>;
-        public costume: Texture;
+        public scriptArea;
+        public costumes: Array<Costume>;
+        public costume: Costume;
         public sounds;
         public version;
         public stagePanelSetting: StagePanelSetting;
-        
 
-        constructor(stagePanelSetting: StagePanelSetting){
+
+        constructor(stagePanelSetting: StagePanelSetting) {
             super();
+            this.width = stagePanelSetting.normalWidth;
+            this.height = stagePanelSetting.normalHeight;
             this.stagePanelSetting = stagePanelSetting;
-            //this.scripts = new ScriptArea(this);
-            this.costumes= [];
+            this.scriptArea = new ScriptArea(this);
+            this.costumes = [];
             this.costume = null;
             this.sounds = [];
+            this.threadManager = new ThreadManager();
             this.graphics.drawRect(0, 0, this.stagePanelSetting.normalWidth, this.stagePanelSetting.normalHeight, "#ffffff");
         }
 
-        public toggleFullScreen(){
+        public toggleFullScreen() {
             this.setScale(this.stagePanelSetting.fullScreenScale);
+            this.width = this.stagePanelSetting.normalWidth * this.stagePanelSetting.fullScreenScale;
+            this.height = this.stagePanelSetting.normalHeight * this.stagePanelSetting.fullScreenScale;
         }
 
-        public toggleNormalScreen(){
+        public toggleNormalScreen() {
             this.setScale(1);
+            this.width = this.stagePanelSetting.normalWidth;
+            this.height = this.stagePanelSetting.normalHeight;
         }
-        
-        public setScale(percentage: number){
+
+        public setScale(percentage: number) {
             this.scale(percentage, percentage);
         }
-        
-        public addCostume(costume){
-            let t: Texture = Laya.loader.getRes(costume);
-            this.costumes.push(t);
-            if(this.costumes.length == 1){
+
+        public addCostume(url: string) {
+            let costume = new Costume(url);
+            this.costumes.push(costume);
+            if (this.costumes.length == 1) {
                 this.wearCostume(0);
             }
         }
 
-        public wearCostume(index: number){
+        public wearCostume(index: number) {
             this.costume = this.costumes[index];
-            this.graphics.drawTexture(this.costume, this.width, this.height);
+            this.graphics.drawTexture(this.costume.texture, 0, 0, this.width, this.height);
         }
 
-        public firePlayButton(){
+        public firePlayButton() {
             let ide = IDE.getIDE();
             let threadManager = this.threadManager;
-            ide.sprites.concat(this).forEach(function(sprite){
-                let headBlocks = sprite.getAllHeadBlocksFor('receiveGo');
-                headBlocks.forEach(function(script){
+            let objects: any[] = ide.sprites;
+            objects = objects.concat(this);
+            objects.forEach(function (object) {
+                let headBlocks = object.getAllHeadBlocksFor('play');
+                headBlocks.forEach(function (script) {
                     threadManager.startProcess(script);
                 })
             })
-            while(this.threadManager.threads){
-                Laya.timer.frameLoop(1, this, this.threadManager.runThread);
+            if (this.threadManager.threads.length > 0) {
+                Laya.timer.frameLoop(1, this.threadManager, this.threadManager.runThread);
             }
+        }
+
+        public getAllHeadBlocksFor(filter) {
+            if (typeof filter == 'number')
+                filter.toString();
+            return this.scriptArea.content._childs.filter(function (headBlock) {
+                if (headBlock.action == filter) {
+                    return true;
+                }
+                return false;
+            })
         }
     }
 }

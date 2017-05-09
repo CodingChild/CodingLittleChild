@@ -19,11 +19,11 @@ var Marmot;
                     this.removeSelf();
                     target.removeSelf();
                     parent_1.addChild(target);
-                    target.x = target.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    target.x = parent_1.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
                     target.y = 0;
                     var tailBlock = target.getTailBlock();
                     tailBlock.addChild(this);
-                    this.x = this.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    this.x = tailBlock.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
                     this.y = 0;
                 }
                 else {

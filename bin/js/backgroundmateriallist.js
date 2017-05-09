@@ -31,7 +31,7 @@ var Marmot;
             this.array = [];
             var ide = Marmot.IDE.getIDE();
             ide.stageArea.costumes.forEach(function (costume) {
-                _this.array.push(costume);
+                _this.array.push(costume.url);
             });
             this.refresh();
         };
@@ -44,6 +44,7 @@ var Marmot;
             this.selection.setBackground(true, backgroundMaterialListItemSetting.backgroundHighlight, backgroundMaterialListItemSetting.backgroundNormal);
             this.curItem = this.selection;
             ide.stageArea.costume = ide.stageArea.costumes[index];
+            ide.stageArea.wearCostume(index);
             var scriptAreaIndex = ide.getChildIndex(ide.scriptArea);
             ide.removeChildAt(scriptAreaIndex);
             ide.addChildAt(ide.stageArea.scriptArea, scriptAreaIndex);

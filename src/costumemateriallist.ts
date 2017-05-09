@@ -35,7 +35,7 @@ module Marmot {
             let ide: IDE = IDE.getIDE();
             this.array = [];
             ide.currentSprite.costumes.forEach((costume) => {
-                this.array.push(costume);
+                this.array.push(costume.url);
             })
             this.refresh();
         }

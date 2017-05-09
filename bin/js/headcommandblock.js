@@ -11,6 +11,9 @@ var Marmot;
         function HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, sliderSetting) {
             return _super.call(this, textureSettings, inputSettings, backgroundSetting, sliderSetting) || this;
         }
+        HeadCommandBlock.prototype.blockSequence = function () {
+            return this.getAllBlockChildren();
+        };
         HeadCommandBlock.prototype.attachTarget = function (block, attachPoint) {
             var target = block;
             if (this.attachPoints[0].attachCoordinate.x == attachPoint.x && this.attachPoints[0].attachCoordinate.y == attachPoint.y) {

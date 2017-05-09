@@ -14,8 +14,10 @@ var Marmot;
             _this.blockFactory = new Marmot.BlockFactory();
             _this.owner = sprite;
             _this.name = "scriptArea";
-            _this.size(Marmot.IDE.WIDTH - 80, Marmot.IDE.HEIGHT - 80);
-            _this.pos(80, 80);
+            _this.hScrollBarSkin = "comp/hscroll.png";
+            //this.vScrollBarSkin = "comp/vscroll.png";
+            _this.size(Marmot.IDE.WIDTH - 160, Marmot.IDE.HEIGHT - 220);
+            _this.pos(100, 120);
             _this.on(Event.MOUSE_DOWN, _this, _this.onMouseDown);
             return _this;
         }

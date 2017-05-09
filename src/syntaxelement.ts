@@ -1,7 +1,8 @@
 module Marmot{
 
     export abstract class SyntaxElement extends Laya.Sprite{
-
+        protected myWidth:number;
+        protected myHeight:number;
         private cachedInputs:Array<SyntaxElement>;
         constructor(){
             super();

@@ -13,7 +13,7 @@ var Marmot;
         BackgroundLibraryDialog.prototype.initializeLibrayItems = function () {
             this.list.array = [
                 "materials/bg_2.jpg",
-                "materials/bg_2.jpg",
+                "res/pics/bg_dadishu.jpg",
                 "materials/bg_2.jpg",
                 "materials/bg_2.jpg",
                 "materials/bg_2.jpg",
@@ -68,7 +68,6 @@ var Marmot;
                 var ide = Marmot.IDE.getIDE();
                 var item = this.list.selectedItem;
                 ide.stageArea.addCostume(item);
-                ide.stageArea.costumes.push(item);
                 ide.backgroundMaterialList.initializeMaterialItems();
             }
         };

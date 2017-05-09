@@ -69,15 +69,14 @@ var Marmot;
                 if (ide.spriteMaterialList.curClickedBtn == "addCostume") {
                     var item = this.list.selectedItem;
                     ide.currentSprite.addCostume(item);
-                    ide.currentSprite.costumes.push(item);
                     ide.spriteMaterialList.costumeMaterialList.initializeMaterialItems();
                 }
                 else if (ide.spriteMaterialList.curClickedBtn == "addSprite") {
                     var newSprite = new Marmot.Sprite();
                     newSprite.addCostume(this.list.selectedItem);
-                    newSprite.costume = this.list.selectedItem;
-                    newSprite.costumes = [newSprite.costume];
                     ide.sprites.push(newSprite);
+                    ide.stageArea.addChild(newSprite);
+                    newSprite.pos(ide.stageArea.width / 2, ide.stageArea.height / 2);
                     ide.spriteMaterialList.initializeMaterialItems();
                 }
             }

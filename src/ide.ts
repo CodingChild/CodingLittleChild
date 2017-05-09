@@ -4,7 +4,7 @@ module Marmot {
     import Tab = Laya.Tab;
     import List = Laya.List;
     import Sprite = Marmot.Sprite;
-    import Stage = Marmot.Stage;
+    import Stage = Marmot.StagePanel;
     import Tween = Laya.Tween;
     import Box = Laya.Box;
 
@@ -52,8 +52,6 @@ module Marmot {
 
             this.currentSprite = new Marmot.Sprite();
             this.currentSprite.addCostume("materials/sp_marmot.png");
-            this.currentSprite.costume = "materials/sp_marmot.png";
-            this.currentSprite.costumes = [this.currentSprite.costume];
 
             this.sprites = [];
             this.sprites.push(this.currentSprite);
@@ -72,8 +70,6 @@ module Marmot {
             }
             else if (index == 1) {
                 this.spriteMaterialList.visible = false;
-                this.stageArea.costume = "materials/bg_2.jpg";
-                this.stageArea.costumes = ["materials/bg_2.jpg"];
                 this.backgroundMaterialList.initializeMaterialItems();
                 this.backgroundMaterialList.visible = true;
             }
@@ -121,12 +117,12 @@ module Marmot {
         }
         protected pressStart(btn_play: Button): void {
             if (this.isPlayed == false) {
-                this.stageArea.fireGreenFlagEvent();
+                this.stageArea.firePlayButton();
                 btn_play.skin = "materials/btn_stop.png";
                 this.isPlayed = true;
             }
             else {
-                this.stageArea.fireStopAllEvent();
+                //this.stageArea.fireStopAllEvent();
                 btn_play.skin = "materials/btn_play.png";
                 this.isPlayed = false;
             }
@@ -136,21 +132,23 @@ module Marmot {
             if (this.isFullScreen == false) {
                 btn_fullscreen.skin = "materials/btn_normalscreen.png";
                 this.stageArea.toggleFullScreen();
+                this.stageArea.pos(this.width / 2 - this.stageArea.width / 2, this.height / 2 - this.stageArea.height / 2);
                 this.isFullScreen = true;
             }
             else {
                 btn_fullscreen.skin = "materials/btn_fullscreen.png";
                 this.stageArea.toggleNormalScreen();
+                this.stageArea.pos(this.width - 650, 120);
                 this.isFullScreen = false;
             }
         }
         protected toggleCoordinateSystem(btn_coordinate: Button): void {
             if (this.isCoordinateSystemVisible == false) {
-                this.stageArea.toggleShowCoordinate(true);
+                //this.stageArea.toggleShowCoordinate(true);
                 this.isCoordinateSystemVisible = true;
             }
             else {
-                this.stageArea.toggleShowCoordinate(false);
+                //this.stageArea.toggleShowCoordinate(false);
                 this.isCoordinateSystemVisible = false;
             }
         }

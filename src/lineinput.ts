@@ -3,12 +3,14 @@ module Marmot {
     import Sprite = Laya.Sprite;
     import Event = Laya.Event;
 
-    export class LineInput extends Argument{
+    export class LineInput extends Argument {
         public textinput: TextInput;
+        public inputSetting:InputSettings;
 
         constructor(inputSetting: InputSettings) {
             super();
             this.textinput = new TextInput();
+            this.inputSetting = inputSetting;
             this.textinput.skin = inputSetting.resourceSetting.path;
             this.textinput.name = inputSetting.resourceSetting.name;
             this.textinput.sizeGrid = inputSetting.textInputSetting.sizeGrid;
@@ -25,12 +27,20 @@ module Marmot {
                 inputSetting.resourceSetting.height * Block.blockSetting.blockScale);
             this.name = inputSetting.resourceSetting.name;
             this.addChild(this.textinput);
-            
+
         }
 
-        public evaluate():number|string{
-            if(this.textinput.restrict == "0-9"){
-                return  Number(this.textinput.text);
+        public evaluate(): number | string {
+            if (this.inputSetting.textInputSetting.restrict == "-0-9") {
+                return Number(this.textinput.text);
+            }
+            else if(this.inputSetting.textInputSetting.restrict == "0-9"){
+                let sliderSetting = (this.parent as Block).sliderSetting;
+                if (sliderSetting != null) {
+                    if (sliderSetting.inputName == this.name) {
+                        return Number(this.textinput.text) / sliderSetting.max * 2;
+                    }
+                }
             }
             else{
                 return this.textinput.text;

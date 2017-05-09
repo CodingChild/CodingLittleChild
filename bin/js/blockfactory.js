@@ -14,11 +14,11 @@ var Marmot;
             };
             this.sliderSetting1 = {
                 name: "vslider",
-                path: "comp/vslider.png",
-                x: Marmot.Block.blockSetting.blockScale * 25,
-                y: Marmot.Block.blockSetting.blockScale * 50,
+                path: "materials/hslider_1.png",
+                x: 0,
+                y: Marmot.Block.blockSetting.blockScale * 50 + 30,
                 width: Marmot.Block.blockSetting.blockScale * 50,
-                height: Marmot.Block.blockSetting.blockScale * 50,
+                height: 0,
                 min: 0,
                 max: 100,
                 initialValue: 50,
@@ -104,6 +104,14 @@ var Marmot;
                 fontSize: 30,
                 bold: true,
                 color: "#000000",
+                restrict: "-0-9"
+            };
+            this.textInputSetting2 = {
+                sizeGrid: "0,10,0,10",
+                font: "Arial",
+                fontSize: 30,
+                bold: true,
+                color: "#000000",
                 restrict: "0-9"
             };
         }
@@ -176,7 +184,7 @@ var Marmot;
                 });
                 inputSettings.push({
                     resourceSetting: this.inputSetting1,
-                    textInputSetting: this.textInputSetting1
+                    textInputSetting: this.textInputSetting2
                 });
                 sliderSetting = this.sliderSetting1;
                 var blockSize = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, sliderSetting);

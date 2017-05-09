@@ -50,6 +50,7 @@ module Marmot {
             btn_fullscreen.width = 100;
             btn_fullscreen.height = 100;
             btn_fullscreen.clickHandler = Handler.create(this, this.toggleFullScreen, [btn_fullscreen], false);
+            btn_fullscreen.name = "btn_fullscreen";
             box.addChild(btn_fullscreen);
 
             let btn_coordinate: Button = new Button("materials/btn_coordinate.png");
@@ -58,6 +59,7 @@ module Marmot {
             btn_coordinate.width = 100;
             btn_coordinate.height = 100;
             btn_coordinate.clickHandler = Handler.create(this, this.toggleCoordinateSystem, [btn_coordinate], false);
+            btn_coordinate.name = "btn_coordinate";
             box.addChild(btn_coordinate);
 
             let btn_play: Button = new Button("materials/btn_play.png");
@@ -66,6 +68,7 @@ module Marmot {
             btn_play.width = 100;
             btn_play.height = 100;
             btn_play.clickHandler = Handler.create(this, this.pressStart, [btn_play], false);
+            btn_play.name = "btn_play";
             box.addChild(btn_play);
         }
         protected createMaterialArea(): void {
@@ -83,7 +86,7 @@ module Marmot {
                 plusButtonWidth: 50,
                 plusButtonHeight: 50,
                 plusButtonStateNum: 1,
-                plusButtonX: 150,
+                plusButtonX: 130,
                 plusButtonY: 330,
                 plusButtonSkin: "materials/plus.png",
                 plusButtonName: "addSprite"
@@ -202,7 +205,7 @@ module Marmot {
                 plusButtonWidth: 50,
                 plusButtonHeight: 50,
                 plusButtonStateNum: 1,
-                plusButtonX: 150,
+                plusButtonX: 130,
                 plusButtonY: 330,
                 plusButtonSkin: "materials/plus.png",
                 plusButtonName: "addBackground"
@@ -222,7 +225,7 @@ module Marmot {
             let backgroundMaterialList = new BackgroundMaterialList(backgroundMaterialListSetting, backgroundMaterialListItemSetting);
             this.addChild(backgroundMaterialList);
             this.backgroundMaterialList = backgroundMaterialList;
-            backgroundMaterialList.visible = false; 
+            backgroundMaterialList.visible = false;
 
             let backgroundLibraryDialogSetting: BackgroundLibraryDialogSetting;
             let libraryDialogItemSettingForBackground: LibraryDialogItemSetting;
@@ -264,8 +267,8 @@ module Marmot {
             let backgroundLibraryDialog = new BackgroundLibraryDialog(spriteLibraryDialogSetting, libraryDialogItemSettingForBackground);
             backgroundMaterialList.addChild(backgroundLibraryDialog);
             backgroundMaterialList.backgroundLibraryDialog = backgroundLibraryDialog;
-            backgroundLibraryDialog.close(Dialog.CANCEL);           
-            
+            backgroundLibraryDialog.close(Dialog.CANCEL);
+
         }
         protected createMaterialCategory(): void {
             let materialCategory: MaterialCategory = new MaterialCategory();
@@ -351,10 +354,15 @@ module Marmot {
         }
 
         protected createStageArea(): void {
-            let stageArea = new Marmot.Stage(600, 400);
+            let setting: StagePanelSetting = {
+                normalWidth: 600,
+                normalHeight: 400,
+                fullScreenScale: 2
+            }
+
+            let stageArea = new Marmot.StagePanel(setting);
             stageArea.pos(this.width, 120);
-            let texture: Texture = Laya.loader.getRes("res/pics/bg_1.png");
-            stageArea.graphics.drawTexture(texture, 0, 0, 600, 400);
+            
             this.stageArea = stageArea;
             this.addChild(stageArea);
             stageArea.addChild(this.currentSprite);

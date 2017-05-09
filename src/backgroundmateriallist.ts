@@ -42,7 +42,7 @@ module Marmot {
             this.array = [];
             let ide: IDE = IDE.getIDE();
             ide.stageArea.costumes.forEach((costume) => {
-                this.array.push(costume);
+                this.array.push(costume.url);
             })
             this.refresh();
 
@@ -62,6 +62,7 @@ module Marmot {
                 backgroundMaterialListItemSetting.backgroundNormal);
             this.curItem = this.selection as BackgroundMaterialListItem;
             ide.stageArea.costume = ide.stageArea.costumes[index];
+            ide.stageArea.wearCostume(index);
 
             let scriptAreaIndex: number = ide.getChildIndex(ide.scriptArea);
             ide.removeChildAt(scriptAreaIndex);

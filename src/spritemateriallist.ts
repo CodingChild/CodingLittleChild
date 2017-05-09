@@ -91,7 +91,7 @@ module Marmot {
             this.array = [];
             let ide: IDE = IDE.getIDE();
             ide.sprites.forEach((sprite) => {
-                this.array.push(sprite.costume);
+                this.array.push(sprite.costume.url);
             })
             this.refresh();
 

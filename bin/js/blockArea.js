@@ -67,7 +67,6 @@ var Marmot;
         BlockArea.prototype.getBlockForSelector = function (blockName) {
             var block = this.blockFactory.create(blockName);
             block.action = blockName;
-            Laya.Log.print(block.inputs().toString());
             var ide = Marmot.IDE.getIDE();
             ide.scriptArea.addChild(block);
             block.pos(ide.scriptArea.x, ide.scriptArea.y);

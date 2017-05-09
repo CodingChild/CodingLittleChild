@@ -28,7 +28,7 @@ var Marmot;
             return _this;
         }
         LineInput.prototype.evaluate = function () {
-            if (this.textinput.restrict == "0-9") {
+            if (this.textinput.restrict == "-0-9") {
                 return Number(this.textinput.text);
             }
             else {

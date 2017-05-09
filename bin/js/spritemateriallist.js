@@ -52,7 +52,7 @@ var Marmot;
             this.array = [];
             var ide = Marmot.IDE.getIDE();
             ide.sprites.forEach(function (sprite) {
-                _this.array.push(sprite.costume);
+                _this.array.push(sprite.costume.url);
             });
             this.refresh();
         };

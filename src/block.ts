@@ -1,6 +1,7 @@
 module Marmot {
     import TextInput = Laya.TextInput;
     import VSlider = Laya.VSlider;
+    import HSlider = Laya.HSlider;
     import Sprite = Laya.Sprite;
     import Texture = Laya.Texture;
     import HitArea = Laya.HitArea;
@@ -29,7 +30,7 @@ module Marmot {
         protected textureSettings: Array<ResourceSetting>;
         protected inputSettings: Array<InputSettings>;
         protected backgroundSetting: BackgroundSetting;
-        protected sliderSetting: SliderSetting;
+        public sliderSetting: SliderSetting;
         protected lastAttachTarget: AttachTarget;
 
 
@@ -44,6 +45,8 @@ module Marmot {
             this.sliderSetting = sliderSetting;
             this.width = 50 * Block.blockSetting.blockScale;
             this.height = 50 * Block.blockSetting.blockScale;
+            this.myWidth = this.width;
+            this.myHeight = this.height;
             this.lastAttachTarget = null;
             this.drawBackgroundNormal();
 
@@ -69,7 +72,7 @@ module Marmot {
 
         }
 
-        public receiver():Marmot.Sprite|Marmot.Stage{
+        public receiver():Marmot.Sprite|Marmot.StagePanel{
             let headBlock = this.getTopBlock();
             return (headBlock.parent.parent as ScriptArea).owner;
         }
@@ -182,11 +185,14 @@ module Marmot {
             this.updateLayer();
             if (this.hitTestPoint(e.stageX, e.stageY)) {
                 this.addHighlight(this);
+                /*
                 let ide = IDE.getIDE();
                 let scriptAreaHeight = ide.scriptArea.height;
                 let scriptAreaWidth = ide.scriptArea.width;
                 Rectangle.TEMP.setTo(20, 20, scriptAreaWidth - 50 * Block.blockSetting.blockScale, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
                 this.startDrag(Rectangle.TEMP, true, 100);
+                */
+                this.startDrag();
 
             }
         }
@@ -232,11 +238,13 @@ module Marmot {
 
         protected drawSlider(): void {
 
-            let vs: VSlider = new VSlider();
+            let vs: HSlider = new HSlider();
 
             vs.skin = this.sliderSetting.path;
-            vs.height = this.sliderSetting.height;
+            vs.width = this.sliderSetting.width;
+
             vs.pos(this.sliderSetting.x, this.sliderSetting.y);
+            vs.sizeGrid =  "0,10,0,10";
             vs.min = this.sliderSetting.min;
             vs.max = this.sliderSetting.max;
             vs.value = this.sliderSetting.initialValue;

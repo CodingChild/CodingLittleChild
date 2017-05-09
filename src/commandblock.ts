@@ -30,13 +30,13 @@ module Marmot {
                     this.removeSelf();
                     target.removeSelf();
                     parent.addChild(target);
-                    target.x = target.width + Block.blockSetting.distanceBetweenBlocks;
+                    target.x = parent.width + Block.blockSetting.distanceBetweenBlocks;
                     target.y = 0;
 
                     let tailBlock = target.getTailBlock();
 
                     tailBlock.addChild(this);
-                    this.x = this.width + Block.blockSetting.distanceBetweenBlocks;
+                    this.x = tailBlock.width + Block.blockSetting.distanceBetweenBlocks;
                     this.y = 0;
                 }
                 else {

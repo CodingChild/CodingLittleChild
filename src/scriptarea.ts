@@ -5,15 +5,17 @@ module Marmot {
     import Handler = Laya.Handler;
 
     export class ScriptArea extends Panel {
-        public owner:Sprite;
+        public owner:Sprite | StagePanel;
         private blockFactory: BlockFactory;
-        constructor(sprite:Sprite | Stage) {
+        constructor(sprite:Sprite | StagePanel) {
             super();
             this.blockFactory = new BlockFactory();
             this.owner = sprite;
             this.name = "scriptArea";
-            this.size(IDE.WIDTH - 80, IDE.HEIGHT - 80);
-            this.pos(80, 80);
+            this.hScrollBarSkin = "comp/hscroll.png";
+            //this.vScrollBarSkin = "comp/vscroll.png";
+            this.size(IDE.WIDTH - 160, IDE.HEIGHT - 220);
+            this.pos(100, 120);
 
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
         }

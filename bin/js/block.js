@@ -5,9 +5,8 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Marmot;
 (function (Marmot) {
-    var VSlider = Laya.VSlider;
+    var HSlider = Laya.HSlider;
     var HitArea = Laya.HitArea;
-    var Rectangle = Laya.Rectangle;
     var Event = Laya.Event;
     var Block = (function (_super) {
         __extends(Block, _super);
@@ -36,6 +35,10 @@ var Marmot;
             return _this;
         }
         Block.prototype.evaluate = function () {
+        };
+        Block.prototype.receiver = function () {
+            var headBlock = this.getTopBlock();
+            return headBlock.parent.parent.owner;
         };
         /**
         *返回所有子孙块节点。
@@ -123,11 +126,14 @@ var Marmot;
             this.updateLayer();
             if (this.hitTestPoint(e.stageX, e.stageY)) {
                 this.addHighlight(this);
-                var ide = Marmot.IDE.getIDE();
-                var scriptAreaHeight = ide.scriptArea.height;
-                var scriptAreaWidth = ide.scriptArea.width;
+                /*
+                let ide = IDE.getIDE();
+                let scriptAreaHeight = ide.scriptArea.height;
+                let scriptAreaWidth = ide.scriptArea.width;
                 Rectangle.TEMP.setTo(20, 20, scriptAreaWidth - 50 * Block.blockSetting.blockScale, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
                 this.startDrag(Rectangle.TEMP, true, 100);
+                */
+                this.startDrag();
             }
         };
         Block.prototype.updateLayer = function () {
@@ -164,10 +170,11 @@ var Marmot;
             }
         };
         Block.prototype.drawSlider = function () {
-            var vs = new VSlider();
+            var vs = new HSlider();
             vs.skin = this.sliderSetting.path;
-            vs.height = this.sliderSetting.height;
+            vs.width = this.sliderSetting.width;
             vs.pos(this.sliderSetting.x, this.sliderSetting.y);
+            vs.sizeGrid = "0,10,0,10";
             vs.min = this.sliderSetting.min;
             vs.max = this.sliderSetting.max;
             vs.value = this.sliderSetting.initialValue;

@@ -27,8 +27,6 @@ var Marmot;
             _this.isFullScreen = false;
             _this.currentSprite = new Marmot.Sprite();
             _this.currentSprite.addCostume("materials/sp_marmot.png");
-            _this.currentSprite.costume = "materials/sp_marmot.png";
-            _this.currentSprite.costumes = [_this.currentSprite.costume];
             _this.sprites = [];
             _this.sprites.push(_this.currentSprite);
             _this.buildIDE();
@@ -43,8 +41,6 @@ var Marmot;
             }
             else if (index == 1) {
                 this.spriteMaterialList.visible = false;
-                this.stageArea.costume = "materials/bg_2.jpg";
-                this.stageArea.costumes = ["materials/bg_2.jpg"];
                 this.backgroundMaterialList.initializeMaterialItems();
                 this.backgroundMaterialList.visible = true;
             }
@@ -87,12 +83,12 @@ var Marmot;
         };
         IDE.prototype.pressStart = function (btn_play) {
             if (this.isPlayed == false) {
-                this.stageArea.fireGreenFlagEvent();
+                this.stageArea.firePlayButton();
                 btn_play.skin = "materials/btn_stop.png";
                 this.isPlayed = true;
             }
             else {
-                this.stageArea.fireStopAllEvent();
+                //this.stageArea.fireStopAllEvent();
                 btn_play.skin = "materials/btn_play.png";
                 this.isPlayed = false;
             }
@@ -101,21 +97,23 @@ var Marmot;
             if (this.isFullScreen == false) {
                 btn_fullscreen.skin = "materials/btn_normalscreen.png";
                 this.stageArea.toggleFullScreen();
+                this.stageArea.pos(this.width / 2 - this.stageArea.width / 2, this.height / 2 - this.stageArea.height / 2);
                 this.isFullScreen = true;
             }
             else {
                 btn_fullscreen.skin = "materials/btn_fullscreen.png";
                 this.stageArea.toggleNormalScreen();
+                this.stageArea.pos(this.width - 650, 120);
                 this.isFullScreen = false;
             }
         };
         IDE.prototype.toggleCoordinateSystem = function (btn_coordinate) {
             if (this.isCoordinateSystemVisible == false) {
-                this.stageArea.toggleShowCoordinate(true);
+                //this.stageArea.toggleShowCoordinate(true);
                 this.isCoordinateSystemVisible = true;
             }
             else {
-                this.stageArea.toggleShowCoordinate(false);
+                //this.stageArea.toggleShowCoordinate(false);
                 this.isCoordinateSystemVisible = false;
             }
         };

@@ -99,7 +99,6 @@ module Marmot {
         public getBlockForSelector(blockName:string) {
             let block = this.blockFactory.create(blockName);
             block.action = blockName;
-            Laya.Log.print(block.inputs().toString());
             let ide: IDE = IDE.getIDE();
             
             ide.scriptArea.addChild(block);

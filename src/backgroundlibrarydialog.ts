@@ -12,7 +12,7 @@ module Marmot {
         protected initializeLibrayItems(): void {
             this.list.array = [
                 "materials/bg_2.jpg",
-                "materials/bg_2.jpg",
+                "res/pics/bg_dadishu.jpg",
                 "materials/bg_2.jpg",
                 "materials/bg_2.jpg",
                 "materials/bg_2.jpg",
@@ -67,7 +67,6 @@ module Marmot {
                 let ide: IDE = IDE.getIDE();
                 let item = this.list.selectedItem;
                 ide.stageArea.addCostume(item);
-                ide.stageArea.costumes.push(item);
                 ide.backgroundMaterialList.initializeMaterialItems();
             }
         }
