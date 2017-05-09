@@ -199,7 +199,7 @@ module Marmot{
 
         public returnValueToParentContext(value){
             if (value !== undefined) {
-                var target = this.context ? // in case of tail call elimination
+                var target = this.context ? 
                 this.context.parentContext || this.homeContext  : this.homeContext;
                 target.addInput(value);
             }
