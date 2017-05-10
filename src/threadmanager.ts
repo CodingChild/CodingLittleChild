@@ -4,9 +4,11 @@ module Marmot{
     export class ThreadManager{
         
         public threads: Array<Thread>;
+        public isRunning:boolean;
 
         constructor(){
             this.threads = [];
+            this.isRunning = false;
         }
 
         public startProcess(headBlock: HeadCommandBlock){
@@ -26,10 +28,11 @@ module Marmot{
                 Laya.timer.clear(this, this.runThread);
                 let ide:IDE = IDE.getIDE();
                 let btn_play = ide.controlBar.getChildByName("btn_play") as Button;
-                btn_play.skin = "materials/btn_play.png";
-                ide.isPlayed = false;
+                ide.pressStart(btn_play);
+                this.isRunning = false;
                 return;
             }
+
             let numberOfThreads: number = this.threads.length;
             let eachTimeout: number = 16 / numberOfThreads;
             this.threads.forEach(function(thread){

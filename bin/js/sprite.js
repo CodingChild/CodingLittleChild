@@ -27,9 +27,9 @@ var Marmot;
             _this.isDown = false;
             _this.width = Sprite.staticWidth;
             _this.height = Sprite.staticHeight;
-            _this.rotation = 90;
+            _this.rotation = 0;
             _this.on(Event.MOUSE_DOWN, _this, _this.onStartDrag);
-            _this.on(Event.CLICK, _this, _this.showCode);
+            _this.on(Event.CLICK, _this, _this.receiveUserInteraction);
             _this.pivot(Sprite.staticWidth / 2, Sprite.staticHeight / 2);
             return _this;
         }
@@ -72,6 +72,14 @@ var Marmot;
             this.x = this.x + x;
             this.y = this.y + y;
         };
+        Sprite.prototype.moveUp = function (stepNum) {
+            var distance = stepNum * Sprite.stepSize;
+            this.y = this.y - distance;
+        };
+        Sprite.prototype.moveDown = function (stepNum) {
+            var distance = stepNum * Sprite.stepSize;
+            this.y = this.y + distance;
+        };
         Sprite.prototype.setHeading = function (degree) {
             this.rotation = 90 - degree;
         };
@@ -93,15 +101,25 @@ var Marmot;
         };
         Sprite.prototype.mouseUpLeft = function () {
         };
-        Sprite.prototype.receiveUserInteraction = function () {
+        Sprite.prototype.receiveUserInteraction = function (e) {
+            var ide = Marmot.IDE.getIDE();
+            var threadManager = ide.stageArea.threadManager;
+            var headBlocks = this.getAllHeadBlocksFor('whenClicked');
+            headBlocks.forEach(function (script) {
+                threadManager.startProcess(script);
+            });
+            if (threadManager.threads.length > 0 && threadManager.isRunning == false) {
+                Laya.timer.frameLoop(1, threadManager, threadManager.runThread);
+                threadManager.isRunning = true;
+                var btn_play = ide.controlBar.getChildByName("btn_play");
+                ide.pressStart(btn_play);
+            }
         };
         Sprite.prototype.onStartDrag = function (e) {
             var stageHeight = this.parent.parent.stagePanelSetting.normalHeight;
             var stageWidth = this.parent.parent.stagePanelSetting.normalWidth;
             Rectangle.TEMP.setTo(Sprite.staticWidth / 4, Sprite.staticHeight / 4, stageWidth - Sprite.staticWidth / 2, stageHeight - Sprite.staticHeight / 2);
             this.startDrag(Rectangle.TEMP, true, 100);
-        };
-        Sprite.prototype.showCode = function (e) {
         };
         return Sprite;
     }(Laya.Sprite));

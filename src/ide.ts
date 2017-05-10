@@ -115,7 +115,7 @@ module Marmot {
             this.blocksArea.updateContent(blocksCategory);
 
         }
-        protected pressStart(btn_play: Button): void {
+        public pressStart(btn_play: Button): void {
             if (this.isPlayed == false) {
                 this.stageArea.firePlayButton();
                 btn_play.skin = "materials/btn_stop.png";

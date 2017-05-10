@@ -5,6 +5,7 @@ module Marmot {
     import Event = Laya.Event;
     import Rectangle = Laya.Rectangle;
     import Utils = Laya.Utils;
+    import Button = Laya.Button;
 
     export class Sprite extends Laya.Sprite {
         private static stepSize: number = 15;
@@ -42,7 +43,7 @@ module Marmot {
             this.isDown = false;
             this.width = Sprite.staticWidth;
             this.height = Sprite.staticHeight;
-            this.rotation = 90;
+            this.rotation = 0;
             this.on(Event.MOUSE_DOWN, this, this.onStartDrag);
             this.on(Event.CLICK, this, this.receiveUserInteraction);
             this.pivot(Sprite.staticWidth / 2, Sprite.staticHeight / 2);
@@ -99,6 +100,16 @@ module Marmot {
             this.y = this.y + y;
         }
 
+        public moveUp(stepNum: number) {
+            let distance: number = stepNum * Sprite.stepSize;
+            this.y = this.y - distance;
+        }
+
+        public moveDown(stepNum: number) {
+            let distance: number = stepNum * Sprite.stepSize;
+            this.y = this.y + distance;
+        }
+
         public setHeading(degree: number) {//rotation = 90 - degree
             this.rotation = 90 - degree;
         }
@@ -137,6 +148,12 @@ module Marmot {
             headBlocks.forEach(function (script) {
                 threadManager.startProcess(script);
             })
+            if (threadManager.threads.length > 0 && threadManager.isRunning == false) {
+                Laya.timer.frameLoop(1, threadManager, threadManager.runThread);
+                threadManager.isRunning = true;
+                let btn_play = ide.controlBar.getChildByName("btn_play") as Button;
+                ide.pressStart(btn_play);
+            }
         }
 
         public onStartDrag(e: Event): void {
