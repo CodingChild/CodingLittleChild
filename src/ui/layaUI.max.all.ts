@@ -4,7 +4,7 @@ import Dialog=laya.ui.Dialog;
 module ui {
     export class testUI extends View {
 
-        public static  uiView:any ={"type":"View","props":{"y":0,"x":0,"width":1920,"height":1080},"child":[{"type":"Panel","props":{"y":263,"x":272,"width":600,"scaleX":2,"height":400},"child":[{"type":"Rect","props":{"y":0,"x":0,"width":600,"lineWidth":1,"height":400,"fillColor":"#ffffff"}}]},{"type":"Image","props":{"y":536,"x":946,"width":200,"skin":"materials/sp_girl.png","scaleY":1,"scaleX":1,"pivotY":100,"pivotX":100,"height":200}},{"type":"VSlider","props":{"y":525,"x":745,"skin":"comp/vslider.png"}},{"type":"HSlider","props":{"y":430,"x":679,"skin":"materials/hslider_1.png"}}]};
+        public static  uiView:any ={"type":"View","props":{"y":0,"x":0,"width":1920,"height":1080},"child":[{"type":"Panel","props":{"y":338,"x":210,"width":400,"vScrollBarSkin":"comp/vscroll.png","scaleX":2,"height":414,"hScrollBarSkin":"comp/hscroll.png"},"child":[{"type":"Image","props":{"y":177,"x":594,"width":112,"skin":"materials/sp_girl.png","pivotY":50,"pivotX":50,"height":88}}]},{"type":"Image","props":{"y":524,"x":791,"skin":"materials/up.png"}},{"type":"Image","props":{"y":525,"x":673,"skin":"materials/down.png"}}]};
         constructor(){ super()}
         createChildren():void {
         

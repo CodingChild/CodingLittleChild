@@ -28,10 +28,11 @@ module Marmot {
             super();
             this.name = 'Sprite';
             this.scriptArea = new ScriptArea(this);
+       
             this.costumes = [];
             this.costume = null;
             this.sounds = [];
-            this.curScale = 1;//图片原始尺寸是100
+            this.curScale = 1;
             this.version = Date.now();
             this.isClone = false;
             this.isCorpse = false;

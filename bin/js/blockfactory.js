@@ -210,7 +210,7 @@ var Marmot;
                 });
                 inputSettings.push({
                     resourceSetting: this.inputSetting1,
-                    textInputSetting: this.textInputSetting1
+                    textInputSetting: this.textInputSetting2
                 });
                 return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
@@ -225,6 +225,48 @@ var Marmot;
                 });
                 backgroundSetting = this.blockBackground2;
                 return new Marmot.HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+            }
+            else if (type == "whenClicked") {
+                textureSettings.push({
+                    name: "whenClicked",
+                    path: "materials/whenClicked.png",
+                    x: 5,
+                    y: 5,
+                    width: 39,
+                    height: 39
+                });
+                backgroundSetting = this.blockBackground2;
+                return new Marmot.HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+            }
+            else if (type == "moveUp") {
+                textureSettings.push({
+                    name: "up",
+                    path: "materials/up.png",
+                    x: 10,
+                    y: 1,
+                    width: 35,
+                    height: 35
+                });
+                inputSettings.push({
+                    resourceSetting: this.inputSetting1,
+                    textInputSetting: this.textInputSetting2
+                });
+                return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+            }
+            else if (type == "moveDown") {
+                textureSettings.push({
+                    name: "down",
+                    path: "materials/down.png",
+                    x: 10,
+                    y: 1,
+                    width: 35,
+                    height: 35
+                });
+                inputSettings.push({
+                    resourceSetting: this.inputSetting1,
+                    textInputSetting: this.textInputSetting2
+                });
+                return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
         };
         return BlockFactory;

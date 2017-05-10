@@ -19,33 +19,41 @@ var Marmot;
             if (this.attachPoints[0].attachCoordinate.x == attachPoint.x && this.attachPoints[0].attachCoordinate.y == attachPoint.y) {
                 target.removeSelf();
                 this.addChild(target);
-                target.x = this.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                target.x = this.myWidth + Marmot.Block.blockSetting.distanceBetweenBlocks;
                 target.y = 0;
+                this.width = this.width + target.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                var parentBlocks = this.getAllParentBlocks();
+                parentBlocks.forEach(function (parentBlock) {
+                    parentBlock.width = parentBlock.width + target.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                });
             }
         };
         HeadCommandBlock.prototype.onDragStart = function (e) {
+            var ide = Marmot.IDE.getIDE();
+            ide.scriptArea.hScrollBar.stopScroll();
+            ide.scriptArea.vScrollBar.stopScroll();
         };
         HeadCommandBlock.prototype.drawHook = function (attachPoint) {
             if (this.attachPoints[0].attachCoordinate.x == attachPoint.x && this.attachPoints[0].attachCoordinate.y == attachPoint.y) {
-                this.graphics.drawLine(this.width, 15 * Marmot.Block.blockSetting.blockScale, this.width + 5 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, Marmot.Block.blockSetting.blockStrokeStyleHighlight, Marmot.Block.blockSetting.blockLineWidthHighlight);
+                this.graphics.drawLine(this.myWidth, 15 * Marmot.Block.blockSetting.blockScale, this.myWidth + 5 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, Marmot.Block.blockSetting.blockStrokeStyleHighlight, Marmot.Block.blockSetting.blockLineWidthHighlight);
                 this.graphics.drawCurves(0, 0, [
-                    this.width + 5 * Marmot.Block.blockSetting.blockScale,
+                    this.myWidth + 5 * Marmot.Block.blockSetting.blockScale,
                     15 * Marmot.Block.blockSetting.blockScale,
-                    this.width + 7 * Marmot.Block.blockSetting.blockScale,
+                    this.myWidth + 7 * Marmot.Block.blockSetting.blockScale,
                     15 * Marmot.Block.blockSetting.blockScale,
-                    this.width + 7 * Marmot.Block.blockSetting.blockScale,
+                    this.myWidth + 7 * Marmot.Block.blockSetting.blockScale,
                     17 * Marmot.Block.blockSetting.blockScale
                 ], Marmot.Block.blockSetting.blockStrokeStyleHighlight, Marmot.Block.blockSetting.blockLineWidthHighlight);
-                this.graphics.drawLine(this.width + 7 * Marmot.Block.blockSetting.blockScale, 17 * Marmot.Block.blockSetting.blockScale, this.width + 7 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale, Marmot.Block.blockSetting.blockStrokeStyleHighlight, Marmot.Block.blockSetting.blockLineWidthHighlight);
+                this.graphics.drawLine(this.myWidth + 7 * Marmot.Block.blockSetting.blockScale, 17 * Marmot.Block.blockSetting.blockScale, this.myWidth + 7 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale, Marmot.Block.blockSetting.blockStrokeStyleHighlight, Marmot.Block.blockSetting.blockLineWidthHighlight);
                 this.graphics.drawCurves(0, 0, [
-                    this.width + 7 * Marmot.Block.blockSetting.blockScale,
+                    this.myWidth + 7 * Marmot.Block.blockSetting.blockScale,
                     33 * Marmot.Block.blockSetting.blockScale,
-                    this.width + 7 * Marmot.Block.blockSetting.blockScale,
+                    this.myWidth + 7 * Marmot.Block.blockSetting.blockScale,
                     35 * Marmot.Block.blockSetting.blockScale,
-                    this.width + 5 * Marmot.Block.blockSetting.blockScale,
+                    this.myWidth + 5 * Marmot.Block.blockSetting.blockScale,
                     35 * Marmot.Block.blockSetting.blockScale,
                 ], Marmot.Block.blockSetting.blockStrokeStyleHighlight, Marmot.Block.blockSetting.blockLineWidthHighlight);
-                this.graphics.drawLine(this.width + 5 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, this.width, 35 * Marmot.Block.blockSetting.blockScale, Marmot.Block.blockSetting.blockStrokeStyleHighlight, Marmot.Block.blockSetting.blockLineWidthHighlight);
+                this.graphics.drawLine(this.myWidth + 5 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, this.myWidth, 35 * Marmot.Block.blockSetting.blockScale, Marmot.Block.blockSetting.blockStrokeStyleHighlight, Marmot.Block.blockSetting.blockLineWidthHighlight);
             }
             else {
             }
@@ -105,7 +113,7 @@ var Marmot;
         HeadCommandBlock.prototype.getAttachPoints = function () {
             return [
                 {
-                    attachCoordinate: new Point(this.width + 7 * Marmot.Block.blockSetting.blockScale, 25 * Marmot.Block.blockSetting.blockScale),
+                    attachCoordinate: new Point(this.myWidth + 7 * Marmot.Block.blockSetting.blockScale, 25 * Marmot.Block.blockSetting.blockScale),
                     isHook: true
                 }
             ];

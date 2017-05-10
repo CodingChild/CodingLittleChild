@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":135,
+    "selecteID":123,
     "props":{"y":0,"x":0,"width":1920,"sceneColor":"#90CAF9","height":1080},
     "nodeParent":-1,
     "label":"View",
@@ -15,7 +15,7 @@
         {
             "x":15,
             "type":"Panel",
-            "props":{"y":263,"x":272,"width":600,"scaleX":2,"height":400},
+            "props":{"y":338,"x":210,"width":400,"vScrollBarSkin":"comp/vscroll.png","scaleX":2,"height":414,"hScrollBarSkin":"comp/hscroll.png"},
             "nodeParent":1,
             "label":"Panel",
             "isOpen":true,
@@ -26,14 +26,14 @@
             "child":[
                 {
                     "x":30,
-                    "type":"Rect",
-                    "props":{"y":0,"x":0,"width":600,"lineWidth":1,"height":400,"fillColor":"#ffffff"},
+                    "type":"Image",
+                    "props":{"y":177,"x":594,"width":112,"skin":"materials/sp_girl.png","pivotY":50,"pivotX":50,"height":88},
                     "nodeParent":123,
-                    "label":"Rect",
+                    "label":"Image",
                     "isDirectory":false,
                     "isAniNode":true,
                     "hasChild":false,
-                    "compId":127,
+                    "compId":130,
                     "child":[
                         ]
                 }]
@@ -41,39 +41,26 @@
         {
             "x":15,
             "type":"Image",
-            "props":{"y":536,"x":946,"width":200,"skin":"materials/sp_girl.png","scaleY":1,"scaleX":1,"pivotY":100,"pivotX":100,"height":200},
+            "props":{"y":524,"x":791,"skin":"materials/up.png"},
             "nodeParent":1,
             "label":"Image",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
-            "compId":130,
+            "compId":131,
             "child":[
                 ]
         },
         {
             "x":15,
-            "type":"VSlider",
-            "props":{"y":525,"x":745,"skin":"comp/vslider.png"},
+            "type":"Image",
+            "props":{"y":525,"x":673,"skin":"materials/down.png"},
             "nodeParent":1,
-            "label":"VSlider",
+            "label":"Image",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
-            "compId":132,
-            "child":[
-                ]
-        },
-        {
-            "x":15,
-            "type":"HSlider",
-            "props":{"y":387,"x":675,"width":300,"skin":"materials/hslider_1.png","sizeGrid":"0,10,0,10","height":0},
-            "nodeParent":1,
-            "label":"HSlider",
-            "isDirectory":false,
-            "isAniNode":true,
-            "hasChild":false,
-            "compId":135,
+            "compId":133,
             "child":[
                 ]
         }],

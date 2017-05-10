@@ -11,7 +11,7 @@ var Marmot;
             return _super.call(this) || this;
         }
         /**
-         * answer my all parts, which is syntaxelement
+         * answer my all parts, which belongs to syntaxelement
          */
         SyntaxElement.prototype.inputs = function () {
             if (this.cachedInputs == null) {
