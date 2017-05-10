@@ -43,7 +43,7 @@ module Marmot {
             this.height = Sprite.staticHeight;
             this.rotation = 90;
             this.on(Event.MOUSE_DOWN, this, this.onStartDrag);
-            this.on(Event.CLICK, this, this.showCode);
+            this.on(Event.CLICK, this, this.receiveUserInteraction);
             this.pivot(Sprite.staticWidth / 2, Sprite.staticHeight / 2);
         }
 
@@ -129,8 +129,13 @@ module Marmot {
 
         }
 
-        public receiveUserInteraction() {
-
+        public receiveUserInteraction(e: Event): void {//when the sprite is clicked
+            let ide = IDE.getIDE();
+            let threadManager = ide.stageArea.threadManager;
+            let headBlocks: any[] = this.getAllHeadBlocksFor('whenClicked');
+            headBlocks.forEach(function (script) {
+                threadManager.startProcess(script);
+            })
         }
 
         public onStartDrag(e: Event): void {
@@ -138,10 +143,6 @@ module Marmot {
             let stageWidth = (this.parent.parent as StagePanel).stagePanelSetting.normalWidth;
             Rectangle.TEMP.setTo(Sprite.staticWidth / 4, Sprite.staticHeight / 4, stageWidth - Sprite.staticWidth / 2, stageHeight - Sprite.staticHeight / 2);
             this.startDrag(Rectangle.TEMP, true, 100);
-        }
-
-        public showCode(e: Event): void {
-
         }
 
     }
