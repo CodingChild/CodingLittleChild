@@ -55,8 +55,9 @@ var Marmot;
                     threadManager.startProcess(script);
                 });
             });
-            if (this.threadManager.threads.length > 0) {
+            if (this.threadManager.threads.length > 0 && this.threadManager.isRunning == false) {
                 Laya.timer.frameLoop(1, this.threadManager, this.threadManager.runThread);
+                this.threadManager.isRunning = true;
             }
         };
         StagePanel.prototype.getAllHeadBlocksFor = function (filter) {
@@ -73,19 +74,4 @@ var Marmot;
     }(Laya.Panel));
     Marmot.StagePanel = StagePanel;
 })(Marmot || (Marmot = {}));
-/*Laya.init(1920, 1080, WebGL);
-Laya.stage.alignV = Stage.ALIGN_MIDDLE;
-Laya.stage.alignH = Stage.ALIGN_CENTER;
-Laya.stage.scaleMode = "full";
-Laya.stage.bgColor = "#000000";//"#232628"
-let curStage = new Marmot.StagePanel(1920 / 3, 1080 / 3);
-curStage.pos(1920 * 2 / 3, 10);
-let spr = new Marmot.Sprite();
-//console.log(spr instanceof Marmot.Sprite);
-spr.addCostume("../laya/assets/comp/girl.png");
-spr.pos(2, 20);
-curStage.addChild(spr);
-Laya.stage.addChild(curStage);*/
-//curStage.scale(2,2);
-//curStage.setScale(Browser.clientWidth / 2, Browser.clientHeight / 2);
 //# sourceMappingURL=stage.js.map

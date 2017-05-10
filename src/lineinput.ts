@@ -41,6 +41,9 @@ module Marmot {
                         return Number(this.textinput.text) / sliderSetting.max * 2;
                     }
                 }
+                else{
+                    return Number(this.textinput.text);
+                }
             }
             else{
                 return this.textinput.text;

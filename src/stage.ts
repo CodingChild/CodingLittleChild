@@ -78,8 +78,9 @@ module Marmot {
                     threadManager.startProcess(script);
                 })
             })
-            if (this.threadManager.threads.length > 0) {
+            if (this.threadManager.threads.length > 0 && this.threadManager.isRunning == false) {
                 Laya.timer.frameLoop(1, this.threadManager, this.threadManager.runThread);
+                this.threadManager.isRunning = true;
             }
         }
 
