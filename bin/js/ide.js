@@ -99,6 +99,8 @@ var Marmot;
                 this.stageArea.toggleFullScreen();
                 this.stageArea.pos(this.width / 2 - this.stageArea.width / 2, this.height / 2 - this.stageArea.height / 2);
                 this.isFullScreen = true;
+                this.isStageVisible = true;
+                this.toggleShowStage.skin = "materials/btn_hidestage.png";
             }
             else {
                 btn_fullscreen.skin = "materials/btn_fullscreen.png";

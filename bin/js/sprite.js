@@ -17,7 +17,7 @@ var Marmot;
             _this.costumes = [];
             _this.costume = null;
             _this.sounds = [];
-            _this.curScale = 1; //图片原始尺寸是100
+            _this.curScale = 1;
             _this.version = Date.now();
             _this.isClone = false;
             _this.isCorpse = false;

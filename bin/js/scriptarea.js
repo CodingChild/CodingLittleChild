@@ -14,9 +14,9 @@ var Marmot;
             _this.blockFactory = new Marmot.BlockFactory();
             _this.owner = sprite;
             _this.name = "scriptArea";
-            _this.hScrollBarSkin = "comp/hscroll.png";
-            //this.vScrollBarSkin = "comp/vscroll.png";
-            _this.size(Marmot.IDE.WIDTH - 160, Marmot.IDE.HEIGHT - 220);
+            _this.hScrollBarSkin = "";
+            _this.vScrollBarSkin = "";
+            _this.size(Marmot.IDE.WIDTH - 150, Marmot.IDE.HEIGHT - 220);
             _this.pos(100, 120);
             _this.on(Event.MOUSE_DOWN, _this, _this.onMouseDown);
             return _this;
@@ -31,6 +31,20 @@ var Marmot;
             ide.spriteMaterialList.spriteLibraryDialog.close();
             ide.backgroundMaterialList.visible = false;
             ide.backgroundMaterialList.backgroundLibraryDialog.close();
+            var highlightBlocks = [];
+            ide.scriptArea.content._childs.forEach(function (child) {
+                if (child.isHighlight == true) {
+                    highlightBlocks.push(child);
+                }
+                child.getAllBlockChildren().forEach(function (blockChild) {
+                    if (blockChild.isHighlight == true) {
+                        highlightBlocks.push(blockChild);
+                    }
+                });
+            });
+            highlightBlocks.forEach(function (block) {
+                block.removeHighlight(block);
+            });
         };
         return ScriptArea;
     }(Panel));

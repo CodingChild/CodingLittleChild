@@ -1,15 +1,27 @@
 module Marmot{
 
     export abstract class SyntaxElement extends Laya.Sprite{
-        protected myWidth:number;
-        protected myHeight:number;
+        /**
+         * myWidth is only one block's width
+         */
+        public myWidth:number;
+
+        /**
+         * myHeight is only one block's height
+         */
+        public myHeight:number;
+
+        /**
+         * cachedInputs store all inputs syntaxelement
+         */
         private cachedInputs:Array<SyntaxElement>;
+
         constructor(){
             super();
         }
 
         /**
-         * answer my all parts, which is syntaxelement
+         * answer my all parts, which belongs to syntaxelement
          */
         public inputs() {
             if(this.cachedInputs == null){
@@ -19,6 +31,10 @@ module Marmot{
             }
             return this.cachedInputs;
         }
+
+        /**
+         * compute my value
+         */
 
         public abstract evaluate();
 

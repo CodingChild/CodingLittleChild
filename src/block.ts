@@ -21,6 +21,11 @@ module Marmot {
             distanceBetweenBlocks: 1
         }
 
+        /**
+         * isHighlight is true after calling drawBackgroundHighlight
+         */
+        public isHighlight:boolean;
+
         public attachPoints: Array<AttachHook>;
 
         public action:string;
@@ -48,6 +53,7 @@ module Marmot {
             this.myWidth = this.width;
             this.myHeight = this.height;
             this.lastAttachTarget = null;
+            this.isHighlight = false;
             this.drawBackgroundNormal();
 
             this.drawHitArea();
@@ -78,9 +84,42 @@ module Marmot {
         }
 
 
-
         /**
-		*返回所有子孙块节点。
+		*返回所有父块节点。
+		*/
+        public getAllParentBlocks(): Array<Block> {
+            let parentBlocks = [];
+            let parentBlock: any = this;
+            while (parentBlock.parent instanceof Block) {
+                parentBlock = parentBlock.parent;
+                parentBlocks.push(parentBlock);
+            }
+            return parentBlocks;
+        }
+        /**
+		* print width and height of all blocks in scriptArea
+		*/
+
+        public print():void{
+            let top  = this.getTopBlock();
+            Laya.Log.maxCount = 40;
+            Laya.Log.clear();
+            let blocks  = [];
+            let i = 1;
+            (top.parent._childs as Block[]).forEach((childtop)=>{
+                Laya.Log.print("head");
+                Laya.Log.print(i + ":" + childtop.width + " " + childtop.height);
+                i ++;
+                childtop.getAllBlockChildren().forEach((child)=>{
+                    Laya.Log.print(i + ":" + child.width + " " + child.height);
+                    i ++;
+                })
+                Laya.Log.print("---------");
+                i = 1;
+            });
+        }
+        /**
+		* answer my all block children
 		*/
         public getAllBlockChildren(): Array<Block> {
             let children = [];
@@ -97,7 +136,7 @@ module Marmot {
         }
 
         /**
-		*返回第一个子块节点。
+		* answer my fisrt block child
 		*/
         public getNextBlockChild(): Block {
             for (let i = 0; i < this._childs.length; i++) {
@@ -109,7 +148,7 @@ module Marmot {
         }
 
         /**
-		*返回该块的头节点。
+		* answer my top block parent
 		*/
         public getTopBlock(): Block {
             let topBlock: any = this;
@@ -120,7 +159,7 @@ module Marmot {
         }
 
         /**
-		*返回该块的尾节点。
+		* answer my last block child
 		*/
         public getTailBlock(): Block {
             let tailBlock: Block = this;
@@ -143,7 +182,6 @@ module Marmot {
                     "strokeStyle": Block.blockSetting.blockStrokeStyleNormal,
                     "lineWidth": Block.blockSetting.blockLineWidthNormal
                 });
-
         }
 
         protected drawBackgroundHighlight(): void {
@@ -155,7 +193,6 @@ module Marmot {
                     "strokeStyle": Block.blockSetting.blockStrokeStyleHighlight,
                     "lineWidth": Block.blockSetting.blockLineWidthHighlight
                 });
-
         }
 
         protected drawTextures(): void {
@@ -182,19 +219,14 @@ module Marmot {
         }
 
         protected onMouseDown(e: Event): void {
+
             this.updateLayer();
             if (this.hitTestPoint(e.stageX, e.stageY)) {
                 this.addHighlight(this);
-                /*
-                let ide = IDE.getIDE();
-                let scriptAreaHeight = ide.scriptArea.height;
-                let scriptAreaWidth = ide.scriptArea.width;
-                Rectangle.TEMP.setTo(20, 20, scriptAreaWidth - 50 * Block.blockSetting.blockScale, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
-                this.startDrag(Rectangle.TEMP, true, 100);
-                */
                 this.startDrag();
 
             }
+            e.stopPropagation();
         }
 
         protected updateLayer(): void {
@@ -212,7 +244,7 @@ module Marmot {
         }
 
         protected onMouseOut(e: Event): void {
-            this.removeHighlight(this);
+            //this.removeHighlight(this);
         }
 
         protected onDragMove(e: Event): void {
@@ -255,16 +287,21 @@ module Marmot {
             this.addChild(vs);
         }
 
-        protected addHighlight(block: Block): void {
+        public addHighlight(block: Block): void {
             block.graphics.clear();
             block.drawBackgroundHighlight();
             block.drawTextures();
+            this.isHighlight = true;
         }
 
-        protected removeHighlight(block: Block): void {
+        public removeHighlight(block: Block): void {
             block.graphics.clear();
             block.drawBackgroundNormal();
             block.drawTextures();
+            this.isHighlight = false;
+        }
+
+        protected onMouseUp(e:Event):void{
         }
 
         protected abstract onDragStart(e: Event): void;
@@ -280,6 +317,9 @@ module Marmot {
             this.on(Event.DRAG_END, this, this.onDragEnd);
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
             this.on(Event.MOUSE_OUT, this, this.onMouseOut);
+            this.on(Event.MOUSE_UP, this, this.onMouseUp);
         }
     }
 }		
+
+

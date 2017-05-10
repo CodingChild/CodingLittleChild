@@ -24,22 +24,30 @@ module Marmot {
         public attachTarget(block: Block, attachPoint: Point): void {
             let target = block;
 
+
             if (this.attachPoints[0].attachCoordinate.x == attachPoint.x && this.attachPoints[0].attachCoordinate.y == attachPoint.y) {
                 let parent = this.parent;
+
+                let childBlocks = target.getAllBlockChildren();
+                childBlocks.forEach((childBlock) => {
+                    childBlock.width = childBlock.width + this.width + Block.blockSetting.distanceBetweenBlocks;
+                })
+
                 if (parent instanceof Block) {
                     this.removeSelf();
                     target.removeSelf();
                     parent.addChild(target);
-                    target.x = parent.width + Block.blockSetting.distanceBetweenBlocks;
+                    target.x = parent.myWidth + Block.blockSetting.distanceBetweenBlocks;
                     target.y = 0;
 
                     let tailBlock = target.getTailBlock();
 
                     tailBlock.addChild(this);
-                    this.x = tailBlock.width + Block.blockSetting.distanceBetweenBlocks;
+                    this.x = tailBlock.myWidth + Block.blockSetting.distanceBetweenBlocks;
                     this.y = 0;
                 }
                 else {
+                    /*
                     let tailBlock = target.getTailBlock();
                     let blockSequence = target.getAllBlockChildren();
                     let totalWidth = target.width;
@@ -49,7 +57,12 @@ module Marmot {
                     })
 
                     Point.EMPTY.setTo(Point.EMPTY.x - totalWidth - Block.blockSetting.distanceBetweenBlocks * (blockSequence.length + 1), Point.EMPTY.y);
+                    */
 
+                    let tailBlock = target.getTailBlock();
+
+
+                    Point.EMPTY.setTo(Point.EMPTY.x - target.width - Block.blockSetting.distanceBetweenBlocks, Point.EMPTY.y);
                     parent.addChild(target);
 
                     target.x = Point.EMPTY.x;
@@ -57,30 +70,50 @@ module Marmot {
 
                     this.removeSelf();
                     tailBlock.addChild(this);
-                    this.x = tailBlock.width + Block.blockSetting.distanceBetweenBlocks;
+                    this.x = tailBlock.myWidth + Block.blockSetting.distanceBetweenBlocks;
                     this.y = 0;
 
                 }
+                let parentBlocks = target.getAllParentBlocks();
+                if (parentBlocks.length > 0) {
+                    parentBlocks.forEach((parentBlock) => {
+                        parentBlock.width = parentBlock.width + target.width + Block.blockSetting.distanceBetweenBlocks;
+                    })
+                }
+                target.width = target.width + this.width + Block.blockSetting.distanceBetweenBlocks;
+
             }
             else if (this.attachPoints[1].attachCoordinate.x == attachPoint.x && this.attachPoints[1].attachCoordinate.y == attachPoint.y) {
                 let child = this.getNextBlockChild();
                 target.removeSelf();
                 this.addChild(target);
-                target.x = this.width + Block.blockSetting.distanceBetweenBlocks;
+                target.x = this.myWidth + Block.blockSetting.distanceBetweenBlocks;
                 target.y = 0;
                 if (child != null) {
                     target.addChild(child);
                 }
-                //this.attachPoints
+
+                this.width = this.width + target.width + Block.blockSetting.distanceBetweenBlocks;
+                let parentBlocks = this.getAllParentBlocks();
+                parentBlocks.forEach((parentBlock) => {
+                    parentBlock.width = parentBlock.width + target.width + Block.blockSetting.distanceBetweenBlocks;
+                })
+
             }
         }
 
         protected onDragStart(e: Event): void {
+
+            let ide = IDE.getIDE();
+            ide.scriptArea.hScrollBar.stopScroll();
+            ide.scriptArea.vScrollBar.stopScroll();
+
             if ((this.parent instanceof Block) == true) {
                 let parent = this.parent;
                 while (parent instanceof Block) {
                     this.x = this.x + parent.x;
                     this.y = this.y + parent.y;
+                    parent.width = parent.width - this.width - Block.blockSetting.distanceBetweenBlocks;
                     parent = parent.parent;
                 }
                 this.parent.removeChild(this);
@@ -144,9 +177,9 @@ module Marmot {
             }
             else if (this.attachPoints[1].attachCoordinate.x == attachPoint.x && this.attachPoints[1].attachCoordinate.y == attachPoint.y) {
                 this.graphics.drawLine(
-                    this.width,
+                    this.myWidth,
                     15 * Block.blockSetting.blockScale,
-                    this.width + 5 * Block.blockSetting.blockScale,
+                    this.myWidth + 5 * Block.blockSetting.blockScale,
                     15 * Block.blockSetting.blockScale,
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
@@ -155,20 +188,20 @@ module Marmot {
                     0,
                     0,
                     [
-                        this.width + 5 * Block.blockSetting.blockScale,
+                        this.myWidth + 5 * Block.blockSetting.blockScale,
                         15 * Block.blockSetting.blockScale,
-                        this.width + 7 * Block.blockSetting.blockScale,
+                        this.myWidth + 7 * Block.blockSetting.blockScale,
                         15 * Block.blockSetting.blockScale,
-                        this.width + 7 * Block.blockSetting.blockScale,
+                        this.myWidth + 7 * Block.blockSetting.blockScale,
                         17 * Block.blockSetting.blockScale
                     ],
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
 
                 this.graphics.drawLine(
-                    this.width + 7 * Block.blockSetting.blockScale,
+                    this.myWidth + 7 * Block.blockSetting.blockScale,
                     17 * Block.blockSetting.blockScale,
-                    this.width + 7 * Block.blockSetting.blockScale,
+                    this.myWidth + 7 * Block.blockSetting.blockScale,
                     33 * Block.blockSetting.blockScale,
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
@@ -177,20 +210,20 @@ module Marmot {
                     0,
                     0,
                     [
-                        this.width + 7 * Block.blockSetting.blockScale,
+                        this.myWidth + 7 * Block.blockSetting.blockScale,
                         33 * Block.blockSetting.blockScale,
-                        this.width + 7 * Block.blockSetting.blockScale,
+                        this.myWidth + 7 * Block.blockSetting.blockScale,
                         35 * Block.blockSetting.blockScale,
-                        this.width + 5 * Block.blockSetting.blockScale,
+                        this.myWidth + 5 * Block.blockSetting.blockScale,
                         35 * Block.blockSetting.blockScale,
                     ],
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
 
                 this.graphics.drawLine(
-                    this.width + 5 * Block.blockSetting.blockScale,
+                    this.myWidth + 5 * Block.blockSetting.blockScale,
                     35 * Block.blockSetting.blockScale,
-                    this.width,
+                    this.myWidth,
                     35 * Block.blockSetting.blockScale,
                     Block.blockSetting.blockStrokeStyleHighlight,
                     Block.blockSetting.blockLineWidthHighlight);
@@ -203,6 +236,10 @@ module Marmot {
         }
 
         protected onDragEnd(e: Event): void {
+
+            let ide = IDE.getIDE();
+            ide.scriptArea.refresh();
+
             this.removeHighlight(this);
             if (this.lastAttachTarget != null) {
                 this.removeHighlight(this.lastAttachTarget.attachBlock);
@@ -245,7 +282,7 @@ module Marmot {
                         }
                     })
                 }
-                else if(child.getNextBlockChild() != null && (child.parent instanceof Block) == false){
+                else if (child.getNextBlockChild() != null && (child.parent instanceof Block) == false) {
 
                 }
                 else {
@@ -307,7 +344,7 @@ module Marmot {
                     isHook: false
                 },
                 {
-                    attachCoordinate: new Point(this.width + 7 * Block.blockSetting.blockScale, 25 * Block.blockSetting.blockScale),
+                    attachCoordinate: new Point(this.myWidth + 7 * Block.blockSetting.blockScale, 25 * Block.blockSetting.blockScale),
                     isHook: true
                 }
             ]

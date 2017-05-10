@@ -1,10 +1,10 @@
 module Marmot {
 
-    export interface BlockAttributes{
-        name:string;
-        path:string;
+    export interface BlockAttributes {
+        name: string;
+        path: string;
     }
-    export let blockSet:Object = {
+    export let blockSet: Object = {
         "motion": [
             {
                 "name": "move",
@@ -13,6 +13,14 @@ module Marmot {
             {
                 "name": "setHeading",
                 "path": "materials/block_setHeading.png"
+            },
+            {
+                "name": "moveUp",
+                "path": "materials/block_moveUp.png"
+            },
+            {
+                "name": "moveDown",
+                "path": "materials/block_moveDown.png"
             }
         ],
         "look": [
@@ -39,6 +47,10 @@ module Marmot {
             {
                 "name": "play",
                 "path": "materials/block_play.png"
+            },
+            {
+                "name": "whenClicked",
+                "path": "materials/block_whenClicked.png"
             }
         ],
         "pen": [

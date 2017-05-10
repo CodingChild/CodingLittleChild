@@ -35,11 +35,14 @@ C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\anglepan.png:14
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\bg_2.jpg:1494242760
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\block_hide.png:1494242760
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\block_move.png:1494242760
+C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\block_moveDown.png:1494376871
+C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\block_moveUp.png:1494376436
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\block_play.png:1494242760
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\block_setHeading.png:1494242760
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\block_setSize.png:1494242761
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\block_show.png:1494242761
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\block_wait.png:1494242761
+C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\block_whenClicked.png:1494380672
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\btn_cancel.png:1494242761
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\btn_control.png:1494242761
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\btn_coordinate.png:1494242761
@@ -65,6 +68,7 @@ C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\btn_variable.pn
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\btn_yes.png:1494242761
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\cloudimport.png:1494242761
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\costume.png:1494242761
+C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\down.png:1494381040
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\hide.png:1493340774
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\hslider_1$bar.png:1494303487
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\hslider_1.png:1494303487
@@ -83,7 +87,9 @@ C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\sp_songshu.png:
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\switch_off.png:1494242762
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\switch_on.png:1494242762
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\tab_index.png:1494242762
+C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\up.png:1494376075
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\vslider_1$bar.png:1494303160
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\vslider_1.png:1494303160
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\wait.png:1493431269
 C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\walk.png:1493212140
+C:/Users\FoolEdward\layaairprojects\marmot\laya\assets\materials\whenClicked.png:1494380430

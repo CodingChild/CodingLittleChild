@@ -18,7 +18,10 @@ var Marmot;
             _this.sliderSetting = sliderSetting;
             _this.width = 50 * Block.blockSetting.blockScale;
             _this.height = 50 * Block.blockSetting.blockScale;
+            _this.myWidth = _this.width;
+            _this.myHeight = _this.height;
             _this.lastAttachTarget = null;
+            _this.isHighlight = false;
             _this.drawBackgroundNormal();
             _this.drawHitArea();
             if (_this.textureSettings.length != 0) {
@@ -41,7 +44,40 @@ var Marmot;
             return headBlock.parent.parent.owner;
         };
         /**
-        *返回所有子孙块节点。
+        *返回所有父块节点。
+        */
+        Block.prototype.getAllParentBlocks = function () {
+            var parentBlocks = [];
+            var parentBlock = this;
+            while (parentBlock.parent instanceof Block) {
+                parentBlock = parentBlock.parent;
+                parentBlocks.push(parentBlock);
+            }
+            return parentBlocks;
+        };
+        /**
+        * print width and height of all blocks in scriptArea
+        */
+        Block.prototype.print = function () {
+            var top = this.getTopBlock();
+            Laya.Log.maxCount = 40;
+            Laya.Log.clear();
+            var blocks = [];
+            var i = 1;
+            top.parent._childs.forEach(function (childtop) {
+                Laya.Log.print("head");
+                Laya.Log.print(i + ":" + childtop.width + " " + childtop.height);
+                i++;
+                childtop.getAllBlockChildren().forEach(function (child) {
+                    Laya.Log.print(i + ":" + child.width + " " + child.height);
+                    i++;
+                });
+                Laya.Log.print("---------");
+                i = 1;
+            });
+        };
+        /**
+        * answer my all block children
         */
         Block.prototype.getAllBlockChildren = function () {
             var children = [];
@@ -56,7 +92,7 @@ var Marmot;
             return children;
         };
         /**
-        *返回第一个子块节点。
+        * answer my fisrt block child
         */
         Block.prototype.getNextBlockChild = function () {
             for (var i = 0; i < this._childs.length; i++) {
@@ -67,7 +103,7 @@ var Marmot;
             return null;
         };
         /**
-        *返回该块的头节点。
+        * answer my top block parent
         */
         Block.prototype.getTopBlock = function () {
             var topBlock = this;
@@ -77,7 +113,7 @@ var Marmot;
             return topBlock;
         };
         /**
-        *返回该块的尾节点。
+        * answer my last block child
         */
         Block.prototype.getTailBlock = function () {
             var tailBlock = this;
@@ -126,15 +162,9 @@ var Marmot;
             this.updateLayer();
             if (this.hitTestPoint(e.stageX, e.stageY)) {
                 this.addHighlight(this);
-                /*
-                let ide = IDE.getIDE();
-                let scriptAreaHeight = ide.scriptArea.height;
-                let scriptAreaWidth = ide.scriptArea.width;
-                Rectangle.TEMP.setTo(20, 20, scriptAreaWidth - 50 * Block.blockSetting.blockScale, scriptAreaHeight - 50 * Block.blockSetting.blockScale * 2);
-                this.startDrag(Rectangle.TEMP, true, 100);
-                */
                 this.startDrag();
             }
+            e.stopPropagation();
         };
         Block.prototype.updateLayer = function () {
             var topValue = 0;
@@ -150,7 +180,7 @@ var Marmot;
             this.updateZOrder();
         };
         Block.prototype.onMouseOut = function (e) {
-            this.removeHighlight(this);
+            //this.removeHighlight(this);
         };
         Block.prototype.onDragMove = function (e) {
             var target = null;
@@ -188,11 +218,15 @@ var Marmot;
             block.graphics.clear();
             block.drawBackgroundHighlight();
             block.drawTextures();
+            this.isHighlight = true;
         };
         Block.prototype.removeHighlight = function (block) {
             block.graphics.clear();
             block.drawBackgroundNormal();
             block.drawTextures();
+            this.isHighlight = false;
+        };
+        Block.prototype.onMouseUp = function (e) {
         };
         Block.prototype.setEventListening = function () {
             this.on(Event.DRAG_START, this, this.onDragStart);
@@ -200,6 +234,7 @@ var Marmot;
             this.on(Event.DRAG_END, this, this.onDragEnd);
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
             this.on(Event.MOUSE_OUT, this, this.onMouseOut);
+            this.on(Event.MOUSE_UP, this, this.onMouseUp);
         };
         return Block;
     }(Marmot.SyntaxElement));
