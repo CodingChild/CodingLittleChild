@@ -24,20 +24,22 @@ module Marmot {
         constructor() {
             super();
             this.img = new Image();
-            if(ListItem.WIDTH != undefined && ListItem.HEIGHT != undefined)
+            if (ListItem.WIDTH != undefined && ListItem.HEIGHT != undefined)
                 this.size(ListItem.WIDTH, ListItem.HEIGHT);
 
             this.addChild(this.img);
         }
 
 
-        public setBackground(isHighlight: boolean, backgroundHighlight: string, backgroundNormal: string) {
+        public setBackground(isHighlight: boolean, backgroundHighlight: string, backgroundNormal: string = null) {
             this.graphics.clear();
             if (isHighlight == true) {
                 this.graphics.drawRect(0, 0, this.width, this.height, backgroundHighlight);
             }
             else {
-                this.graphics.drawRect(0, 0, this.width, this.height, backgroundNormal);
+                if (backgroundNormal != null) {
+                    this.graphics.drawRect(0, 0, this.width, this.height, backgroundNormal);
+                }
             }
         }
 

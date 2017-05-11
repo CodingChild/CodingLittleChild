@@ -18,12 +18,15 @@ var Marmot;
             return _this;
         }
         ListItem.prototype.setBackground = function (isHighlight, backgroundHighlight, backgroundNormal) {
+            if (backgroundNormal === void 0) { backgroundNormal = null; }
             this.graphics.clear();
             if (isHighlight == true) {
                 this.graphics.drawRect(0, 0, this.width, this.height, backgroundHighlight);
             }
             else {
-                this.graphics.drawRect(0, 0, this.width, this.height, backgroundNormal);
+                if (backgroundNormal != null) {
+                    this.graphics.drawRect(0, 0, this.width, this.height, backgroundNormal);
+                }
             }
         };
         ListItem.prototype.setImg = function (src, x, y, width, height) {

@@ -76,10 +76,14 @@ module Marmot {
             let spriteMaterialListSetting: SpriteMaterialListSetting;
             let spriteMaterialListItemSetting: SpriteMaterialListItemSetting;
 
+            let listFillStyle = "#f0e6d6";
+            let itemHighlight = "#CDBA96";
+
+
             spriteMaterialListSetting = {
                 width: 310,
                 height: 400,
-                fillStyle: "#a8b4f1",
+                fillStyle: listFillStyle,
                 vScrollBarSkin: "",
                 spaceY: 20,
                 repeatY: 3,
@@ -96,7 +100,7 @@ module Marmot {
                 width: 310,
                 height: 100,
                 backgroundNormal: "#ffffff",
-                backgroundHighlight: "#979494",
+                backgroundHighlight: itemHighlight,
                 imageX: 0,
                 imageY: 0,
                 imageWidth: 100,
@@ -120,7 +124,7 @@ module Marmot {
             costumeMaterialListSetting = {
                 width: 100,
                 height: 400,
-                fillStyle: "#c4cdf8",
+                fillStyle: listFillStyle,
                 vScrollBarSkin: "",
                 spaceY: 20,
                 repeatY: 3,
@@ -137,7 +141,7 @@ module Marmot {
                 width: 150,
                 height: 100,
                 backgroundNormal: "#ffffff",
-                backgroundHighlight: "#ffffff",
+                backgroundHighlight: itemHighlight,
                 imageX: 10,
                 imageY: 10,
                 imageWidth: 80,
@@ -182,7 +186,7 @@ module Marmot {
                 width: 100,
                 height: 100,
                 backgroundNormal: "#ffffff",
-                backgroundHighlight: "#979494",
+                backgroundHighlight: itemHighlight,
                 imagePadding: 0,
                 imageWidth: 100,
                 imageHeight: 100
@@ -198,7 +202,7 @@ module Marmot {
             backgroundMaterialListSetting = {
                 width: 310,
                 height: 400,
-                fillStyle: "#a8b4f1",
+                fillStyle: listFillStyle,
                 vScrollBarSkin: "",
                 spaceY: 10,
                 repeatY: 3,
@@ -215,7 +219,7 @@ module Marmot {
                 width: 310,
                 height: 100,
                 backgroundNormal: "#ffffff",
-                backgroundHighlight: "#979494",
+                backgroundHighlight: itemHighlight,
                 imageX: 20,
                 imageY: 10,
                 imageWidth: 270,
@@ -259,7 +263,7 @@ module Marmot {
                 width: 100,
                 height: 100,
                 backgroundNormal: "#ffffff",
-                backgroundHighlight: "#979494",
+                backgroundHighlight: itemHighlight,
                 imagePadding: 10,
                 imageWidth: 80,
                 imageHeight: 80
@@ -271,85 +275,135 @@ module Marmot {
 
         }
         protected createMaterialCategory(): void {
-            let materialCategory: MaterialCategory = new MaterialCategory();
-            this.addChild(materialCategory);
-            this.materialCategory = materialCategory;
+            let urls: string[] = [
+                "materials/btn_sprite.png",
+                "materials/btn_stage.png",
+                "materials/btn_music.png"
+            ];
+            let materialCategorySetting: MaterialCategorySetting = {
+                width: 100,
+                height: 400,
+                vScrollBarSkin: null,
+                hScrollBarSkin: null,
+                spaceX: 0,
+                spaceY: 50,
+                repeatX: 1,
+                repeatY: 3
+            }
+            let materialCategoryItemSetting: MaterialCategoryItemSetting = {
+                width: 100,
+                height: 100,
+                backgroundNormal: null,
+                backgroundHighlight: "#f0e6d6",
+                imageX: 0,
+                imageY: 0,
+                imageWidth: 100,
+                imageHeight: 100
+            }
 
-
+            this.materialCategory = new MaterialCategory(materialCategorySetting, materialCategoryItemSetting, urls);
+            this.addChild(this.materialCategory);
+            this.materialCategory.pos(0, 200);
         }
         protected createBlocksArea(): void {
+            let blockAreaItemSetting: BlockAreaItemSetting = {
+                width: 30 * 2 + 173,
+                height: 30 * 2 + 154,
+                backgroundNormal: null,
+                backgroundHighlight: "#f0e6d6",
+                imageX: 30,
+                imageY: 30,
+                imageWidth: 173,
+                imageHeight: 154
+            }
+            let blockAreaSetting: BlockAreaSetting = {
+                width: this.width,
+                height: 300,
+                vScrollBarSkin: null,
+                hScrollBarSkin: null,
+                spaceX: 50,
+                spaceY: 0,
+                repeatX: 5,
+                repeatY: 1,
+                spaceOfTab_index:20,
+                fillStyle:"#f0e6d6",
+                tabstateNum: 2,
+                tabSkin: "materials/tab_index.png",
+                tabY: blockAreaItemSetting.height
+            }
             let blockFactory = new BlockFactory();
-            let blockArea = new BlockArea(this.width, blockFactory, "blockArea");
+            let blockArea = new BlockArea(blockAreaSetting, blockAreaItemSetting, blockFactory);
+
             this.blocksArea = blockArea;
             this.addChild(blockArea);
+            blockArea.bottom = 100;
+            blockArea.left = 0;
+            blockArea.right = 0;
         }
         protected createBlocksCategory(): void {
-            let tab: Tab = new Tab();
+            let blockCategoryContent: BlockCategoryContent[] = [
+                {
+                    url: "materials/btn_control.png",
+                    blockCategory: "control"
+                },
+                {
+                    url: "materials/btn_event.png",
+                    blockCategory: "event"
+                },
+                {
+                    url: "materials/btn_pen.png",
+                    blockCategory: "pen"
+                },
+                {
+                    url: "materials/btn_math.png",
+                    blockCategory: "math"
+                },
+                {
+                    url: "materials/btn_music.png",
+                    blockCategory: "music"
+                },
+                {
+                    url: "materials/btn_motion.png",
+                    blockCategory: "motion"
+                },
+                {
+                    url: "materials/btn_look.png",
+                    blockCategory: "look"
+                },
+                {
+                    url: "materials/btn_sense.png",
+                    blockCategory: "sense"
+                },
+                {
+                    url: "materials/btn_variable.png",
+                    blockCategory: "variable"
+                }
+            ];
+            let blockCategorySetting: BlockCategorySetting = {
+                width: this.width,
+                height: 100,
+                vScrollBarSkin: "",
+                hScrollBarSkin: null,
+                spaceX: (this.width - 900) / 8,
+                spaceY: 0,
+                repeatX: 9,
+                repeatY: 1
+            }
+            let blockCategoryItemSetting: BlockCategoryItemSetting = {
+                width: 100,
+                height: 100,
+                backgroundNormal: null,
+                backgroundHighlight: "#f0e6d6",
+                imageX: 0,
+                imageY: 0,
+                imageWidth: 100,
+                imageHeight: 100
+            }
 
-            tab.left = 0;
-            tab.bottom = 0;
-
-            tab.space = (this.width - 900) / 8;
-            tab.selectedIndex = 9;
-            tab.selectHandler = new Handler(this, this.chooseBlock);
-            this.blocksCategory = tab;
-            this.addChild(tab);
-            tab.initItems();
-
-            let btn_control: Button = new Button("materials/btn_control.png");
-            btn_control.stateNum = 2;
-            btn_control.width = 100;
-            btn_control.height = 100;
-            tab.addItem(btn_control);
-
-            let btn_event: Button = new Button("materials/btn_event.png");
-            btn_event.stateNum = 2;
-            btn_event.width = 100;
-            btn_event.height = 100;
-            tab.addItem(btn_event);
-
-            let btn_pen: Button = new Button("materials/btn_pen.png");
-            btn_pen.stateNum = 2;
-            btn_pen.width = 100;
-            btn_pen.height = 100;
-            tab.addItem(btn_pen);
-
-            let btn_math: Button = new Button("materials/btn_math.png");
-            btn_math.stateNum = 2;
-            btn_math.width = 100;
-            btn_math.height = 100;
-            tab.addItem(btn_math);
-
-            let btn_music: Button = new Button("materials/btn_music.png");
-            btn_music.stateNum = 2;
-            btn_music.width = 100;
-            btn_music.height = 100;
-            tab.addItem(btn_music);
-
-            let btn_motion: Button = new Button("materials/btn_motion.png");
-            btn_motion.stateNum = 2;
-            btn_motion.width = 100;
-            btn_motion.height = 100;
-            tab.addItem(btn_motion);
-
-            let btn_look: Button = new Button("materials/btn_look.png");
-            btn_look.stateNum = 2;
-            btn_look.width = 100;
-            btn_look.height = 100;
-            tab.addItem(btn_look);
-
-            let btn_variable: Button = new Button("materials/btn_variable.png");
-            btn_variable.stateNum = 2;
-            btn_variable.width = 100;
-            btn_variable.height = 100;
-            tab.addItem(btn_variable);
-
-            let btn_sense: Button = new Button("materials/btn_sense.png");
-            btn_sense.stateNum = 2;
-            btn_sense.width = 100;
-            btn_sense.height = 100;
-            tab.addItem(btn_sense);
-
+            this.blocksCategory = new BlockCategory(blockCategorySetting, blockCategoryItemSetting, blockCategoryContent);
+            this.addChild(this.blocksCategory);
+            this.blocksCategory.left = 0;
+            this.blocksCategory.bottom = 0;
 
         }
 
@@ -362,7 +416,7 @@ module Marmot {
 
             let stageArea = new Marmot.StagePanel(setting);
             stageArea.pos(this.width, 120);
-            
+
             this.stageArea = stageArea;
             this.addChild(stageArea);
             stageArea.addChild(this.currentSprite);
