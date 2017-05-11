@@ -133,10 +133,10 @@ var Marmot;
                 textureSettings.push({
                     name: "move",
                     path: "materials/texture_move.png",
-                    x: 6,
-                    y: 6,
-                    width: 45,
-                    height: 30
+                    x: 8,
+                    y: 2,
+                    width: 40,
+                    height: 35
                 });
                 inputSettings.push({
                     resourceSetting: this.inputSetting1,
@@ -147,7 +147,7 @@ var Marmot;
             else if (type == "setHeading") {
                 textureSettings.push({
                     name: "anglepan",
-                    path: "materials/anglepan.png",
+                    path: "materials/texture_anglepan.png",
                     x: 13,
                     y: 3,
                     width: 32,
@@ -185,7 +185,7 @@ var Marmot;
                 var sliderSetting = void 0;
                 textureSettings.push({
                     name: "setsize",
-                    path: "materials/setsize.png",
+                    path: "materials/texture_setsize.png",
                     x: 12,
                     y: 2,
                     width: 31,
@@ -294,7 +294,7 @@ var Marmot;
             if (blockSet.length != 0) {
                 for (var i = 0; i < blockSet.length; i++) {
                     if (blockSet[i].name == type) {
-                        return "#eeb35c";
+                        return "#fa800a";
                     }
                 }
             }
@@ -350,7 +350,7 @@ var Marmot;
             if (blockSet.length != 0) {
                 for (var i = 0; i < blockSet.length; i++) {
                     if (blockSet[i].name == type) {
-                        return "#2bcaa7";
+                        return "#fa800a";
                     }
                 }
             }
