@@ -126,7 +126,7 @@ var Marmot;
         };
         Block.prototype.drawBackgroundNormal = function () {
             this.graphics.drawPath(0, 0, this.backgroundSetting.pathBackground, {
-                fillStyle: Block.blockSetting.blockFillStyle
+                fillStyle: this.backgroundSetting.blockFillStyle
             }, {
                 "strokeStyle": Block.blockSetting.blockStrokeStyleNormal,
                 "lineWidth": Block.blockSetting.blockLineWidthNormal
@@ -134,7 +134,7 @@ var Marmot;
         };
         Block.prototype.drawBackgroundHighlight = function () {
             this.graphics.drawPath(0, 0, this.backgroundSetting.pathBackground, {
-                fillStyle: Block.blockSetting.blockFillStyle
+                fillStyle: this.backgroundSetting.blockFillStyle
             }, {
                 "strokeStyle": Block.blockSetting.blockStrokeStyleHighlight,
                 "lineWidth": Block.blockSetting.blockLineWidthHighlight
@@ -187,13 +187,13 @@ var Marmot;
             target = this.closestAttachTarget();
             if (target == null) {
                 if (this.lastAttachTarget != null) {
-                    this.removeHighlight(this.lastAttachTarget.attachBlock);
+                    this.lastAttachTarget.attachBlock.removeHighlight(this.lastAttachTarget.attachBlock);
                     this.lastAttachTarget = null;
                 }
             }
             else {
                 if (this.lastAttachTarget != null) {
-                    this.removeHighlight(this.lastAttachTarget.attachBlock);
+                    this.lastAttachTarget.attachBlock.removeHighlight(this.lastAttachTarget.attachBlock);
                 }
                 target.attachBlock.drawHook(target.attachHook.attachCoordinate);
                 this.lastAttachTarget = target;
@@ -240,7 +240,6 @@ var Marmot;
     }(Marmot.SyntaxElement));
     Block.blockSetting = {
         blockScale: 3,
-        blockFillStyle: "#1976D2",
         blockStrokeStyleNormal: "#000000",
         blockStrokeStyleHighlight: "#fcff00",
         blockLineWidthHighlight: 8,

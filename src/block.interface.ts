@@ -3,7 +3,6 @@ module Marmot{
     
      export interface BlockSetting {
         blockScale: number;
-        blockFillStyle: string;
         blockStrokeStyleNormal: string;
         blockStrokeStyleHighlight: string;
         blockLineWidthHighlight: number;
@@ -30,6 +29,7 @@ module Marmot{
     }
 
     export interface BackgroundSetting {
+        blockFillStyle: string;
         pathBackground: Array<any>;
         hitAreaBackground: Array<any>;
     }

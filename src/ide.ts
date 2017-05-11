@@ -16,7 +16,7 @@ module Marmot {
         public scriptArea: ScriptArea;
         public currentSprite: Sprite;
         public sprites: Array<Sprite>;
-        public blocksCategory: Tab;
+        public blocksCategory: BlockCategory;
         public materialCategory: MaterialCategory;
         public blocksArea: BlockArea;
         public stageArea: Stage;
@@ -112,6 +112,7 @@ module Marmot {
             else {
                 return;
             }
+
             this.blocksArea.updateContent(blocksCategory);
 
         }

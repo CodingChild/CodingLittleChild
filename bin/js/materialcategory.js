@@ -5,83 +5,44 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Marmot;
 (function (Marmot) {
-    var List = Laya.List;
-    var Box = Laya.Box;
-    var Image = Laya.Image;
-    var Handler = Laya.Handler;
-    var Item = (function (_super) {
-        __extends(Item, _super);
-        function Item() {
+    var MaterialCategoryItem = (function (_super) {
+        __extends(MaterialCategoryItem, _super);
+        function MaterialCategoryItem() {
             var _this = _super.call(this) || this;
-            _this.img = new Image();
-            _this.addChild(_this.img);
+            if (MaterialCategoryItem.WIDTH != undefined && MaterialCategoryItem.HEIGHT != undefined)
+                _this.size(MaterialCategoryItem.WIDTH, MaterialCategoryItem.HEIGHT);
             return _this;
         }
-        Item.prototype.setBackground = function (isHighlight) {
-            this.graphics.clear();
-            if (isHighlight == true) {
-                this.graphics.drawRect(0, 0, this.width, this.height, "#a8b4f1");
-            }
-        };
-        Item.prototype.setImg = function (src) {
-            this.img.skin = src;
-            this.img.pos(0, 0);
-            this.img.size(100, 100);
-        };
-        return Item;
-    }(Box));
+        return MaterialCategoryItem;
+    }(Marmot.ListItem));
     var MaterialCategory = (function (_super) {
         __extends(MaterialCategory, _super);
-        function MaterialCategory() {
-            var _this = _super.call(this) || this;
-            _this.width = 100;
-            _this.height = 400;
-            _this.pos(0, 200);
-            _this.array = [
-                "materials/btn_sprite.png",
-                "materials/btn_stage.png",
-                "materials/btn_music_1.png"
-            ];
-            _this.itemRender = Item;
-            _this.selectEnable = true;
-            _this.spaceY = 50;
-            _this.repeatX = 1;
-            _this.repeatY = 3;
-            _this.startIndex = 0;
-            _this.curIndex = -1;
-            _this.selectHandler = new Handler(_this, _this.onSelect);
-            _this.renderHandler = new Handler(_this, _this.updateItem);
+        function MaterialCategory(materialCategorySetting, materialCategoryItemSetting, urls) {
+            var _this = _super.call(this, materialCategorySetting, materialCategoryItemSetting) || this;
+            MaterialCategoryItem.WIDTH = materialCategoryItemSetting.width;
+            MaterialCategoryItem.HEIGHT = materialCategoryItemSetting.height;
+            _this.initializeItems(urls);
+            _this.itemRender = MaterialCategoryItem;
             return _this;
         }
-        MaterialCategory.prototype.updateItem = function (cell, index) {
-            var yindex = index % this.repeatY;
-            cell.pos(0, (yindex * 100 + yindex * 50));
-            cell.setImg(cell.dataSource);
-            cell.size(100, 100);
-            cell.setBackground(false);
+        MaterialCategory.prototype.initializeItems = function (categories) {
+            if (categories) {
+                this.array = categories;
+            }
         };
         MaterialCategory.prototype.onSelect = function (index) {
-            if (index != -1) {
-                var newCell = this.cells[index];
-                if (this.curIndex > -1) {
-                    var oldCell = this.cells[this.curIndex];
-                    oldCell.setBackground(false);
-                }
-                newCell.setBackground(true);
-                this.curIndex = index;
-                var ide = Marmot.IDE.getIDE();
+            var ide = Marmot.IDE.getIDE();
+            if (index >= 0 && index < this.length) {
+                this.selection.setBackground(true, this.listItemSetting.backgroundHighlight, this.listItemSetting.backgroundNormal);
                 ide.chooseMaterialArea(index);
             }
-            else {
-                if (this.curIndex > -1) {
-                    var oldCell = this.cells[this.curIndex];
-                    oldCell.setBackground(false);
-                }
-                this.curIndex = index;
+            if (this.curItem != null) {
+                this.curItem.setBackground(false, this.listItemSetting.backgroundHighlight, this.listItemSetting.backgroundNormal);
             }
+            this.curItem = this.selection;
         };
         return MaterialCategory;
-    }(List));
+    }(Marmot.CommonList));
     Marmot.MaterialCategory = MaterialCategory;
 })(Marmot || (Marmot = {}));
 //# sourceMappingURL=materialcategory.js.map

@@ -29,6 +29,7 @@ var Marmot;
                 }
             };
             this.blockBackground1 = {
+                blockFillStyle: null,
                 pathBackground: [
                     ["moveTo", 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
                     ["lineTo", 46 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
@@ -69,6 +70,7 @@ var Marmot;
                 ]
             };
             this.blockBackground2 = {
+                blockFillStyle: null,
                 pathBackground: [
                     ["moveTo", 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
                     ["lineTo", 46 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
@@ -118,12 +120,19 @@ var Marmot;
         BlockFactory.prototype.create = function (type) {
             var textureSettings = [];
             var inputSettings = [];
-            var backgroundSetting;
-            backgroundSetting = this.blockBackground1;
+            var backgroundSetting = {
+                blockFillStyle: null,
+                hitAreaBackground: null,
+                pathBackground: null
+            };
+            backgroundSetting.hitAreaBackground = this.blockBackground1.hitAreaBackground;
+            backgroundSetting.pathBackground = this.blockBackground1.pathBackground;
+            var blockFillStyle = this.chooseBlockFillStyle(type);
+            backgroundSetting.blockFillStyle = blockFillStyle;
             if (type == "move") {
                 textureSettings.push({
                     name: "move",
-                    path: "materials/walk.png",
+                    path: "materials/texture_move.png",
                     x: 6,
                     y: 6,
                     width: 45,
@@ -153,22 +162,22 @@ var Marmot;
             else if (type == "show") {
                 textureSettings.push({
                     name: "show",
-                    path: "materials/show.png",
+                    path: "materials/texture_show.png",
                     x: 10,
-                    y: 14,
+                    y: 10,
                     width: 39,
-                    height: 17
+                    height: 30
                 });
                 return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
             else if (type == "hide") {
                 textureSettings.push({
                     name: "hide",
-                    path: "materials/hide.png",
+                    path: "materials/texture_hide.png",
                     x: 10,
-                    y: 14,
+                    y: 10,
                     width: 39,
-                    height: 17
+                    height: 30
                 });
                 return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
@@ -202,7 +211,7 @@ var Marmot;
             else if (type == "wait") {
                 textureSettings.push({
                     name: "wait",
-                    path: "materials/wait.png",
+                    path: "materials/texture_wait.png",
                     x: 12,
                     y: 3,
                     width: 30,
@@ -217,31 +226,33 @@ var Marmot;
             else if (type == "play") {
                 textureSettings.push({
                     name: "play",
-                    path: "materials/play.png",
+                    path: "materials/texture_play.png",
                     x: 5,
                     y: 5,
                     width: 39,
                     height: 39
                 });
-                backgroundSetting = this.blockBackground2;
+                backgroundSetting.hitAreaBackground = this.blockBackground2.hitAreaBackground;
+                backgroundSetting.pathBackground = this.blockBackground2.pathBackground;
                 return new Marmot.HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
             else if (type == "whenClicked") {
                 textureSettings.push({
                     name: "whenClicked",
-                    path: "materials/whenClicked.png",
+                    path: "materials/texture_whenClicked.png",
                     x: 5,
                     y: 5,
                     width: 39,
                     height: 39
                 });
-                backgroundSetting = this.blockBackground2;
+                backgroundSetting.hitAreaBackground = this.blockBackground2.hitAreaBackground;
+                backgroundSetting.pathBackground = this.blockBackground2.pathBackground;
                 return new Marmot.HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
             else if (type == "moveUp") {
                 textureSettings.push({
                     name: "up",
-                    path: "materials/up.png",
+                    path: "materials/texture_up.png",
                     x: 10,
                     y: 1,
                     width: 35,
@@ -256,7 +267,7 @@ var Marmot;
             else if (type == "moveDown") {
                 textureSettings.push({
                     name: "down",
-                    path: "materials/down.png",
+                    path: "materials/texture_down.png",
                     x: 10,
                     y: 1,
                     width: 35,
@@ -268,6 +279,82 @@ var Marmot;
                 });
                 return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
             }
+        };
+        BlockFactory.prototype.chooseBlockFillStyle = function (type) {
+            var blockSet;
+            blockSet = Marmot.blockSet["motion"];
+            if (blockSet.length != 0) {
+                for (var i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#f46767";
+                    }
+                }
+            }
+            blockSet = Marmot.blockSet["look"];
+            if (blockSet.length != 0) {
+                for (var i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#eeb35c";
+                    }
+                }
+            }
+            blockSet = Marmot.blockSet["control"];
+            if (blockSet.length != 0) {
+                for (var i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#6bcd47";
+                    }
+                }
+            }
+            blockSet = Marmot.blockSet["event"];
+            if (blockSet.length != 0) {
+                for (var i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#608fee";
+                    }
+                }
+            }
+            blockSet = Marmot.blockSet["pen"];
+            if (blockSet.length != 0) {
+                for (var i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#68cdff";
+                    }
+                }
+            }
+            blockSet = Marmot.blockSet["music"];
+            if (blockSet.length != 0) {
+                for (var i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#a073ff";
+                    }
+                }
+            }
+            blockSet = Marmot.blockSet["variable"];
+            if (blockSet.length != 0) {
+                for (var i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#d92323";
+                    }
+                }
+            }
+            blockSet = Marmot.blockSet["math"];
+            if (blockSet.length != 0) {
+                for (var i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#e76cea";
+                    }
+                }
+            }
+            blockSet = Marmot.blockSet["sense"];
+            if (blockSet.length != 0) {
+                for (var i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#2bcaa7";
+                    }
+                }
+            }
+            return null;
         };
         return BlockFactory;
     }());

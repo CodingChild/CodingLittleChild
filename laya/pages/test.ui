@@ -2,8 +2,8 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":123,
-    "props":{"y":0,"x":0,"width":1920,"sceneColor":"#90CAF9","height":1080},
+    "selecteID":134,
+    "props":{"y":0,"x":0,"width":1920,"sceneColor":"#deb8fd","height":1080},
     "nodeParent":-1,
     "label":"View",
     "isOpen":true,
@@ -61,6 +61,19 @@
             "isAniNode":true,
             "hasChild":false,
             "compId":133,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "props":{"y":488,"x":1484,"width":312,"stateNum":"1","skin":"materials/btn_music.png","label":"label","height":348},
+            "nodeParent":1,
+            "label":"Button",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":134,
             "child":[
                 ]
         }],

@@ -13,7 +13,6 @@ module Marmot {
 
         public static blockSetting: BlockSetting = {
             blockScale: 3,
-            blockFillStyle: "#1976D2",
             blockStrokeStyleNormal: "#000000",
             blockStrokeStyleHighlight: "#fcff00",
             blockLineWidthHighlight: 8,
@@ -54,6 +53,7 @@ module Marmot {
             this.myHeight = this.height;
             this.lastAttachTarget = null;
             this.isHighlight = false;
+
             this.drawBackgroundNormal();
 
             this.drawHitArea();
@@ -176,7 +176,7 @@ module Marmot {
         protected drawBackgroundNormal(): void {
             this.graphics.drawPath(0, 0, this.backgroundSetting.pathBackground,
                 {
-                    fillStyle: Block.blockSetting.blockFillStyle
+                    fillStyle: this.backgroundSetting.blockFillStyle
                 },
                 {
                     "strokeStyle": Block.blockSetting.blockStrokeStyleNormal,
@@ -187,7 +187,7 @@ module Marmot {
         protected drawBackgroundHighlight(): void {
             this.graphics.drawPath(0, 0, this.backgroundSetting.pathBackground,
                 {
-                    fillStyle: Block.blockSetting.blockFillStyle
+                    fillStyle: this.backgroundSetting.blockFillStyle
                 },
                 {
                     "strokeStyle": Block.blockSetting.blockStrokeStyleHighlight,
@@ -254,13 +254,13 @@ module Marmot {
 
             if (target == null) {
                 if (this.lastAttachTarget != null) {
-                    this.removeHighlight(this.lastAttachTarget.attachBlock);
+                    this.lastAttachTarget.attachBlock.removeHighlight(this.lastAttachTarget.attachBlock);
                     this.lastAttachTarget = null;
                 }
             }
             else {
                 if (this.lastAttachTarget != null) {
-                    this.removeHighlight(this.lastAttachTarget.attachBlock);
+                    this.lastAttachTarget.attachBlock.removeHighlight(this.lastAttachTarget.attachBlock);
                 }
                 target.attachBlock.drawHook(target.attachHook.attachCoordinate);
                 this.lastAttachTarget = target;

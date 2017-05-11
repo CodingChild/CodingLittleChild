@@ -10,7 +10,7 @@ var Marmot;
             Laya.stage.alignV = Stage.ALIGN_CENTER;
             Laya.stage.alignH = Stage.ALIGN_MIDDLE;
             Laya.stage.scaleMode = "full";
-            Laya.stage.bgColor = "#90CAF9";
+            Laya.stage.bgColor = "#fffbf2";
             //自动竖屏，让游戏的水平方向始终与浏览器显示屏幕的最长边保持垂直。
             Laya.stage.screenMode = "horizontal";
             //预加载资源，回调
