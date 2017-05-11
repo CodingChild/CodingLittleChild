@@ -149,10 +149,10 @@ module Marmot {
                     {
                         name: "move",
                         path: "materials/texture_move.png",
-                        x: 6,
-                        y: 6,
-                        width: 45,
-                        height: 30
+                        x: 8,
+                        y: 2,
+                        width: 40,
+                        height: 35
                     }
                 );
                 inputSettings.push(
@@ -167,7 +167,7 @@ module Marmot {
                 textureSettings.push(
                     {
                         name: "anglepan",
-                        path: "materials/anglepan.png",
+                        path: "materials/texture_anglepan.png",
                         x: 13,
                         y: 3,
                         width: 32,
@@ -213,7 +213,7 @@ module Marmot {
                 textureSettings.push(
                     {
                         name: "setsize",
-                        path: "materials/setsize.png",
+                        path: "materials/texture_setsize.png",
                         x: 12,
                         y: 2,
                         width: 31,
@@ -346,7 +346,7 @@ module Marmot {
             if (blockSet.length != 0) {
                 for(let i = 0;i < blockSet.length;i ++){
                     if (blockSet[i].name == type){
-                        return "#eeb35c";
+                        return "#fa800a";
                     }
                 }
             }
@@ -402,7 +402,7 @@ module Marmot {
             if (blockSet.length != 0) {
                 for(let i = 0;i < blockSet.length;i ++){
                     if (blockSet[i].name == type){
-                        return "#2bcaa7";
+                        return "#fa800a";
                     }
                 }
             }
