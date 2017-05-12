@@ -8,8 +8,8 @@ var Marmot;
     var Point = Laya.Point;
     var HeadCommandBlock = (function (_super) {
         __extends(HeadCommandBlock, _super);
-        function HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, sliderSetting) {
-            return _super.call(this, textureSettings, inputSettings, backgroundSetting, sliderSetting) || this;
+        function HeadCommandBlock(textureSettings, inputSettings, backgroundSettings, sliderSetting, comboBoxSlotSetting) {
+            return _super.call(this, textureSettings, inputSettings, backgroundSettings, sliderSetting, comboBoxSlotSetting) || this;
         }
         HeadCommandBlock.prototype.blockSequence = function () {
             return this.getAllBlockChildren();

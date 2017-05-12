@@ -9,8 +9,8 @@ var Marmot;
     var Box = Laya.Box;
     var CommandBlock = (function (_super) {
         __extends(CommandBlock, _super);
-        function CommandBlock(textureSettings, inputSettings, backgroundSetting, sliderSetting) {
-            return _super.call(this, textureSettings, inputSettings, backgroundSetting, sliderSetting) || this;
+        function CommandBlock(textureSettings, inputSettings, backgroundSettings, sliderSetting, comboBoxSlotSetting) {
+            return _super.call(this, textureSettings, inputSettings, backgroundSettings, sliderSetting, comboBoxSlotSetting) || this;
         }
         CommandBlock.prototype.attachTarget = function (block, attachPoint) {
             var _this = this;

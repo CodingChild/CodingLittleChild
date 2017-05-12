@@ -6,7 +6,7 @@ var Marmot;
     var Entry = (function () {
         function Entry() {
             //初始化舞台
-            Laya.init(1920, 1080, WebGL, Laya.Log);
+            Laya.init(1920, 1080, WebGL);
             Laya.stage.alignV = Stage.ALIGN_CENTER;
             Laya.stage.alignH = Stage.ALIGN_MIDDLE;
             Laya.stage.scaleMode = "full";

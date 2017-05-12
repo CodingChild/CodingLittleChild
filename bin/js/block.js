@@ -10,12 +10,13 @@ var Marmot;
     var Event = Laya.Event;
     var Block = (function (_super) {
         __extends(Block, _super);
-        function Block(textureSettings, inputSettings, backgroundSetting, sliderSetting) {
+        function Block(textureSettings, inputSettings, backgroundSettings, sliderSetting, comboBoxSlotSetting) {
             var _this = _super.call(this) || this;
             _this.textureSettings = textureSettings;
             _this.inputSettings = inputSettings;
-            _this.backgroundSetting = backgroundSetting;
+            _this.backgroundSettings = backgroundSettings;
             _this.sliderSetting = sliderSetting;
+            _this.comboBoxSlotSetting = comboBoxSlotSetting;
             _this.width = 50 * Block.blockSetting.blockScale;
             _this.height = 50 * Block.blockSetting.blockScale;
             _this.myWidth = _this.width;
@@ -23,26 +24,6 @@ var Marmot;
             _this.lastAttachTarget = null;
             _this.isHighlight = false;
             return _this;
-            /*
-
-            this.drawBackgroundNormal();
-
-            this.drawHitArea();
-
-            if (this.textureSettings.length != 0) {
-                this.drawTextures();
-            }
-
-            if (this.inputSettings.length != 0) {
-                this.drawInputs();
-            }
-            if (this.sliderSetting != null) {
-                this.drawSlider();
-            }
-
-            this.attachPoints = this.getAttachPoints();
-            this.setEventListening();
-            */
         }
         Block.prototype.initialize = function () {
             this.drawBackgroundNormal();
@@ -55,6 +36,9 @@ var Marmot;
             }
             if (this.sliderSetting != null) {
                 this.drawSlider();
+            }
+            if (this.comboBoxSlotSetting != null) {
+                this.drawComboBox();
             }
             this.attachPoints = this.getAttachPoints();
             this.setEventListening();
@@ -171,19 +155,25 @@ var Marmot;
             return tailBlock;
         };
         Block.prototype.drawBackgroundNormal = function () {
-            this.graphics.drawPath(0, 0, this.backgroundSetting.pathBackground, {
-                fillStyle: this.backgroundSetting.blockFillStyle
-            }, {
-                "strokeStyle": Block.blockSetting.blockStrokeStyleNormal,
-                "lineWidth": Block.blockSetting.blockLineWidthNormal
+            var _this = this;
+            this.backgroundSettings.forEach(function (backgroundSetting) {
+                _this.graphics.drawPath(0, 0, backgroundSetting.pathBackground, {
+                    fillStyle: backgroundSetting.blockFillStyle
+                }, {
+                    "strokeStyle": Block.blockSetting.blockStrokeStyleNormal,
+                    "lineWidth": Block.blockSetting.blockLineWidthNormal
+                });
             });
         };
         Block.prototype.drawBackgroundHighlight = function () {
-            this.graphics.drawPath(0, 0, this.backgroundSetting.pathBackground, {
-                fillStyle: this.backgroundSetting.blockFillStyle
-            }, {
-                "strokeStyle": Block.blockSetting.blockStrokeStyleHighlight,
-                "lineWidth": Block.blockSetting.blockLineWidthHighlight
+            var _this = this;
+            this.backgroundSettings.forEach(function (backgroundSetting) {
+                _this.graphics.drawPath(0, 0, backgroundSetting.pathBackground, {
+                    fillStyle: backgroundSetting.blockFillStyle
+                }, {
+                    "strokeStyle": Block.blockSetting.blockStrokeStyleHighlight,
+                    "lineWidth": Block.blockSetting.blockLineWidthHighlight
+                });
             });
         };
         Block.prototype.drawTextures = function () {
@@ -195,7 +185,9 @@ var Marmot;
         };
         Block.prototype.drawHitArea = function () {
             var hit = new HitArea();
-            hit.hit.drawPoly(0, 0, this.backgroundSetting.hitAreaBackground, "#ffff00");
+            this.backgroundSettings.forEach(function (backgroundSetting) {
+                hit.hit.drawPoly(0, 0, backgroundSetting.hitAreaBackground, "#ffff00");
+            });
             this.hitArea = hit;
         };
         Block.prototype.drawInputs = function () {
@@ -203,6 +195,9 @@ var Marmot;
             this.inputSettings.forEach(function (inputSetting) {
                 _this.addChild(new Marmot.LineInput(inputSetting));
             });
+        };
+        Block.prototype.drawComboBox = function () {
+            this.addChild(new Marmot.ComboBoxSlot(this.comboBoxSlotSetting));
         };
         Block.prototype.onMouseDown = function (e) {
             this.updateLayer();

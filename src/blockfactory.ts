@@ -177,6 +177,187 @@ module Marmot {
                 0 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale
             ]
         }
+        private blockBackgroundForForeverLoop: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 4 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale],
+                ["arcTo", 100 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["arcTo", 100 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 96 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["arcTo", 75 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 75 * Block.blockSetting.blockScale, 96 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["lineTo", 75 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale],
+                ["arcTo", 82 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale, 82 * Block.blockSetting.blockScale, 83 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 82 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale, 80 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 75 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale],
+                ["lineTo", 75 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale],
+                ["lineTo", 25 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale],
+                ["lineTo", 25 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale],
+                ["arcTo", 32 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale, 32 * Block.blockSetting.blockScale, 67 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 32 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale, 30 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 25 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale],
+                ["arcTo", 25 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 21 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["arcTo", 0 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 96 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["lineTo", 0 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale],
+                ["arcTo", 7 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale, 7 * Block.blockSetting.blockScale, 33 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 7 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 5 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 0 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale],
+                ["arcTo", 0 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                0 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale,
+                100 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale,
+                100 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale,
+                75 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale,
+                75 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale,
+
+                75 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale,
+                82 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale,
+                82 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale,
+                75 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale,
+                75 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale,
+                25 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale,
+                25 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale,
+                32 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale,
+                32 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale,
+
+                25 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale,
+                25 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale,
+                0 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale,
+                0 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale,
+                7 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale,
+                7 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale,
+                0 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale,
+                0 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                7 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+
+                7 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                0 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                0 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale
+            ]
+        }
+
+        private blockBackgroundForIfelse1: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 4 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale],
+                ["arcTo", 25 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 25 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["lineTo", 25 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale],
+                ["arcTo", 32 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 32 * Block.blockSetting.blockScale, 17 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 32 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale, 30 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 25 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale],
+                ["arcTo", 25 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale, 21 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["arcTo", 0 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 46 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["lineTo", 0 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale],
+                ["arcTo", 7 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale, 7 * Block.blockSetting.blockScale, 33 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 7 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 5 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 0 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale],
+                ["arcTo", 0 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                0 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale,
+                25 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale,
+                25 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                32 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                32 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                25 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                25 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale,
+                0 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale,
+                0 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                7 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                7 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                0 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                0 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale
+            ]
+        }
+
+        private blockBackgroundForIfelse2: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 54 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale],
+                ["arcTo", 75 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 75 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["lineTo", 75 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale],
+                ["arcTo", 82 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 82 * Block.blockSetting.blockScale, 17 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 82 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale, 80 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 75 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale],
+                ["lineTo", 75 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale],
+                ["arcTo", 82 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale, 82 * Block.blockSetting.blockScale, 67 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 82 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale, 80 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 75 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale],
+                ["arcTo", 75 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 71 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["arcTo", 50 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 50 * Block.blockSetting.blockScale, 96 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["lineTo", 50 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale],
+                ["arcTo", 57 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale, 57 * Block.blockSetting.blockScale, 33 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 57 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 55 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 50 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale],
+                ["arcTo", 50 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 54 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                50 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale,
+                75 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale,
+                75 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                82 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                82 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                75 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                75 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale,
+
+                82 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale,
+                82 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale,
+                75 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale,
+                75 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale,
+
+                50 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale,
+                50 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                57 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                57 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                50 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                50 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale
+            ]
+        }
+
+        private blockBackgroundForIfelse3: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 104 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale],
+                ["arcTo", 125 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 125 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["lineTo", 125 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale],
+                ["arcTo", 132 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 132 * Block.blockSetting.blockScale, 17 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 132 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale, 130 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 125 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale],
+                ["arcTo", 125 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 121 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["arcTo", 100 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale, 96 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["lineTo", 100 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale],
+                ["arcTo", 107 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale, 107 * Block.blockSetting.blockScale, 83 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 107 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale, 105 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 100 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale],
+                ["lineTo", 100 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale],
+                ["arcTo", 107 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale, 107 * Block.blockSetting.blockScale, 33 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["arcTo", 107 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 105 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale, 2 * Block.blockSetting.blockScale],
+                ["lineTo", 100 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale],
+                ["arcTo", 100 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 104 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale, 4 * Block.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                200 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale,
+                225 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale,
+                225 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                232 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                232 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                225 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                225 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale,
+                200 * Block.blockSetting.blockScale, 100 * Block.blockSetting.blockScale,
+                200 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale,
+                207 * Block.blockSetting.blockScale, 85 * Block.blockSetting.blockScale,
+                207 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale,
+                200 * Block.blockSetting.blockScale, 65 * Block.blockSetting.blockScale,
+                200 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                207 * Block.blockSetting.blockScale, 35 * Block.blockSetting.blockScale,
+                207 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                200 * Block.blockSetting.blockScale, 15 * Block.blockSetting.blockScale,
+                200 * Block.blockSetting.blockScale, 0 * Block.blockSetting.blockScale
+            ]
+        }
         private textInputSetting1: TextInputSetting = {
             sizeGrid: "0,10,0,10",
             font: "Arial",
@@ -201,17 +382,9 @@ module Marmot {
         public create(type: string): Block {
             let textureSettings: Array<ResourceSetting> = [];
             let inputSettings: Array<InputSettings> = [];
-            let backgroundSetting: BackgroundSetting = {
-                blockFillStyle: null,
-                hitAreaBackground: null,
-                pathBackground: null
-            };
+            let backgroundSettings: Array<BackgroundSetting> = [];
             let block: Block;
 
-            backgroundSetting.hitAreaBackground = this.blockBackground1.hitAreaBackground;
-            backgroundSetting.pathBackground = this.blockBackground1.pathBackground;
-            let blockFillStyle = this.chooseBlockFillStyle(type);
-            backgroundSetting.blockFillStyle = blockFillStyle;
             if (type == "move") {
                 textureSettings.push(
                     {
@@ -228,8 +401,14 @@ module Marmot {
                         resourceSetting: this.inputSetting1,
                         textInputSetting: this.textInputSetting1
                     }
-                )
-                block = new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                );
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground1.hitAreaBackground,
+                    pathBackground: this.blockBackground1.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                block = new CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -250,7 +429,13 @@ module Marmot {
                         textInputSetting: this.textInputSetting1
                     }
                 )
-                block = new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground1.hitAreaBackground,
+                    pathBackground: this.blockBackground1.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                block = new CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -265,7 +450,13 @@ module Marmot {
                         height: 30
                     }
                 );
-                let block = new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground1.hitAreaBackground,
+                    pathBackground: this.blockBackground1.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                let block = new CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -280,7 +471,13 @@ module Marmot {
                         height: 30
                     }
                 );
-                let block = new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground1.hitAreaBackground,
+                    pathBackground: this.blockBackground1.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                let block = new CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -303,7 +500,13 @@ module Marmot {
                     }
                 )
                 sliderSetting = this.sliderSetting1;
-                let blockSize = new CommandBlock(textureSettings, inputSettings, backgroundSetting, sliderSetting);
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground1.hitAreaBackground,
+                    pathBackground: this.blockBackground1.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                let blockSize = new CommandBlock(textureSettings, inputSettings, backgroundSettings, sliderSetting);
                 blockSize.initialize();
 
                 let input: LineInput = blockSize.getChildByName("input") as LineInput;
@@ -335,7 +538,13 @@ module Marmot {
                         textInputSetting: this.textInputSetting2
                     }
                 )
-                let block = new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground1.hitAreaBackground,
+                    pathBackground: this.blockBackground1.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                let block = new CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -350,9 +559,13 @@ module Marmot {
                         height: 39
                     }
                 );
-                backgroundSetting.hitAreaBackground = this.blockBackground2.hitAreaBackground;
-                backgroundSetting.pathBackground = this.blockBackground2.pathBackground;
-                let block = new HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground2.hitAreaBackground,
+                    pathBackground: this.blockBackground2.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                let block = new HeadCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -367,9 +580,13 @@ module Marmot {
                         height: 39
                     }
                 );
-                backgroundSetting.hitAreaBackground = this.blockBackground2.hitAreaBackground;
-                backgroundSetting.pathBackground = this.blockBackground2.pathBackground;
-                let block = new HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground2.hitAreaBackground,
+                    pathBackground: this.blockBackground2.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                let block = new HeadCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -390,7 +607,13 @@ module Marmot {
                         textInputSetting: this.textInputSetting2
                     }
                 )
-                let block = new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground1.hitAreaBackground,
+                    pathBackground: this.blockBackground1.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                let block = new CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -411,7 +634,13 @@ module Marmot {
                         textInputSetting: this.textInputSetting2
                     }
                 )
-                let block = new CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground1.hitAreaBackground,
+                    pathBackground: this.blockBackground1.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                let block = new CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -442,13 +671,101 @@ module Marmot {
                         height: 15
                     }
                 );
-                backgroundSetting.hitAreaBackground = this.blockBackgroundForLoop.hitAreaBackground;
-                backgroundSetting.pathBackground = this.blockBackgroundForLoop.pathBackground;
-                let block = new LoopCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackgroundForForeverLoop.hitAreaBackground,
+                    pathBackground: this.blockBackgroundForForeverLoop.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                let block = new LoopCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
-
+            else if (type == "ifelse") {
+                textureSettings.push(
+                    {
+                        name: "questionMark",
+                        path: "materials/texture_questionMark.png",
+                        x: 8,
+                        y: 15,
+                        width: 15,
+                        height: 15
+                    },
+                    {
+                        name: "yes",
+                        path: "materials/texture_yes.png",
+                        x: 59,
+                        y: 15,
+                        width: 15,
+                        height: 15
+                    },
+                    {
+                        name: "no",
+                        path: "materials/texture_no.png",
+                        x: 59,
+                        y: 66,
+                        width: 15,
+                        height: 15
+                    }
+                );
+                let fillStyle = this.chooseBlockFillStyle(type);
+                let backgroundSetting1: BackgroundSetting = {
+                    blockFillStyle: fillStyle,
+                    hitAreaBackground: this.blockBackgroundForIfelse1.hitAreaBackground,
+                    pathBackground: this.blockBackgroundForIfelse1.pathBackground
+                };
+                let backgroundSetting2: BackgroundSetting = {
+                    blockFillStyle: fillStyle,
+                    hitAreaBackground: this.blockBackgroundForIfelse2.hitAreaBackground,
+                    pathBackground: this.blockBackgroundForIfelse2.pathBackground
+                };
+                let backgroundSetting3: BackgroundSetting = {
+                    blockFillStyle: fillStyle,
+                    hitAreaBackground: this.blockBackgroundForIfelse3.hitAreaBackground,
+                    pathBackground: this.blockBackgroundForIfelse3.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting1);
+                backgroundSettings.push(backgroundSetting2);
+                backgroundSettings.push(backgroundSetting3);
+                let block = new IfelseCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                block.initialize();
+                return block;
+            }
+            else if (type == "stop") {
+                let comboBoxSlotSetting: ComboBoxSlotSetting;
+                textureSettings.push(
+                    {
+                        name: "stop",
+                        path: "materials/texture_stop.png",
+                        x: 12,
+                        y: 1,
+                        width: 35,
+                        height: 35
+                    }
+                );
+                comboBoxSlotSetting =
+                    {
+                        skin: "comp/combobox.png",
+                        name: "comboBox",
+                        sizeGrid: "0,51,0,10",
+                        labelSize: 15,
+                        itemSize: 15,
+                        x: 10,
+                        y: 37,
+                        labels: ", 停止所有, 停止人物, 停止当前块",
+                        width:37,
+                        height:10
+                    };
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground1.hitAreaBackground,
+                    pathBackground: this.blockBackground1.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                block = new CommandBlock(textureSettings, inputSettings, backgroundSettings, null, comboBoxSlotSetting);
+                block.initialize();
+                return block;
+            }
         }
 
         private chooseBlockFillStyle(type: string): string {

@@ -23,37 +23,43 @@ module Marmot {
         /**
          * isHighlight is true after calling drawBackgroundHighlight
          */
-        public isHighlight:boolean;
+        public isHighlight: boolean;
 
         public attachPoints: Array<AttachHook>;
 
-        public action:string;
+        public action: string;
 
         protected static minimumHookDistance: number = 50;
 
         protected textureSettings: Array<ResourceSetting>;
         protected inputSettings: Array<InputSettings>;
-        protected backgroundSetting: BackgroundSetting;
+        protected backgroundSettings: Array<BackgroundSetting>;
         public sliderSetting: SliderSetting;
+        public comboBoxSlotSetting: ComboBoxSlotSetting;
         protected lastAttachTarget: AttachTarget;
 
 
         constructor(textureSettings: Array<ResourceSetting>,
             inputSettings: Array<InputSettings>,
-            backgroundSetting: BackgroundSetting,
-            sliderSetting: SliderSetting) {
+            backgroundSettings: Array<BackgroundSetting>,
+            sliderSetting?: SliderSetting,
+            comboBoxSlotSetting?: ComboBoxSlotSetting) {
             super();
             this.textureSettings = textureSettings;
             this.inputSettings = inputSettings;
-            this.backgroundSetting = backgroundSetting;
+            this.backgroundSettings = backgroundSettings;
             this.sliderSetting = sliderSetting;
+            this.comboBoxSlotSetting = comboBoxSlotSetting;
             this.width = 50 * Block.blockSetting.blockScale;
             this.height = 50 * Block.blockSetting.blockScale;
             this.myWidth = this.width;
             this.myHeight = this.height;
             this.lastAttachTarget = null;
             this.isHighlight = false;
-            /*
+
+        }
+
+        public initialize(): void {
 
             this.drawBackgroundNormal();
 
@@ -68,40 +74,20 @@ module Marmot {
             }
             if (this.sliderSetting != null) {
                 this.drawSlider();
+            }
+            if(this.comboBoxSlotSetting != null){
+                this.drawComboBox();
             }
 
             this.attachPoints = this.getAttachPoints();
             this.setEventListening();
-            */
+        }
+
+        public evaluate() {
 
         }
 
-        public initialize():void{
-
-            this.drawBackgroundNormal();
-
-            this.drawHitArea();
-
-            if (this.textureSettings.length != 0) {
-                this.drawTextures();
-            }
-
-            if (this.inputSettings.length != 0) {
-                this.drawInputs();
-            }
-            if (this.sliderSetting != null) {
-                this.drawSlider();
-            }
-
-            this.attachPoints = this.getAttachPoints();
-            this.setEventListening();            
-        }
-
-        public evaluate(){
-
-        }
-
-        public receiver():Marmot.Sprite|Marmot.StagePanel{
+        public receiver(): Marmot.Sprite | Marmot.StagePanel {
             let headBlock = this.getTopBlock();
             return (headBlock.parent.parent as ScriptArea).owner;
         }
@@ -123,7 +109,7 @@ module Marmot {
 		* print width and height of all blocks in scriptArea
 		*/
 
-        public print():void{
+        public print(): void {
             /*
             let top  = this.getTopBlock();
             Laya.Log.maxCount = 40;
@@ -150,10 +136,10 @@ module Marmot {
             let children = [];
 
             let nextBlockChild = this.getNextBlockChild();
-            if(nextBlockChild != null){
+            if (nextBlockChild != null) {
                 children.push(this.getNextBlockChild());
             }
-            else{
+            else {
                 return [];
             }
 
@@ -169,14 +155,14 @@ module Marmot {
         public getAllNestedBlockChildren(): Array<Block> {
             let children = [];
 
-            if(this instanceof LoopCommandBlock){
+            if (this instanceof LoopCommandBlock) {
                 let nestedFirstChild = this.commandSlot.getNextBlockChild() as CommandBlock;
-                if(nestedFirstChild != null){
+                if (nestedFirstChild != null) {
                     children = children.concat(nestedFirstChild.blockSequence());
                 }
             }
             let nextBlockChild = this.getNextBlockChild();
-            if(nextBlockChild != null){
+            if (nextBlockChild != null) {
                 children.push(this.getNextBlockChild());
             }
 
@@ -225,25 +211,29 @@ module Marmot {
         public abstract attachTarget(block: Block, attachPoint: Point): void;
 
         protected drawBackgroundNormal(): void {
-            this.graphics.drawPath(0, 0, this.backgroundSetting.pathBackground,
-                {
-                    fillStyle: this.backgroundSetting.blockFillStyle
-                },
-                {
-                    "strokeStyle": Block.blockSetting.blockStrokeStyleNormal,
-                    "lineWidth": Block.blockSetting.blockLineWidthNormal
-                });
+            this.backgroundSettings.forEach((backgroundSetting) => {
+                this.graphics.drawPath(0, 0, backgroundSetting.pathBackground,
+                    {
+                        fillStyle: backgroundSetting.blockFillStyle
+                    },
+                    {
+                        "strokeStyle": Block.blockSetting.blockStrokeStyleNormal,
+                        "lineWidth": Block.blockSetting.blockLineWidthNormal
+                    });
+            })
         }
 
         protected drawBackgroundHighlight(): void {
-            this.graphics.drawPath(0, 0, this.backgroundSetting.pathBackground,
-                {
-                    fillStyle: this.backgroundSetting.blockFillStyle
-                },
-                {
-                    "strokeStyle": Block.blockSetting.blockStrokeStyleHighlight,
-                    "lineWidth": Block.blockSetting.blockLineWidthHighlight
-                });
+            this.backgroundSettings.forEach((backgroundSetting) => {
+                this.graphics.drawPath(0, 0, backgroundSetting.pathBackground,
+                    {
+                        fillStyle: backgroundSetting.blockFillStyle
+                    },
+                    {
+                        "strokeStyle": Block.blockSetting.blockStrokeStyleHighlight,
+                        "lineWidth": Block.blockSetting.blockLineWidthHighlight
+                    });
+            })
         }
 
         protected drawTextures(): void {
@@ -259,7 +249,9 @@ module Marmot {
 
         protected drawHitArea(): void {
             let hit = new HitArea();
-            hit.hit.drawPoly(0, 0, this.backgroundSetting.hitAreaBackground, "#ffff00");
+            this.backgroundSettings.forEach((backgroundSetting) => {
+                hit.hit.drawPoly(0, 0, backgroundSetting.hitAreaBackground, "#ffff00");
+            });
             this.hitArea = hit;
         }
 
@@ -267,6 +259,9 @@ module Marmot {
             this.inputSettings.forEach((inputSetting) => {
                 this.addChild(new LineInput(inputSetting));
             })
+        }
+        protected drawComboBox(): void {
+            this.addChild(new ComboBoxSlot(this.comboBoxSlotSetting));
         }
 
         protected onMouseDown(e: Event): void {
@@ -323,7 +318,7 @@ module Marmot {
             vs.width = this.sliderSetting.width;
 
             vs.pos(this.sliderSetting.x, this.sliderSetting.y);
-            vs.sizeGrid =  "0,10,0,10";
+            vs.sizeGrid = "0,10,0,10";
             vs.min = this.sliderSetting.min;
             vs.max = this.sliderSetting.max;
             vs.value = this.sliderSetting.initialValue;
@@ -362,6 +357,6 @@ module Marmot {
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
         }
     }
-}		
+}
 
 

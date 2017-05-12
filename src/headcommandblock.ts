@@ -12,12 +12,14 @@ module Marmot {
 
         constructor(textureSettings: Array<ResourceSetting>,
             inputSettings: Array<InputSettings>,
-            backgroundSetting: BackgroundSetting,
-            sliderSetting: SliderSetting) {
+            backgroundSettings: Array<BackgroundSetting>,
+            sliderSetting?: SliderSetting,
+            comboBoxSlotSetting?: ComboBoxSlotSetting) {
             super(textureSettings,
                 inputSettings,
-                backgroundSetting,
-                sliderSetting);
+                backgroundSettings,
+                sliderSetting,
+                comboBoxSlotSetting);
 
         }
 

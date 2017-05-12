@@ -42,6 +42,14 @@ var Marmot;
                 "name": "foreverLoop",
                 "path": "materials/block_foreverLoop.png"
             },
+            {
+                "name": "ifelse",
+                "path": "materials/block_ifelse.png"
+            },
+            {
+                "name": "stop",
+                "path": "materials/block_stop.png"
+            }
         ],
         "event": [
             {
