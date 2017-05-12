@@ -1,4 +1,5 @@
 module Marmot{
+    import Button = Laya.Button;
     export class Thread{
 
         public timeout: number;
@@ -139,6 +140,52 @@ module Marmot{
             }
             this.pushContext('doYield');
             this.pushContext();
+        }
+
+        public foreverLoop(body){// loop forever
+            this.context.inputs = [];//that's the reason why it can loop forever
+            if(body){
+                this.pushContext(body.blockSequence());
+            }
+            this.pushContext();
+        }
+
+        public doStop(choice){
+            switch(choice){
+                case 'all':
+                    this.doStopAll();
+                    break;
+                case 'this sprite':
+                    this.doStopSprite();
+                    break;
+                case 'this thread':
+                    this.doStopThread();
+                    break;
+            }
+        }
+
+        public doStopAll(){
+            let ide:IDE = IDE.getIDE();
+            let threadManager:ThreadManager = ide.stageArea.threadManager;
+            if(threadManager){
+                threadManager.stopAll();
+            }
+            let btn_play = ide.controlBar.getChildByName("btn_play") as Button;
+            ide.pressStart(btn_play);
+            threadManager.isRunning = false;
+        }
+
+        public doStopThread(){
+            this.stop();
+        }
+
+        public doStopSprite(){
+            let sprite = this.homeContext.receiver;
+            let threadManager:ThreadManager = IDE.getIDE().stageArea.threadManager;
+            threadManager.threads.forEach(function(thread){
+                if(thread.homeContext.receiver == sprite)
+                    thread.stop();
+            })
         }
 
         public getBlockReceiver(){
