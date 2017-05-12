@@ -662,7 +662,7 @@ var Marmot;
                 block_9.initialize();
                 return block_9;
             }
-            else if (type == "stop") {
+            else if (type == "doStop") {
                 var comboBoxSlotSetting = void 0;
                 textureSettings.push({
                     name: "stop",

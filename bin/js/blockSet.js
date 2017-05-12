@@ -47,7 +47,7 @@ var Marmot;
                 "path": "materials/block_ifelse.png"
             },
             {
-                "name": "stop",
+                "name": "doStop",
                 "path": "materials/block_stop.png"
             }
         ],

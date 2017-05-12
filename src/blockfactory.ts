@@ -731,7 +731,7 @@ module Marmot {
                 block.initialize();
                 return block;
             }
-            else if (type == "stop") {
+            else if (type == "doStop") {
                 let comboBoxSlotSetting: ComboBoxSlotSetting;
                 textureSettings.push(
                     {

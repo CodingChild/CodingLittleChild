@@ -263,9 +263,8 @@ var Marmot;
                 }
                 else if (child instanceof Marmot.LoopCommandBlock) {
                     if (child.commandSlot.width == 0) {
-                        points.push(child.attachPoints[2]);
+                        points.push(child.attachPoints[1]);
                     }
-                    points.push(child.attachPoints[1]);
                 }
                 else {
                     points = child.attachPoints;
