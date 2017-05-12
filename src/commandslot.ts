@@ -1,7 +1,7 @@
 module Marmot{
     import Event = Laya.Event;
 
-    export class CommandSlot extends SyntaxElement{
+    export class CommandSlot extends Argument{
         constructor(){
             super();
             this.myWidth = 0;

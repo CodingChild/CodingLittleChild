@@ -40,7 +40,7 @@ var Marmot;
             },
             {
                 "name": "foreverLoop",
-                "path": "materials/block_wait.png"
+                "path": "materials/block_foreverLoop.png"
             },
         ],
         "event": [

@@ -147,6 +147,7 @@ module Marmot{
             if(body){
                 this.pushContext(body.blockSequence());
             }
+            this.pushContext('doYield');
             this.pushContext();
         }
 
