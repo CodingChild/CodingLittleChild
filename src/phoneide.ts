@@ -25,6 +25,7 @@ module Marmot {
         protected createScriptArea(): void {
             this.scriptArea = this.currentSprite.scriptArea;
             this.addChild(this.scriptArea);
+            
         }
         protected createControlBar(): void {
             let btn_home: Button = new Button("materials/btn_home.png");

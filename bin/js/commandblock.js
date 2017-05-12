@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Marmot;
 (function (Marmot) {
     var Point = Laya.Point;
+    var Box = Laya.Box;
     var CommandBlock = (function (_super) {
         __extends(CommandBlock, _super);
         function CommandBlock(textureSettings, inputSettings, backgroundSetting, sliderSetting) {
@@ -30,67 +31,144 @@ var Marmot;
                     tailBlock.addChild(this);
                     this.x = tailBlock.myWidth + Marmot.Block.blockSetting.distanceBetweenBlocks;
                     this.y = 0;
+                    var parentBlocks = target.getAllParentBlocks();
+                    if (parentBlocks.length > 0) {
+                        parentBlocks.forEach(function (parentBlock) {
+                            parentBlock.width = parentBlock.width + target.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                        });
+                    }
+                    target.width = target.width + this.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    var topBlock = target.getTopBlock();
+                    if (topBlock.parent instanceof Marmot.CommandSlot) {
+                        var commandSlot = topBlock.parent;
+                        var loopCommandBlock = commandSlot.parent;
+                        commandSlot.width = topBlock.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                        commandSlot.height = topBlock.height;
+                        var oldWidth = loopCommandBlock.myWidth;
+                        loopCommandBlock.myWidth = loopCommandBlock.commandSlot.width + 50 * Marmot.Block.blockSetting.blockScale;
+                        loopCommandBlock.width = loopCommandBlock.width - oldWidth + loopCommandBlock.myWidth;
+                        loopCommandBlock.updateBackgroundSetting();
+                    }
                 }
-                else {
-                    /*
-                    let tailBlock = target.getTailBlock();
-                    let blockSequence = target.getAllBlockChildren();
-                    let totalWidth = target.width;
-                    Point.EMPTY.setTo(this.x, this.y);
-                    blockSequence.forEach((block) => {
-                        totalWidth += block.width;
-                    })
-
-                    Point.EMPTY.setTo(Point.EMPTY.x - totalWidth - Block.blockSetting.distanceBetweenBlocks * (blockSequence.length + 1), Point.EMPTY.y);
-                    */
+                else if (parent_1 instanceof Box) {
                     var tailBlock = target.getTailBlock();
-                    Point.EMPTY.setTo(Point.EMPTY.x - target.width - Marmot.Block.blockSetting.distanceBetweenBlocks, Point.EMPTY.y);
-                    parent_1.addChild(target);
+                    Point.EMPTY.setTo(this.x - target.width - Marmot.Block.blockSetting.distanceBetweenBlocks, this.y);
+                    parent_1.parent.addChild(target);
                     target.x = Point.EMPTY.x;
                     target.y = Point.EMPTY.y;
                     this.removeSelf();
                     tailBlock.addChild(this);
                     this.x = tailBlock.myWidth + Marmot.Block.blockSetting.distanceBetweenBlocks;
                     this.y = 0;
+                    var parentBlocks = target.getAllParentBlocks();
+                    if (parentBlocks.length > 0) {
+                        parentBlocks.forEach(function (parentBlock) {
+                            parentBlock.width = parentBlock.width + target.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                        });
+                    }
+                    target.width = target.width + this.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
                 }
-                var parentBlocks = target.getAllParentBlocks();
-                if (parentBlocks.length > 0) {
-                    parentBlocks.forEach(function (parentBlock) {
-                        parentBlock.width = parentBlock.width + target.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
-                    });
+                else if (parent_1 instanceof Marmot.CommandSlot) {
+                    this.removeSelf();
+                    target.removeSelf();
+                    parent_1.addChild(target);
+                    target.x = Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    target.y = 0;
+                    var tailBlock = target.getTailBlock();
+                    tailBlock.addChild(this);
+                    this.x = tailBlock.myWidth + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    this.y = 0;
+                    target.width = target.width + this.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    target.height = Math.max(target.height, this.height);
+                    parent_1.width = target.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    parent_1.height = target.height;
+                    var loopCommandBlock = parent_1.parent;
+                    var oldWidth = loopCommandBlock.myWidth;
+                    loopCommandBlock.myWidth = loopCommandBlock.commandSlot.width + 50 * Marmot.Block.blockSetting.blockScale;
+                    loopCommandBlock.width = loopCommandBlock.width - oldWidth + loopCommandBlock.myWidth;
+                    loopCommandBlock.updateBackgroundSetting();
                 }
-                target.width = target.width + this.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
             }
             else if (this.attachPoints[1].attachCoordinate.x == attachPoint.x && this.attachPoints[1].attachCoordinate.y == attachPoint.y) {
-                var child = this.getNextBlockChild();
                 target.removeSelf();
                 this.addChild(target);
                 target.x = this.myWidth + Marmot.Block.blockSetting.distanceBetweenBlocks;
                 target.y = 0;
-                if (child != null) {
-                    target.addChild(child);
-                }
-                this.width = this.width + target.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
-                var parentBlocks = this.getAllParentBlocks();
+                var parentBlocks = target.getAllParentBlocks();
                 parentBlocks.forEach(function (parentBlock) {
                     parentBlock.width = parentBlock.width + target.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
                 });
+                var topBlock = this.getTopBlock();
+                if (topBlock.parent instanceof Marmot.CommandSlot) {
+                    var commandSlot = topBlock.parent;
+                    var loopCommandBlock = commandSlot.parent;
+                    commandSlot.width = topBlock.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    commandSlot.height = topBlock.height;
+                    var oldWidth = loopCommandBlock.myWidth;
+                    loopCommandBlock.myWidth = loopCommandBlock.commandSlot.width + 50 * Marmot.Block.blockSetting.blockScale;
+                    loopCommandBlock.width = loopCommandBlock.width - oldWidth + loopCommandBlock.myWidth;
+                    loopCommandBlock.updateBackgroundSetting();
+                }
             }
         };
+        CommandBlock.prototype.blockSequence = function () {
+            var blocks = [];
+            blocks.push(this);
+            blocks = blocks.concat(this.getAllBlockChildren());
+            return blocks;
+        };
         CommandBlock.prototype.onDragStart = function (e) {
+            var _this = this;
             var ide = Marmot.IDE.getIDE();
             ide.scriptArea.hScrollBar.stopScroll();
             ide.scriptArea.vScrollBar.stopScroll();
-            if ((this.parent instanceof Marmot.Block) == true) {
+            if (this.parent instanceof Marmot.Block) {
                 var parent_2 = this.parent;
-                while (parent_2 instanceof Marmot.Block) {
-                    this.x = this.x + parent_2.x;
-                    this.y = this.y + parent_2.y;
-                    parent_2.width = parent_2.width - this.width - Marmot.Block.blockSetting.distanceBetweenBlocks;
-                    parent_2 = parent_2.parent;
+                var parentBlocks = this.getAllParentBlocks();
+                if (parentBlocks.length > 0) {
+                    parentBlocks.forEach(function (parentBlock) {
+                        parentBlock.width = parentBlock.width - _this.width - Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    });
                 }
+                var topBlock = this.getTopBlock();
+                Point.EMPTY.setTo(this.x, this.y);
+                parent_2.localToGlobal(Point.EMPTY);
+                ide.scriptArea.content.globalToLocal(Point.EMPTY);
+                this.pos(Point.EMPTY.x, Point.EMPTY.y);
                 this.parent.removeChild(this);
                 Laya.stage.getChildByName("ide").getChildByName("scriptArea").addChild(this);
+                if (topBlock.parent instanceof Marmot.CommandSlot) {
+                    var commandSlot = topBlock.parent;
+                    var loopCommandBlock = commandSlot.parent;
+                    commandSlot.width = topBlock.width + Marmot.Block.blockSetting.distanceBetweenBlocks;
+                    commandSlot.height = topBlock.height;
+                    var oldWidth = loopCommandBlock.myWidth;
+                    loopCommandBlock.myWidth = loopCommandBlock.commandSlot.width + 50 * Marmot.Block.blockSetting.blockScale;
+                    loopCommandBlock.width = loopCommandBlock.width - oldWidth + loopCommandBlock.myWidth;
+                    loopCommandBlock.updateBackgroundSetting();
+                }
+            }
+            if ((this.parent instanceof Marmot.CommandSlot) == true) {
+                var commandSlot = this.parent;
+                var scriptArea = Laya.stage.getChildByName("ide").getChildByName("scriptArea");
+                Point.EMPTY.setTo(this.x, this.y);
+                this.localToGlobal(Point.EMPTY);
+                scriptArea.globalToLocal(Point.EMPTY);
+                commandSlot.myHeight = 0;
+                commandSlot.myWidth = 0;
+                commandSlot.height = 0;
+                commandSlot.width = 0;
+                var parent_3 = commandSlot.parent;
+                if (parent_3 instanceof Marmot.LoopCommandBlock) {
+                    parent_3.width = 100 * Marmot.Block.blockSetting.blockScale;
+                    parent_3.height = 100 * Marmot.Block.blockSetting.blockScale;
+                    parent_3.myWidth = parent_3.width;
+                    parent_3.myHeight = parent_3.height;
+                    parent_3.updateBackgroundSetting();
+                }
+                this.parent.removeChild(this);
+                scriptArea.addChild(this);
+                this.pos(Point.EMPTY.x, Point.EMPTY.y);
             }
         };
         CommandBlock.prototype.drawHook = function (attachPoint) {
@@ -156,7 +234,7 @@ var Marmot;
             this.parent._childs.forEach(function (child) {
                 if (child instanceof Marmot.Block && child != _this) {
                     targets.push(child);
-                    targets = targets.concat(child.getAllBlockChildren());
+                    targets = targets.concat(child.getAllNestedBlockChildren());
                     headTargets.push(child);
                 }
             });
@@ -174,7 +252,7 @@ var Marmot;
             this.localToGlobal(Point.TEMP);
             targets.forEach(function (child) {
                 var points = [];
-                if (child.getNextBlockChild() != null && (child.parent instanceof Marmot.Block) == true) {
+                if (child.getNextBlockChild() != null && ((child.parent instanceof Marmot.Block) == true || (child.parent instanceof Marmot.CommandSlot) == true)) {
                     child.attachPoints.forEach(function (targetAttachPoint) {
                         if (targetAttachPoint.isHook == false) {
                             points.push(targetAttachPoint);
@@ -182,6 +260,12 @@ var Marmot;
                     });
                 }
                 else if (child.getNextBlockChild() != null && (child.parent instanceof Marmot.Block) == false) {
+                }
+                else if (child instanceof Marmot.LoopCommandBlock) {
+                    if (child.commandSlot.width == 0) {
+                        points.push(child.attachPoints[2]);
+                    }
+                    points.push(child.attachPoints[1]);
                 }
                 else {
                     points = child.attachPoints;

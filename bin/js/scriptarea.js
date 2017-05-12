@@ -36,7 +36,7 @@ var Marmot;
                 if (child.isHighlight == true) {
                     highlightBlocks.push(child);
                 }
-                child.getAllBlockChildren().forEach(function (blockChild) {
+                child.getAllNestedBlockChildren().forEach(function (blockChild) {
                     if (blockChild.isHighlight == true) {
                         highlightBlocks.push(blockChild);
                     }

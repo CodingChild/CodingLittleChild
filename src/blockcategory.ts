@@ -49,7 +49,6 @@ module Marmot {
 
         protected updateItem(cell: ListItem, index: number): void {
             let blockCategoryContent:BlockCategoryContent = cell.dataSource;
-            Laya.Log.print(blockCategoryContent.url);
             cell.setImg(blockCategoryContent.url,
                 this.listItemSetting.imageX,
                 this.listItemSetting.imageY,

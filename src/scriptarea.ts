@@ -38,7 +38,7 @@ module Marmot {
                 if (child.isHighlight == true) {
                     highlightBlocks.push(child);
                 }
-                child.getAllBlockChildren().forEach((blockChild) => {
+                child.getAllNestedBlockChildren().forEach((blockChild) => {
                     if (blockChild.isHighlight == true) {
                         highlightBlocks.push(blockChild);
                     }

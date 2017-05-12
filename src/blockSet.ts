@@ -41,7 +41,11 @@ module Marmot {
             {
                 "name": "wait",
                 "path": "materials/block_wait.png"
-            }
+            },
+            {
+                "name": "foreverLoop",
+                "path": "materials/block_wait.png"
+            },            
         ],
         "event": [
             {
