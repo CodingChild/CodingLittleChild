@@ -14,7 +14,7 @@ module Marmot{
         /**
          * cachedInputs store all inputs syntaxelement
          */
-        private cachedInputs:Array<SyntaxElement>;
+        protected cachedInputs:Array<SyntaxElement>;
 
         constructor(){
             super();
@@ -42,7 +42,7 @@ module Marmot{
          * answer my all parts, except my next block child
          */
 
-        private parts():Array<SyntaxElement>{
+        protected parts():Array<SyntaxElement>{
             let block:Block = null;
             let parts:Array<SyntaxElement> = [];
             if(this instanceof Block){

@@ -22,21 +22,43 @@ var Marmot;
             _this.myHeight = _this.height;
             _this.lastAttachTarget = null;
             _this.isHighlight = false;
-            _this.drawBackgroundNormal();
-            _this.drawHitArea();
-            if (_this.textureSettings.length != 0) {
-                _this.drawTextures();
-            }
-            if (_this.inputSettings.length != 0) {
-                _this.drawInputs();
-            }
-            if (_this.sliderSetting != null) {
-                _this.drawSlider();
-            }
-            _this.attachPoints = _this.getAttachPoints();
-            _this.setEventListening();
             return _this;
+            /*
+
+            this.drawBackgroundNormal();
+
+            this.drawHitArea();
+
+            if (this.textureSettings.length != 0) {
+                this.drawTextures();
+            }
+
+            if (this.inputSettings.length != 0) {
+                this.drawInputs();
+            }
+            if (this.sliderSetting != null) {
+                this.drawSlider();
+            }
+
+            this.attachPoints = this.getAttachPoints();
+            this.setEventListening();
+            */
         }
+        Block.prototype.initialize = function () {
+            this.drawBackgroundNormal();
+            this.drawHitArea();
+            if (this.textureSettings.length != 0) {
+                this.drawTextures();
+            }
+            if (this.inputSettings.length != 0) {
+                this.drawInputs();
+            }
+            if (this.sliderSetting != null) {
+                this.drawSlider();
+            }
+            this.attachPoints = this.getAttachPoints();
+            this.setEventListening();
+        };
         Block.prototype.evaluate = function () {
         };
         Block.prototype.receiver = function () {
@@ -59,35 +81,59 @@ var Marmot;
         * print width and height of all blocks in scriptArea
         */
         Block.prototype.print = function () {
-            var top = this.getTopBlock();
+            /*
+            let top  = this.getTopBlock();
             Laya.Log.maxCount = 40;
             Laya.Log.clear();
-            var blocks = [];
-            var i = 1;
-            top.parent._childs.forEach(function (childtop) {
+            let blocks  = [];
+            let i = 1;
+            (top.parent._childs as Block[]).forEach((childtop)=>{
                 Laya.Log.print("head");
                 Laya.Log.print(i + ":" + childtop.width + " " + childtop.height);
-                i++;
-                childtop.getAllBlockChildren().forEach(function (child) {
+                i ++;
+                childtop.getAllBlockChildren().forEach((child)=>{
                     Laya.Log.print(i + ":" + child.width + " " + child.height);
-                    i++;
-                });
+                    i ++;
+                })
                 Laya.Log.print("---------");
                 i = 1;
             });
+            */
         };
         /**
-        * answer my all block children
+        * answer my all block children, except blocks in commandslot
         */
         Block.prototype.getAllBlockChildren = function () {
             var children = [];
-            this._childs.forEach(function (child) {
-                if (child instanceof Block) {
-                    children.push(child);
-                }
-            });
+            var nextBlockChild = this.getNextBlockChild();
+            if (nextBlockChild != null) {
+                children.push(this.getNextBlockChild());
+            }
+            else {
+                return [];
+            }
             children.forEach(function (child) {
                 children = children.concat(child.getAllBlockChildren());
+            });
+            return children;
+        };
+        /**
+        * answer my all block children, including blocks in commandslot
+        */
+        Block.prototype.getAllNestedBlockChildren = function () {
+            var children = [];
+            if (this instanceof Marmot.LoopCommandBlock) {
+                var nestedFirstChild = this.commandSlot.getNextBlockChild();
+                if (nestedFirstChild != null) {
+                    children = children.concat(nestedFirstChild.blockSequence());
+                }
+            }
+            var nextBlockChild = this.getNextBlockChild();
+            if (nextBlockChild != null) {
+                children.push(this.getNextBlockChild());
+            }
+            children.forEach(function (child) {
+                children = children.concat(child.getAllNestedBlockChildren());
             });
             return children;
         };
@@ -179,9 +225,6 @@ var Marmot;
             this.zOrder = topValue + 1;
             this.updateZOrder();
         };
-        Block.prototype.onMouseOut = function (e) {
-            //this.removeHighlight(this);
-        };
         Block.prototype.onDragMove = function (e) {
             var target = null;
             target = this.closestAttachTarget();
@@ -226,20 +269,16 @@ var Marmot;
             block.drawTextures();
             this.isHighlight = false;
         };
-        Block.prototype.onMouseUp = function (e) {
-        };
         Block.prototype.setEventListening = function () {
             this.on(Event.DRAG_START, this, this.onDragStart);
             this.on(Event.DRAG_MOVE, this, this.onDragMove);
             this.on(Event.DRAG_END, this, this.onDragEnd);
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
-            this.on(Event.MOUSE_OUT, this, this.onMouseOut);
-            this.on(Event.MOUSE_UP, this, this.onMouseUp);
         };
         return Block;
     }(Marmot.SyntaxElement));
     Block.blockSetting = {
-        blockScale: 4.5,
+        blockScale: 3,
         blockStrokeStyleNormal: "#000000",
         blockStrokeStyleHighlight: "#fcff00",
         blockLineWidthHighlight: 8,

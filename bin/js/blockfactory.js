@@ -100,6 +100,69 @@ var Marmot;
                     0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale
                 ]
             };
+            this.blockBackgroundForLoop = {
+                blockFillStyle: null,
+                pathBackground: [
+                    ["moveTo", 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 100 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["lineTo", 100 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 107 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 107 * Marmot.Block.blockSetting.blockScale, 17 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 107 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 105 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
+                    ["lineTo", 100 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 100 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 75 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 75 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 82 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 82 * Marmot.Block.blockSetting.blockScale, 83 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 82 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 80 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
+                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale],
+                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale],
+                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale],
+                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 32 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 32 * Marmot.Block.blockSetting.blockScale, 67 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 32 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 30 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
+                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 25 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 21 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 7 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 7 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 7 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 5 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
+                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
+                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["closePath"]
+                ],
+                hitAreaBackground: [
+                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
+                    100 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
+                    100 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
+                    107 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
+                    107 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
+                    100 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
+                    100 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
+                    75 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
+                    75 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
+                    75 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
+                    82 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
+                    82 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
+                    75 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
+                    75 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
+                    25 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
+                    25 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
+                    32 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
+                    32 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
+                    25 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
+                    25 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
+                    0 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
+                    0 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
+                    7 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
+                    7 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
+                    0 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
+                    0 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
+                    7 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
+                    7 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
+                    0 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
+                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale
+                ]
+            };
             this.textInputSetting1 = {
                 sizeGrid: "0,10,0,10",
                 font: "Arial",
@@ -125,6 +188,7 @@ var Marmot;
                 hitAreaBackground: null,
                 pathBackground: null
             };
+            var block;
             backgroundSetting.hitAreaBackground = this.blockBackground1.hitAreaBackground;
             backgroundSetting.pathBackground = this.blockBackground1.pathBackground;
             var blockFillStyle = this.chooseBlockFillStyle(type);
@@ -142,7 +206,9 @@ var Marmot;
                     resourceSetting: this.inputSetting1,
                     textInputSetting: this.textInputSetting1
                 });
-                return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block.initialize();
+                return block;
             }
             else if (type == "setHeading") {
                 textureSettings.push({
@@ -157,7 +223,9 @@ var Marmot;
                     resourceSetting: this.inputSetting1,
                     textInputSetting: this.textInputSetting1
                 });
-                return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block.initialize();
+                return block;
             }
             else if (type == "show") {
                 textureSettings.push({
@@ -168,7 +236,9 @@ var Marmot;
                     width: 39,
                     height: 30
                 });
-                return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                var block_1 = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block_1.initialize();
+                return block_1;
             }
             else if (type == "hide") {
                 textureSettings.push({
@@ -179,7 +249,9 @@ var Marmot;
                     width: 39,
                     height: 30
                 });
-                return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                var block_2 = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block_2.initialize();
+                return block_2;
             }
             else if (type == "setSize") {
                 var sliderSetting = void 0;
@@ -197,6 +269,7 @@ var Marmot;
                 });
                 sliderSetting = this.sliderSetting1;
                 var blockSize = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, sliderSetting);
+                blockSize.initialize();
                 var input = blockSize.getChildByName("input");
                 var vslider_1 = blockSize.getChildByName("vslider");
                 input.textinput.editable = false;
@@ -221,7 +294,9 @@ var Marmot;
                     resourceSetting: this.inputSetting1,
                     textInputSetting: this.textInputSetting2
                 });
-                return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                var block_3 = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block_3.initialize();
+                return block_3;
             }
             else if (type == "play") {
                 textureSettings.push({
@@ -234,7 +309,9 @@ var Marmot;
                 });
                 backgroundSetting.hitAreaBackground = this.blockBackground2.hitAreaBackground;
                 backgroundSetting.pathBackground = this.blockBackground2.pathBackground;
-                return new Marmot.HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                var block_4 = new Marmot.HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block_4.initialize();
+                return block_4;
             }
             else if (type == "whenClicked") {
                 textureSettings.push({
@@ -247,7 +324,9 @@ var Marmot;
                 });
                 backgroundSetting.hitAreaBackground = this.blockBackground2.hitAreaBackground;
                 backgroundSetting.pathBackground = this.blockBackground2.pathBackground;
-                return new Marmot.HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                var block_5 = new Marmot.HeadCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block_5.initialize();
+                return block_5;
             }
             else if (type == "moveUp") {
                 textureSettings.push({
@@ -262,7 +341,9 @@ var Marmot;
                     resourceSetting: this.inputSetting1,
                     textInputSetting: this.textInputSetting2
                 });
-                return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                var block_6 = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block_6.initialize();
+                return block_6;
             }
             else if (type == "moveDown") {
                 textureSettings.push({
@@ -277,7 +358,38 @@ var Marmot;
                     resourceSetting: this.inputSetting1,
                     textInputSetting: this.textInputSetting2
                 });
-                return new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                var block_7 = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block_7.initialize();
+                return block_7;
+            }
+            else if (type == "foreverLoop") {
+                textureSettings.push({
+                    name: "loop",
+                    path: "materials/texture_loop.png",
+                    x: 30,
+                    y: 5,
+                    width: 40,
+                    height: 40
+                }, {
+                    name: "turnRight",
+                    path: "materials/texture_loop_turnRight.png",
+                    x: 9,
+                    y: 64,
+                    width: 15,
+                    height: 15
+                }, {
+                    name: "turnUp",
+                    path: "materials/texture_loop_turnUp.png",
+                    x: 82,
+                    y: 62,
+                    width: 15,
+                    height: 15
+                });
+                backgroundSetting.hitAreaBackground = this.blockBackgroundForLoop.hitAreaBackground;
+                backgroundSetting.pathBackground = this.blockBackgroundForLoop.pathBackground;
+                var block_8 = new Marmot.LoopCommandBlock(textureSettings, inputSettings, backgroundSetting, null);
+                block_8.initialize();
+                return block_8;
             }
         };
         BlockFactory.prototype.chooseBlockFillStyle = function (type) {

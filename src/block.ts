@@ -12,7 +12,7 @@ module Marmot {
     export abstract class Block extends SyntaxElement {
 
         public static blockSetting: BlockSetting = {
-            blockScale: 4.5,
+            blockScale: 3,
             blockStrokeStyleNormal: "#000000",
             blockStrokeStyleHighlight: "#fcff00",
             blockLineWidthHighlight: 8,
@@ -53,6 +53,7 @@ module Marmot {
             this.myHeight = this.height;
             this.lastAttachTarget = null;
             this.isHighlight = false;
+            /*
 
             this.drawBackgroundNormal();
 
@@ -71,7 +72,29 @@ module Marmot {
 
             this.attachPoints = this.getAttachPoints();
             this.setEventListening();
+            */
 
+        }
+
+        public initialize():void{
+
+            this.drawBackgroundNormal();
+
+            this.drawHitArea();
+
+            if (this.textureSettings.length != 0) {
+                this.drawTextures();
+            }
+
+            if (this.inputSettings.length != 0) {
+                this.drawInputs();
+            }
+            if (this.sliderSetting != null) {
+                this.drawSlider();
+            }
+
+            this.attachPoints = this.getAttachPoints();
+            this.setEventListening();            
         }
 
         public evaluate(){
@@ -101,6 +124,7 @@ module Marmot {
 		*/
 
         public print():void{
+            /*
             let top  = this.getTopBlock();
             Laya.Log.maxCount = 40;
             Laya.Log.clear();
@@ -117,20 +141,47 @@ module Marmot {
                 Laya.Log.print("---------");
                 i = 1;
             });
+            */
         }
         /**
-		* answer my all block children
+		* answer my all block children, except blocks in commandslot
 		*/
         public getAllBlockChildren(): Array<Block> {
             let children = [];
-            this._childs.forEach(function (child) {
-                if (child instanceof Block) {
-                    children.push(child);
-                }
-            });
+
+            let nextBlockChild = this.getNextBlockChild();
+            if(nextBlockChild != null){
+                children.push(this.getNextBlockChild());
+            }
+            else{
+                return [];
+            }
 
             children.forEach(function (child) {
                 children = children.concat(child.getAllBlockChildren());
+            });
+            return children;
+        }
+
+        /**
+		* answer my all block children, including blocks in commandslot
+		*/
+        public getAllNestedBlockChildren(): Array<Block> {
+            let children = [];
+
+            if(this instanceof LoopCommandBlock){
+                let nestedFirstChild = this.commandSlot.getNextBlockChild() as CommandBlock;
+                if(nestedFirstChild != null){
+                    children = children.concat(nestedFirstChild.blockSequence());
+                }
+            }
+            let nextBlockChild = this.getNextBlockChild();
+            if(nextBlockChild != null){
+                children.push(this.getNextBlockChild());
+            }
+
+            children.forEach(function (child) {
+                children = children.concat(child.getAllNestedBlockChildren());
             });
             return children;
         }
@@ -243,10 +294,6 @@ module Marmot {
             this.updateZOrder();
         }
 
-        protected onMouseOut(e: Event): void {
-            //this.removeHighlight(this);
-        }
-
         protected onDragMove(e: Event): void {
             let target: AttachTarget = null;
             target = this.closestAttachTarget();
@@ -301,9 +348,6 @@ module Marmot {
             this.isHighlight = false;
         }
 
-        protected onMouseUp(e:Event):void{
-        }
-
         protected abstract onDragStart(e: Event): void;
         protected abstract drawHook(attachPoint: Point): void;
         protected abstract onDragEnd(e: Event): void;
@@ -316,8 +360,6 @@ module Marmot {
             this.on(Event.DRAG_MOVE, this, this.onDragMove);
             this.on(Event.DRAG_END, this, this.onDragEnd);
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
-            this.on(Event.MOUSE_OUT, this, this.onMouseOut);
-            this.on(Event.MOUSE_UP, this, this.onMouseUp);
         }
     }
 }		
