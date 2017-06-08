@@ -1,7 +1,7 @@
 var window = window || global;
 var document = document || (window.document = {});
 /***********************************/
-/*http://www.layabox.com 2017/01/16*/
+/*http://www.layabox.com 2016/11/25*/
 /***********************************/
 var Laya=window.Laya=(function(window,document){
 	var Laya={
@@ -84,14 +84,13 @@ var Laya=window.Laya=(function(window,document){
 				var supers=_super.split(',');
 				a.extend=[];
 				for(var i=0;i<supers.length;i++){
-					var nm=supers[i];
-					ins[nm]=ins[nm] || {self:nm};
-					a.extend.push(ins[nm]);
+					var name=supers[i];
+					ins[name]=ins[name] || {self:name};
+					a.extend.push(ins[name]);
 				}
 			}
 			var o=window,words=name.split('.');
-			for(var i=0;i<words.length-1;i++) o=o[words[i]];
-			o[words[words.length-1]]={__interface__:name};
+			for(var i=0;i<words.length-1;i++) o=o[words[i]];o[words[words.length-1]]={__interface__:name};
 		},
 		class:function(o,fullName,_super,miniName){
 			_super && Laya.__extend(o,_super);
@@ -263,6 +262,9 @@ var Laya=window.Laya=(function(window,document){
 			return r;
 		}
 
+		RunDriver.getWebGLContext=function(canvas){
+		};
+
 		RunDriver.beginFlush=function(){
 		};
 
@@ -349,6 +351,7 @@ var Laya=window.Laya=(function(window,document){
 		Laya.init=function(width,height,__plugins){
 			var plugins=[];for(var i=2,sz=arguments.length;i<sz;i++)plugins.push(arguments[i]);
 			if (Laya._isinit)return;
+			ArrayBuffer.prototype.slice || (ArrayBuffer.prototype.slice=Laya._arrayBufferSlice);
 			Laya._isinit=true;
 			Browser.__init__();
 			Context.__init__();
@@ -379,10 +382,18 @@ var Laya=window.Laya=(function(window,document){
 			return Render.canvas;
 		}
 
+		Laya._arrayBufferSlice=function(start,end){
+			var arr=/*__JS__ */this;
+			var arrU8List=new Uint8Array(arr,start,end-start);
+			var newU8List=new Uint8Array(arrU8List.length);
+			newU8List.set(arrU8List);
+			return newU8List.buffer;
+		}
+
 		Laya.stage=null;
 		Laya.timer=null;
 		Laya.loader=null;
-		Laya.version="1.7.2";
+		Laya.version="1.7.6beta";
 		Laya.render=null
 		Laya._currentStage=null
 		Laya._isinit=false;
@@ -406,7 +417,7 @@ var Laya=window.Laya=(function(window,document){
 		Config.animationInterval=50;
 		Config.isAntialias=false;
 		Config.isAlpha=false;
-		Config.premultipliedAlpha=false;
+		Config.premultipliedAlpha=true;
 		Config.isStencil=true;
 		Config.preserveDrawingBuffer=false;
 		return Config;
@@ -438,8 +449,7 @@ var Laya=window.Laya=(function(window,document){
 		/**
 		*派发事件。
 		*@param type 事件类型。
-		*@param data 回调数据。
-		*<b>注意：</b>如果是需要传递多个参数 p1,p2,p3,...可以使用数组结构如：[p1,p2,p3,...] ；如果需要回调单个参数 p 是一个数组，则需要使用结构如：[p]，其他的单个参数 p ，可以直接传入参数 p。
+		*@param data （可选）回调数据。<b>注意：</b>如果是需要传递多个参数 p1,p2,p3,...可以使用数组结构如：[p1,p2,p3,...] ；如果需要回调单个参数 p 是一个数组，则需要使用结构如：[p]，其他的单个参数 p ，可以直接传入参数 p。
 		*@return 此事件类型是否有侦听者，如果有侦听者则值为 true，否则值为 false。
 		*/
 		__proto.event=function(type,data){
@@ -470,7 +480,7 @@ var Laya=window.Laya=(function(window,document){
 		*@param type 事件的类型。
 		*@param caller 事件侦听函数的执行域。
 		*@param listener 事件侦听函数。
-		*@param args 事件侦听函数的回调参数。
+		*@param args （可选）事件侦听函数的回调参数。
 		*@return 此 EventDispatcher 对象。
 		*/
 		__proto.on=function(type,caller,listener,args){
@@ -482,7 +492,7 @@ var Laya=window.Laya=(function(window,document){
 		*@param type 事件的类型。
 		*@param caller 事件侦听函数的执行域。
 		*@param listener 事件侦听函数。
-		*@param args 事件侦听函数的回调参数。
+		*@param args （可选）事件侦听函数的回调参数。
 		*@return 此 EventDispatcher 对象。
 		*/
 		__proto.once=function(type,caller,listener,args){
@@ -509,7 +519,7 @@ var Laya=window.Laya=(function(window,document){
 		*@param type 事件的类型。
 		*@param caller 事件侦听函数的执行域。
 		*@param listener 事件侦听函数。
-		*@param onceOnly 如果值为 true ,则只移除通过 once 方法添加的侦听器。
+		*@param onceOnly （可选）如果值为 true ,则只移除通过 once 方法添加的侦听器。
 		*@return 此 EventDispatcher 对象。
 		*/
 		__proto.off=function(type,caller,listener,onceOnly){
@@ -540,7 +550,7 @@ var Laya=window.Laya=(function(window,document){
 
 		/**
 		*从 EventDispatcher 对象中删除指定事件类型的所有侦听器。
-		*@param type 事件类型，如果值为 null，则移除本对象所有类型的侦听器。
+		*@param type （可选）事件类型，如果值为 null，则移除本对象所有类型的侦听器。
 		*@return 此 EventDispatcher 对象。
 		*/
 		__proto.offAll=function(type){
@@ -729,9 +739,9 @@ var Laya=window.Laya=(function(window,document){
 		__class(BitmapFont,'laya.display.BitmapFont');
 		var __proto=BitmapFont.prototype;
 		/**
-		*通过指定位图字体文件路径，加载位图字体文件。
+		*通过指定位图字体文件路径，加载位图字体文件，加载完成后会自动解析。
 		*@param path 位图字体文件的路径。
-		*@param complete 加载完成的回调，通知上层字体文件已经完成加载并解析。
+		*@param complete 加载并解析完成的回调。
 		*/
 		__proto.loadFont=function(path,complete){
 			this._path=path;
@@ -1260,6 +1270,7 @@ var Laya=window.Laya=(function(window,document){
 			//this._bounds=null;
 			//this._rstBoundPoints=null;
 			//this._vectorgraphArray=null;
+			this._cacheBoundsType=false;
 			this._render=this._renderEmpty;
 			if (Render.isConchNode){
 				/*__JS__ */this._nativeObj=new _conchGraphics();;
@@ -1316,23 +1327,29 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*获取位置及宽高信息矩阵(比较耗，尽量少用)。
+		*获取位置及宽高信息矩阵(比较耗CPU，频繁使用会造成卡顿，尽量少用)。
+		*@param realSize （可选）使用图片的真实大小，默认为false
 		*@return 位置与宽高组成的 一个 Rectangle 对象。
 		*/
-		__proto.getBounds=function(){
-			if (!this._bounds || !this._temp || this._temp.length < 1){
-				this._bounds=Rectangle._getWrapRec(this.getBoundPoints(),this._bounds)
+		__proto.getBounds=function(realSize){
+			(realSize===void 0)&& (realSize=false);
+			if (!this._bounds || !this._temp || this._temp.length < 1 || realSize !=this._cacheBoundsType){
+				this._bounds=Rectangle._getWrapRec(this.getBoundPoints(realSize),this._bounds)
 			}
+			this._cacheBoundsType=realSize;
 			return this._bounds;
 		}
 
 		/**
 		*@private
+		*@param realSize （可选）使用图片的真实大小，默认为false
 		*获取端点列表。
 		*/
-		__proto.getBoundPoints=function(){
-			if (!this._temp || this._temp.length < 1)
-				this._temp=this._getCmdPoints();
+		__proto.getBoundPoints=function(realSize){
+			(realSize===void 0)&& (realSize=false);
+			if (!this._temp || this._temp.length < 1 || realSize !=this._cacheBoundsType)
+				this._temp=this._getCmdPoints(realSize);
+			this._cacheBoundsType=realSize;
 			return this._rstBoundPoints=Utils.copyArray(this._rstBoundPoints,this._temp);
 		}
 
@@ -1342,7 +1359,8 @@ var Laya=window.Laya=(function(window,document){
 			this._cmds.push(a);
 		}
 
-		__proto._getCmdPoints=function(){
+		__proto._getCmdPoints=function(realSize){
+			(realSize===void 0)&& (realSize=false);
 			var context=Render._context;
 			var cmds=this._cmds;
 			var rst;
@@ -1416,12 +1434,21 @@ var Laya=window.Laya=(function(window,document){
 						break ;
 					case context._drawTexture:
 						tex=cmd[0];
-						var offX=tex.offsetX>0?tex.offsetX:0;
-						var offY=tex.offsetY>0?tex.offsetY:0;
-						if (cmd[3] && cmd[4]){
-							Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1]-offX,cmd[2]-offY,cmd[3]+tex.sourceWidth-tex.width,cmd[4]+tex.sourceHeight-tex.height),tMatrix);
+						if (realSize){
+							if (cmd[3] && cmd[4]){
+								Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1],cmd[2],cmd[3],cmd[4]),tMatrix);
+								}else {
+								tex=cmd[0];
+								Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1],cmd[2],tex.width,tex.height),tMatrix);
+							}
 							}else {
-							Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1]-offX,cmd[2]-offY,tex.width+tex.sourceWidth-tex.width,tex.height+tex.sourceHeight-tex.height),tMatrix);
+							var offX=tex.offsetX > 0 ? tex.offsetX :0;
+							var offY=tex.offsetY > 0 ? tex.offsetY :0;
+							if (cmd[3] && cmd[4]){
+								Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1]-offX,cmd[2]-offY,cmd[3]+tex.sourceWidth-tex.width,cmd[4]+tex.sourceHeight-tex.height),tMatrix);
+								}else {
+								Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1]-offX,cmd[2]-offY,tex.width+tex.sourceWidth-tex.width,tex.height+tex.sourceHeight-tex.height),tMatrix);
+							}
 						}
 						break ;
 					case context._fillTexture:
@@ -1441,13 +1468,22 @@ var Laya=window.Laya=(function(window,document){
 							}else {
 							drawMatrix=tMatrix;
 						}
-						tex=cmd[0];
-						offX=tex.offsetX>0?tex.offsetX:0;
-						offY=tex.offsetY>0?tex.offsetY:0;
-						if (cmd[3] && cmd[4]){
-							Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1]-offX,cmd[2]-offY,cmd[3]+tex.sourceWidth-tex.width,cmd[4]+tex.sourceHeight-tex.height),tMatrix);
+						if (realSize){
+							if (cmd[3] && cmd[4]){
+								Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1],cmd[2],cmd[3],cmd[4]),drawMatrix);
+								}else {
+								tex=cmd[0];
+								Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1],cmd[2],tex.width,tex.height),drawMatrix);
+							}
 							}else {
-							Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1]-offX,cmd[2]-offY,tex.width+tex.sourceWidth-tex.width,tex.height+tex.sourceHeight-tex.height),tMatrix);
+							tex=cmd[0];
+							offX=tex.offsetX > 0 ? tex.offsetX :0;
+							offY=tex.offsetY > 0 ? tex.offsetY :0;
+							if (cmd[3] && cmd[4]){
+								Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1]-offX,cmd[2]-offY,cmd[3]+tex.sourceWidth-tex.width,cmd[4]+tex.sourceHeight-tex.height),drawMatrix);
+								}else {
+								Graphics._addPointArrToRst(rst,Rectangle._getBoundPointS(cmd[1]-offX,cmd[2]-offY,tex.width+tex.sourceWidth-tex.width,tex.height+tex.sourceHeight-tex.height),drawMatrix);
+							}
 						}
 						break ;
 					case context._drawRect:
@@ -1507,11 +1543,12 @@ var Laya=window.Laya=(function(window,document){
 		/**
 		*绘制纹理。
 		*@param tex 纹理。
-		*@param x X 轴偏移量。
-		*@param y Y 轴偏移量。
-		*@param width 宽度。
-		*@param height 高度。
-		*@param m 矩阵信息。
+		*@param x X （可选）轴偏移量。
+		*@param y Y （可选）轴偏移量。
+		*@param width （可选）宽度。
+		*@param height （可选）高度。
+		*@param m （可选）矩阵信息。
+		*@param alpha （可选）透明度。
 		*/
 		__proto.drawTexture=function(tex,x,y,width,height,m,alpha){
 			(x===void 0)&& (x=0);
@@ -1579,14 +1616,14 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*用texture填充
+		*用texture填充。
 		*@param tex 纹理。
-		*@param x X 轴偏移量。
-		*@param y Y 轴偏移量。
-		*@param width 宽度。
-		*@param height 高度。
-		*@param type 填充类型 repeat|repeat-x|repeat-y|no-repeat
-		*@param offset 贴图纹理偏移
+		*@param x X轴偏移量。
+		*@param y Y轴偏移量。
+		*@param width （可选）宽度。
+		*@param height （可选）高度。
+		*@param type （可选）填充类型 repeat|repeat-x|repeat-y|no-repeat
+		*@param offset （可选）贴图纹理偏移
 		*
 		*/
 		__proto.fillTexture=function(tex,x,y,width,height,type,offset){
@@ -1692,8 +1729,8 @@ var Laya=window.Laya=(function(window,document){
 		/**
 		*替换绘图的当前转换矩阵。
 		*@param mat 矩阵。
-		*@param pivotX 水平方向轴心点坐标。
-		*@param pivotY 垂直方向轴心点坐标。
+		*@param pivotX （可选）水平方向轴心点坐标。
+		*@param pivotY （可选）垂直方向轴心点坐标。
 		*/
 		__proto.transform=function(matrix,pivotX,pivotY){
 			(pivotX===void 0)&& (pivotX=0);
@@ -1704,8 +1741,8 @@ var Laya=window.Laya=(function(window,document){
 		/**
 		*旋转当前绘图。(推荐使用transform，性能更高)
 		*@param angle 旋转角度，以弧度计。
-		*@param pivotX 水平方向轴心点坐标。
-		*@param pivotY 垂直方向轴心点坐标。
+		*@param pivotX （可选）水平方向轴心点坐标。
+		*@param pivotY （可选）垂直方向轴心点坐标。
 		*/
 		__proto.rotate=function(angle,pivotX,pivotY){
 			(pivotX===void 0)&& (pivotX=0);
@@ -1717,8 +1754,8 @@ var Laya=window.Laya=(function(window,document){
 		*缩放当前绘图至更大或更小。(推荐使用transform，性能更高)
 		*@param scaleX 水平方向缩放值。
 		*@param scaleY 垂直方向缩放值。
-		*@param pivotX 水平方向轴心点坐标。
-		*@param pivotY 垂直方向轴心点坐标。
+		*@param pivotX （可选）水平方向轴心点坐标。
+		*@param pivotY （可选）垂直方向轴心点坐标。
 		*/
 		__proto.scale=function(scaleX,scaleY,pivotX,pivotY){
 			(pivotX===void 0)&& (pivotX=0);
@@ -1807,11 +1844,11 @@ var Laya=window.Laya=(function(window,document){
 		/**
 		*加载并显示一个图片。
 		*@param url 图片地址。
-		*@param x 显示图片的x位置。
-		*@param y 显示图片的y位置。
-		*@param width 显示图片的宽度，设置为0表示使用图片默认宽度。
-		*@param height 显示图片的高度，设置为0表示使用图片默认高度。
-		*@param complete 加载完成回调。
+		*@param x （可选）显示图片的x位置。
+		*@param y （可选）显示图片的y位置。
+		*@param width （可选）显示图片的宽度，设置为0表示使用图片默认宽度。
+		*@param height （可选）显示图片的高度，设置为0表示使用图片默认高度。
+		*@param complete （可选）加载完成回调。
 		*/
 		__proto.loadImage=function(url,x,y,width,height,complete){
 			var _$this=this;
@@ -1863,12 +1900,12 @@ var Laya=window.Laya=(function(window,document){
 
 		/**
 		*绘制一条线。
-		*@param fromX X 轴开始位置。
-		*@param fromY Y 轴开始位置。
-		*@param toX X 轴结束位置。
-		*@param toY Y 轴结束位置。
+		*@param fromX X轴开始位置。
+		*@param fromY Y轴开始位置。
+		*@param toX X轴结束位置。
+		*@param toY Y轴结束位置。
 		*@param lineColor 颜色。
-		*@param lineWidth 线条宽度。
+		*@param lineWidth （可选）线条宽度。
 		*/
 		__proto.drawLine=function(fromX,fromY,toX,toY,lineColor,lineWidth){
 			(lineWidth===void 0)&& (lineWidth=1);
@@ -1885,15 +1922,16 @@ var Laya=window.Laya=(function(window,document){
 
 		/**
 		*绘制一系列线段。
-		*@param x 开始绘制的 X 轴位置。
-		*@param y 开始绘制的 Y 轴位置。
+		*@param x 开始绘制的X轴位置。
+		*@param y 开始绘制的Y轴位置。
 		*@param points 线段的点集合。格式:[x1,y1,x2,y2,x3,y3...]。
 		*@param lineColor 线段颜色，或者填充绘图的渐变对象。
-		*@param lineWidth 线段宽度。
+		*@param lineWidth （可选）线段宽度。
 		*/
 		__proto.drawLines=function(x,y,points,lineColor,lineWidth){
 			(lineWidth===void 0)&& (lineWidth=1);
 			var tId=0;
+			if (!points || points.length < 1)return;
 			if (Render.isWebGL){
 				tId=VectorGraphManager.getInstance().getId();
 				if (this._vectorgraphArray==null)this._vectorgraphArray=[];
@@ -1910,7 +1948,7 @@ var Laya=window.Laya=(function(window,document){
 		*@param y 开始绘制的 Y 轴位置。
 		*@param points 线段的点集合，格式[startx,starty,ctrx,ctry,startx,starty...]。
 		*@param lineColor 线段颜色，或者填充绘图的渐变对象。
-		*@param lineWidth 线段宽度。
+		*@param lineWidth （可选）线段宽度。
 		*/
 		__proto.drawCurves=function(x,y,points,lineColor,lineWidth){
 			(lineWidth===void 0)&& (lineWidth=1);
@@ -1925,8 +1963,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param width 矩形宽度。
 		*@param height 矩形高度。
 		*@param fillColor 填充颜色，或者填充绘图的渐变对象。
-		*@param lineColor 边框颜色，或者填充绘图的渐变对象。
-		*@param lineWidth 边框宽度。
+		*@param lineColor （可选）边框颜色，或者填充绘图的渐变对象。
+		*@param lineWidth （可选）边框宽度。
 		*/
 		__proto.drawRect=function(x,y,width,height,fillColor,lineColor,lineWidth){
 			(lineWidth===void 0)&& (lineWidth=1);
@@ -1942,8 +1980,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param y 圆点Y 轴位置。
 		*@param radius 半径。
 		*@param fillColor 填充颜色，或者填充绘图的渐变对象。
-		*@param lineColor 边框颜色，或者填充绘图的渐变对象。
-		*@param lineWidth 边框宽度。
+		*@param lineColor （可选）边框颜色，或者填充绘图的渐变对象。
+		*@param lineWidth （可选）边框宽度。
 		*/
 		__proto.drawCircle=function(x,y,radius,fillColor,lineColor,lineWidth){
 			(lineWidth===void 0)&& (lineWidth=1);
@@ -1966,8 +2004,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param startAngle 开始角度。
 		*@param endAngle 结束角度。
 		*@param fillColor 填充颜色，或者填充绘图的渐变对象。
-		*@param lineColor 边框颜色，或者填充绘图的渐变对象。
-		*@param lineWidth 边框宽度。
+		*@param lineColor （可选）边框颜色，或者填充绘图的渐变对象。
+		*@param lineWidth （可选）边框宽度。
 		*/
 		__proto.drawPie=function(x,y,radius,startAngle,endAngle,fillColor,lineColor,lineWidth){
 			(lineWidth===void 0)&& (lineWidth=1);
@@ -2006,8 +2044,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param y 开始绘制的 Y 轴位置。
 		*@param points 多边形的点集合。
 		*@param fillColor 填充颜色，或者填充绘图的渐变对象。
-		*@param lineColor 边框颜色，或者填充绘图的渐变对象。
-		*@param lineWidth 边框宽度。
+		*@param lineColor （可选）边框颜色，或者填充绘图的渐变对象。
+		*@param lineWidth （可选）边框宽度。
 		*/
 		__proto.drawPoly=function(x,y,points,fillColor,lineColor,lineWidth){
 			(lineWidth===void 0)&& (lineWidth=1);
@@ -2051,8 +2089,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param x 开始绘制的 X 轴位置。
 		*@param y 开始绘制的 Y 轴位置。
 		*@param paths 路径集合，路径支持以下格式：[["moveTo",x,y],["lineTo",x,y,x,y,x,y],["arcTo",x1,y1,x2,y2,r],["closePath"]]。
-		*@param brush 刷子定义，支持以下设置{fillStyle}。
-		*@param pen 画笔定义，支持以下设置{strokeStyle,lineWidth,lineJoin,lineCap,miterLimit}。
+		*@param brush （可选）刷子定义，支持以下设置{fillStyle}。
+		*@param pen （可选）画笔定义，支持以下设置{strokeStyle,lineWidth,lineJoin,lineCap,miterLimit}。
 		*/
 		__proto.drawPath=function(x,y,paths,brush,pen){
 			var arr=[x,y,paths,brush,pen];
@@ -2116,7 +2154,7 @@ var Laya=window.Laya=(function(window,document){
 					x+=tex.offsetX;
 					y+=tex.offsetY;
 					var uv=tex.uv,w=tex.bitmap.width,h=tex.bitmap.height;
-					this.drawImageM(tex.bitmap.source,uv[0] *w,uv[1] *h,(uv[2]-uv[0])*w,(uv[5]-uv[3])*h,x,y,width,height,m);
+					this.drawImageM(tex.bitmap.source,uv[0] *w,uv[1] *h,(uv[2]-uv[0])*w,(uv[5]-uv[3])*h,x,y,width,height,m,alpha);
 					this._repaint();
 				}
 				from.fillTexture=function (tex,x,y,width,height,type,offset){
@@ -2459,10 +2497,8 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
-	*<p><code>KeyBoardManager</code> 是键盘事件管理类。</p>
-	*<p>该类从浏览器中接收键盘事件，并派发该事件。
-	*派发事件时若 Stage.focus 为空则只从 Stage 上派发该事件，否则将从 Stage.focus 对象开始一直冒泡派发该事件。
-	*所以在 Laya.stage 上监听键盘事件一定能够收到，如果在其他地方监听，则必须处在Stage.focus的冒泡链上才能收到该事件。</p>
+	*<p><code>KeyBoardManager</code> 是键盘事件管理类。该类从浏览器中接收键盘事件，并派发该事件。</p>
+	*<p>派发事件时若 Stage.focus 为空则只从 Stage 上派发该事件，否则将从 Stage.focus 对象开始一直冒泡派发该事件。所以在 Laya.stage 上监听键盘事件一定能够收到，如果在其他地方监听，则必须处在Stage.focus的冒泡链上才能收到该事件。</p>
 	*<p>用户可以通过代码 Laya.stage.focus=someNode 的方式来设置focus对象。</p>
 	*<p>用户可统一的根据事件对象中 e.keyCode 来判断按键类型，该属性兼容了不同浏览器的实现。</p>
 	*/
@@ -2489,7 +2525,7 @@ var Laya=window.Laya=(function(window,document){
 			KeyBoardManager._event.keyCode=e.keyCode || e.which || e.charCode;
 			if (type==="keydown")KeyBoardManager._pressKeys[KeyBoardManager._event.keyCode]=true;
 			else if (type==="keyup")KeyBoardManager._pressKeys[KeyBoardManager._event.keyCode]=null;
-			var target=(Laya.stage.focus && (Laya.stage.focus.event !=null)&&Laya.stage.focus.displayedInStage)? Laya.stage.focus :Laya.stage;
+			var target=(Laya.stage.focus && (Laya.stage.focus.event !=null)&& Laya.stage.focus.displayedInStage)? Laya.stage.focus :Laya.stage;
 			var ct=target;
 			while (ct){
 				ct.event(type,KeyBoardManager._event.setTo(type,ct,target));
@@ -2527,7 +2563,13 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
-	*<code>MouseManager</code> 是鼠标、触摸交互管理器。
+	*<p><code>MouseManager</code> 是鼠标、触摸交互管理器。</p>
+	*<p>
+	*鼠标事件流包括捕获阶段、目标阶段、冒泡阶段。<br/>
+	*捕获阶段：此阶段引擎会从stage开始递归检测stage及其子对象，直到找到命中的目标对象或者未命中任何对象；<br/>
+	*目标阶段：找到命中的目标对象；<br/>
+	*冒泡阶段：事件离开目标对象，按节点层级向上逐层通知，直到到达舞台的过程。
+	*<p>
 	*/
 	//class laya.events.MouseManager
 	var MouseManager=(function(){
@@ -2539,20 +2581,18 @@ var Laya=window.Laya=(function(window,document){
 			this.mouseMoveAccuracy=2;
 			this._stage=null;
 			this._target=null;
-			this._lastOvers=[];
-			this._currOvers=[];
-			this._lastClickTimer=0;
 			this._lastMoveTimer=0;
-			this._isDoubleClick=false;
 			this._isLeftMouse=false;
 			this._eventList=[];
 			this._touchIDs={};
 			this._id=1;
+			this._tTouchID=0;
 			this._event=new Event();
 			this._matrix=new Matrix();
 			this._point=new Point();
 			this._rect=new Rectangle();
 			this._prePoint=new Point();
+			this._curTouchID=NaN;
 		}
 
 		__class(MouseManager,'laya.events.MouseManager');
@@ -2562,7 +2602,6 @@ var Laya=window.Laya=(function(window,document){
 		*初始化。
 		*/
 		__proto.__init__=function(stage,canvas){
-			var _$this=this;
 			this._stage=stage;
 			var _this=this;
 			var list=this._eventList;
@@ -2601,7 +2640,6 @@ var Laya=window.Laya=(function(window,document){
 			canvas.addEventListener("touchstart",function(e){
 				if (MouseManager.enabled){
 					list.push(e);
-					_$this.runEvent();
 					if (!Input.isInputting)e.preventDefault();
 					_this.mouseDownTime=Browser.now();
 				}
@@ -2632,100 +2670,47 @@ var Laya=window.Laya=(function(window,document){
 			_this._event._stoped=false;
 			_this._event.nativeEvent=nativeEvent || e;
 			_this._target=null;
-			this._point.setTo(e.clientX,e.clientY);
+			this._point.setTo(e.pageX || e.clientX,e.pageY || e.clientY);
 			this._stage._canvasTransform.invertTransformPoint(this._point);
 			_this.mouseX=this._point.x;
 			_this.mouseY=this._point.y;
 			_this._event.touchId=e.identifier || 0;
+			this._tTouchID=_this._event.touchId;
+			var evt;
+			evt=TouchManager.I._event;
+			evt._stoped=false;
+			evt.nativeEvent=_this._event.nativeEvent;
+			evt.touchId=_this._event.touchId;
 		}
 
 		__proto.checkMouseWheel=function(e){
 			this._event.delta=e.wheelDelta ? e.wheelDelta *0.025 :-e.detail;
-			for (var i=0,n=this._lastOvers.length;i < n;i++){
-				var ele=this._lastOvers[i];
+			var _lastOvers=TouchManager.I.getLastOvers();
+			for (var i=0,n=_lastOvers.length;i < n;i++){
+				var ele=_lastOvers[i];
 				ele.event(/*laya.events.Event.MOUSE_WHEEL*/"mousewheel",this._event.setTo(/*laya.events.Event.MOUSE_WHEEL*/"mousewheel",ele,this._target));
 			}
-			this._stage.event(/*laya.events.Event.MOUSE_WHEEL*/"mousewheel",this._event.setTo(/*laya.events.Event.MOUSE_WHEEL*/"mousewheel",this._stage,this._target));
 		}
 
-		__proto.checkMouseOut=function(){
-			if (this.disableMouseEvent)return;
-			for (var i=0,n=this._lastOvers.length;i < n;i++){
-				var ele=this._lastOvers[i];
-				if (!ele.destroyed && this._currOvers.indexOf(ele)< 0){
-					ele._set$P("$_MOUSEOVER",false);
-					ele.event(/*laya.events.Event.MOUSE_OUT*/"mouseout",this._event.setTo(/*laya.events.Event.MOUSE_OUT*/"mouseout",ele,ele));
-				}
-			};
-			var temp=this._lastOvers;
-			this._lastOvers=this._currOvers;
-			this._currOvers=temp;
-			this._currOvers.length=0;
-		}
-
+		// _stage.event(Event.MOUSE_WHEEL,_event.setTo(Event.MOUSE_WHEEL,_stage,_target));
 		__proto.onMouseMove=function(ele){
-			this.sendMouseMove(ele);
-			this._event._stoped=false;
-			this.sendMouseOver(this._target);
-		}
-
-		__proto.sendMouseMove=function(ele){
-			ele.event(/*laya.events.Event.MOUSE_MOVE*/"mousemove",this._event.setTo(/*laya.events.Event.MOUSE_MOVE*/"mousemove",ele,this._target));
-			!this._event._stoped && ele.parent && this.sendMouseMove(ele.parent);
-		}
-
-		__proto.sendMouseOver=function(ele){
-			if (ele.parent || ele===this._stage){
-				if (!ele._get$P("$_MOUSEOVER")){
-					ele._set$P("$_MOUSEOVER",true);
-					ele.event(/*laya.events.Event.MOUSE_OVER*/"mouseover",this._event.setTo(/*laya.events.Event.MOUSE_OVER*/"mouseover",ele,this._target));
-				}
-				this._currOvers.push(ele);
-			}
-			!this._event._stoped && ele.parent && this.sendMouseOver(ele.parent);
+			TouchManager.I.onMouseMove(ele,this._tTouchID);
 		}
 
 		__proto.onMouseDown=function(ele){
 			if (Input.isInputting && Laya.stage.focus && Laya.stage.focus["focus"] && !Laya.stage.focus.contains(this._target)){
-				Laya.stage.focus["focus"]=false;
+				var pre_input=Laya.stage.focus['_tf'] || Laya.stage.focus;
+				var new_input=ele['_tf'] || ele;
+				if ((new_input instanceof laya.display.Input )&& new_input.multiline==pre_input.multiline)
+					pre_input['_focusOut']();
+				else
+				pre_input.focus=false;
 			}
-			this._onMouseDown(ele);
-		}
-
-		__proto._onMouseDown=function(ele){
-			if (this._isLeftMouse){
-				ele._set$P("$_MOUSEDOWN",this._touchIDs[this._event.touchId]);
-				ele.event(/*laya.events.Event.MOUSE_DOWN*/"mousedown",this._event.setTo(/*laya.events.Event.MOUSE_DOWN*/"mousedown",ele,this._target));
-				}else {
-				ele._set$P("$_RIGHTMOUSEDOWN",this._touchIDs[this._event.touchId]);
-				ele.event(/*laya.events.Event.RIGHT_MOUSE_DOWN*/"rightmousedown",this._event.setTo(/*laya.events.Event.RIGHT_MOUSE_DOWN*/"rightmousedown",ele,this._target));
-			}
-			!this._event._stoped && ele.parent && this.onMouseDown(ele.parent);
+			TouchManager.I.onMouseDown(ele,this._tTouchID,this._isLeftMouse);
 		}
 
 		__proto.onMouseUp=function(ele){
-			var type=this._isLeftMouse ? /*laya.events.Event.MOUSE_UP*/"mouseup" :/*laya.events.Event.RIGHT_MOUSE_UP*/"rightmouseup";
-			this.sendMouseUp(ele,type);
-			this._event._stoped=false;
-			this.sendClick(this._target,type);
-		}
-
-		__proto.sendMouseUp=function(ele,type){
-			ele.event(type,this._event.setTo(type,ele,this._target));
-			!this._event._stoped && ele.parent && this.sendMouseUp(ele.parent,type);
-		}
-
-		__proto.sendClick=function(ele,type){
-			if (ele.destroyed)return;
-			if (type===/*laya.events.Event.MOUSE_UP*/"mouseup" && ele._get$P("$_MOUSEDOWN")===this._touchIDs[this._event.touchId]){
-				ele._set$P("$_MOUSEDOWN",-1);
-				ele.event(/*laya.events.Event.CLICK*/"click",this._event.setTo(/*laya.events.Event.CLICK*/"click",ele,this._target));
-				this._isDoubleClick && ele.event(/*laya.events.Event.DOUBLE_CLICK*/"doubleclick",this._event.setTo(/*laya.events.Event.DOUBLE_CLICK*/"doubleclick",ele,this._target));
-				}else if (type===/*laya.events.Event.RIGHT_MOUSE_UP*/"rightmouseup" && ele._get$P("$_RIGHTMOUSEDOWN")===this._touchIDs[this._event.touchId]){
-				ele._set$P("$_RIGHTMOUSEDOWN",-1);
-				ele.event(/*laya.events.Event.RIGHT_CLICK*/"rightclick",this._event.setTo(/*laya.events.Event.RIGHT_CLICK*/"rightclick",ele,this._target));
-			}
-			!this._event._stoped && ele.parent && this.sendClick(ele.parent,type);
+			TouchManager.I.onMouseUp(ele,this._tTouchID,this._isLeftMouse);
 		}
 
 		__proto.check=function(sp,mouseX,mouseY,callBack){
@@ -2736,23 +2721,20 @@ var Laya=window.Laya=(function(window,document){
 			var scrollRect=sp.scrollRect;
 			if (scrollRect){
 				this._rect.setTo(scrollRect.x,scrollRect.y,scrollRect.width,scrollRect.height);
-				var isHit=this._rect.contains(mouseX,mouseY);
-				if (!isHit)return false;
+				if (!this._rect.contains(mouseX,mouseY))return false;
 			}
 			if (!this.disableMouseEvent){
-				var flag=false;
 				if (sp.hitTestPrior && !sp.mouseThrough && !this.hitTest(sp,mouseX,mouseY)){
 					return false;
 				}
 				for (var i=sp._childs.length-1;i >-1;i--){
 					var child=sp._childs[i];
 					if (!child.destroyed && child.mouseEnabled && child.visible){
-						flag=this.check(child,mouseX ,mouseY ,callBack);
-						if (flag)return true;
+						if (this.check(child,mouseX,mouseY,callBack))return true;
 					}
 				}
-			}
-			isHit=this.hitTest(sp,scrollRect ? mouseX-scrollRect.x :mouseX,scrollRect ? mouseY-scrollRect.y :mouseY);
+			};
+			var isHit=(sp.hitTestPrior && !sp.mouseThrough && !this.disableMouseEvent)? true :this.hitTest(sp,mouseX,mouseY);
 			if (isHit){
 				this._target=sp;
 				callBack.call(this,sp);
@@ -2769,8 +2751,8 @@ var Laya=window.Laya=(function(window,document){
 				return sp.hitArea.isHit(mouseX,mouseY);
 			}
 			if (sp.width > 0 && sp.height > 0 || sp.mouseThrough || sp.hitArea){
-				var hitRect=this._rect;
 				if (!sp.mouseThrough){
+					var hitRect=this._rect;
 					if (sp.hitArea)hitRect=sp.hitArea;
 					else hitRect.setTo(0,0,sp.width,sp.height);
 					isHit=hitRect.contains(mouseX,mouseY);
@@ -2804,9 +2786,6 @@ var Laya=window.Laya=(function(window,document){
 						break ;
 					case 'mouseup':
 						_this._isLeftMouse=evt.button===0;
-						var now=Browser.now();
-						_this._isDoubleClick=(now-_this._lastClickTimer)< 300;
-						_this._lastClickTimer=now;
 						_this.initEvent(evt);
 						_this.check(_this._stage,_this.mouseX,_this.mouseY,_this.onMouseUp);
 						break ;
@@ -2816,7 +2795,6 @@ var Laya=window.Laya=(function(window,document){
 							this._prePoint.y=evt.clientY;
 							_this.initEvent(evt);
 							_this.check(_this._stage,_this.mouseX,_this.mouseY,_this.onMouseMove);
-							_this.checkMouseOut();
 						}
 						break ;
 					case "touchstart":
@@ -2825,31 +2803,37 @@ var Laya=window.Laya=(function(window,document){
 						var touches=evt.changedTouches;
 						for (var j=0,n=touches.length;j < n;j++){
 							var touch=touches[j];
-							if (this._id % 200===0)this._touchIDs={};
-							this._touchIDs[touch.identifier]=this._id++;
-							_this.initEvent(touch,evt);
-							_this.check(_this._stage,_this.mouseX,_this.mouseY,_this.onMouseDown);
+							if (MouseManager.multiTouchEnabled || isNaN(this._curTouchID)){
+								this._curTouchID=touch.identifier;
+								if (this._id % 200===0)this._touchIDs={};
+								this._touchIDs[touch.identifier]=this._id++;
+								_this.initEvent(touch,evt);
+								_this.check(_this._stage,_this.mouseX,_this.mouseY,_this.onMouseDown);
+							}
 						}
 						break ;
 					case "touchend":
 						MouseManager._isTouchRespond=true;
 						_this._isLeftMouse=true;
-						now=Browser.now();
-						_this._isDoubleClick=(now-_this._lastClickTimer)< 300;
-						_this._lastClickTimer=now;
 						var touchends=evt.changedTouches;
 						for (j=0,n=touchends.length;j < n;j++){
-							_this.initEvent(touchends[j],evt);
-							_this.check(_this._stage,_this.mouseX,_this.mouseY,_this.onMouseUp);
+							touch=touchends[j];
+							if (MouseManager.multiTouchEnabled || touch.identifier==this._curTouchID){
+								this._curTouchID=NaN;
+								_this.initEvent(touch,evt);
+								_this.check(_this._stage,_this.mouseX,_this.mouseY,_this.onMouseUp);
+							}
 						}
 						break ;
 					case "touchmove":;
 						var touchemoves=evt.changedTouches;
 						for (j=0,n=touchemoves.length;j < n;j++){
-							_this.initEvent(touchemoves[j],evt);
-							_this.check(_this._stage,_this.mouseX,_this.mouseY,_this.onMouseMove);
+							touch=touchemoves[j];
+							if (MouseManager.multiTouchEnabled || touch.identifier==this._curTouchID){
+								_this.initEvent(touch,evt);
+								_this.check(_this._stage,_this.mouseX,_this.mouseY,_this.onMouseMove);
+							}
 						}
-						_this.checkMouseOut();
 						break ;
 					case "wheel":
 					case "mousewheel":
@@ -2869,11 +2853,315 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		MouseManager.enabled=true;
+		MouseManager.multiTouchEnabled=true;
 		MouseManager._isTouchRespond=false;
 		__static(MouseManager,
 		['instance',function(){return this.instance=new MouseManager();}
 		]);
 		return MouseManager;
+	})()
+
+
+	/**
+	*@private
+	*Touch事件管理类，处理多点触控下的鼠标事件
+	*/
+	//class laya.events.TouchManager
+	var TouchManager=(function(){
+		function TouchManager(){
+			this.preOvers=[];
+			this.preDowns=[];
+			this.preRightDowns=[];
+			this.enable=true;
+			this._lastClickTime=0;
+			this._event=new Event();
+		}
+
+		__class(TouchManager,'laya.events.TouchManager');
+		var __proto=TouchManager.prototype;
+		/**
+		*从touch表里查找对应touchID的数据
+		*@param touchID touch ID
+		*@param arr touch表
+		*@return
+		*
+		*/
+		__proto.getTouchFromArr=function(touchID,arr){
+			var i=0,len=0;
+			len=arr.length;
+			var tTouchO;
+			for (i=0;i < len;i++){
+				tTouchO=arr[i];
+				if (tTouchO.id==touchID){
+					return tTouchO;
+				}
+			}
+			return null;
+		}
+
+		/**
+		*从touch表里移除一个元素
+		*@param touchID touch ID
+		*@param arr touch表
+		*
+		*/
+		__proto.removeTouchFromArr=function(touchID,arr){
+			var i=0;
+			for (i=arr.length-1;i >=0;i--){
+				if (arr[i].id==touchID){
+					arr.splice(i,1);
+				}
+			}
+		}
+
+		/**
+		*创建一个touch数据
+		*@param ele 当前的根节点
+		*@param touchID touchID
+		*@return
+		*
+		*/
+		__proto.createTouchO=function(ele,touchID){
+			var rst;
+			rst=Pool.getItem("TouchData")|| {};
+			rst.id=touchID;
+			rst.tar=ele;
+			return rst;
+		}
+
+		/**
+		*处理touchStart
+		*@param ele 根节点
+		*@param touchID touchID
+		*@param isLeft （可选）是否为左键
+		*/
+		__proto.onMouseDown=function(ele,touchID,isLeft){
+			(isLeft===void 0)&& (isLeft=false);
+			if (!this.enable)
+				return;
+			var preO;
+			var tO;
+			var arrs;
+			preO=this.getTouchFromArr(touchID,this.preOvers);
+			arrs=this.getEles(ele,null,TouchManager._tEleArr);
+			if (!preO){
+				tO=this.createTouchO(ele,touchID);
+				this.preOvers.push(tO);
+				}else {
+				preO.tar=ele;
+			}
+			if (Browser.onMobile)
+				this.sendEvents(arrs,/*laya.events.Event.MOUSE_OVER*/"mouseover",touchID);
+			var preDowns;
+			preDowns=isLeft ? this.preDowns :this.preRightDowns;
+			preO=this.getTouchFromArr(touchID,preDowns);
+			if (!preO){
+				tO=this.createTouchO(ele,touchID);
+				preDowns.push(tO);
+				}else {
+				preO.tar=ele;
+			}
+			this.sendEvents(arrs,isLeft ? /*laya.events.Event.MOUSE_DOWN*/"mousedown" :/*laya.events.Event.RIGHT_MOUSE_DOWN*/"rightmousedown",touchID);
+		}
+
+		/**
+		*派发事件。
+		*@param eles 对象列表。
+		*@param type 事件类型。
+		*@param touchID （可选）touchID，默认为0。
+		*/
+		__proto.sendEvents=function(eles,type,touchID){
+			(touchID===void 0)&& (touchID=0);
+			var i=0,len=0;
+			len=eles.length;
+			this._event._stoped=false;
+			var _target;
+			_target=eles[0];
+			var tE;
+			for (i=0;i < len;i++){
+				tE=eles[i];
+				if (tE.destroyed)return;
+				tE.event(type,this._event.setTo(type,tE,_target));
+				if (this._event._stoped)
+					break ;
+			}
+		}
+
+		/**
+		*获取对象列表。
+		*@param start 起始节点。
+		*@param end 结束节点。
+		*@param rst 返回值。如果此值不为空，则将其赋值为计算结果，从而避免创建新数组；如果此值为空，则创建新数组返回。
+		*@return Array 返回节点列表。
+		*/
+		__proto.getEles=function(start,end,rst){
+			if (!rst){
+				rst=[];
+				}else {
+				rst.length=0;
+			}
+			while (start && start !=end){
+				rst.push(start);
+				start=start.parent;
+			}
+			return rst;
+		}
+
+		/**
+		*touchMove时处理out事件和over时间。
+		*@param eleNew 新的根节点。
+		*@param elePre 旧的根节点。
+		*@param touchID （可选）touchID，默认为0。
+		*/
+		__proto.checkMouseOutAndOverOfMove=function(eleNew,elePre,touchID){
+			(touchID===void 0)&& (touchID=0);
+			if (elePre==eleNew)
+				return;
+			var tar;
+			var arrs;
+			var i=0,len=0;
+			if (elePre.contains(eleNew)){
+				arrs=this.getEles(eleNew,elePre,TouchManager._tEleArr);
+				this.sendEvents(arrs,/*laya.events.Event.MOUSE_OVER*/"mouseover",touchID);
+				}else if (eleNew.contains(elePre)){
+				arrs=this.getEles(elePre,eleNew,TouchManager._tEleArr);
+				this.sendEvents(arrs,/*laya.events.Event.MOUSE_OUT*/"mouseout",touchID);
+				}else {
+				arrs=TouchManager._tEleArr;
+				arrs.length=0;
+				var oldArr;
+				oldArr=this.getEles(elePre,null,TouchManager._oldArr);
+				var newArr;
+				newArr=this.getEles(eleNew,null,TouchManager._newArr);
+				len=oldArr.length;
+				var tIndex=0;
+				for (i=0;i < len;i++){
+					tar=oldArr[i];
+					tIndex=newArr.indexOf(tar);
+					if (tIndex >=0){
+						newArr.splice(tIndex,newArr.length-tIndex);
+						break ;
+						}else {
+						arrs.push(tar);
+					}
+				}
+				if (arrs.length > 0){
+					this.sendEvents(arrs,/*laya.events.Event.MOUSE_OUT*/"mouseout",touchID);
+				}
+				if (newArr.length > 0){
+					this.sendEvents(newArr,/*laya.events.Event.MOUSE_OVER*/"mouseover",touchID);
+				}
+			}
+		}
+
+		/**
+		*处理TouchMove事件
+		*@param ele 根节点
+		*@param touchID touchID
+		*
+		*/
+		__proto.onMouseMove=function(ele,touchID){
+			if (!this.enable)
+				return;
+			var preO;
+			preO=this.getTouchFromArr(touchID,this.preOvers);
+			var arrs;
+			arrs=this.getEles(ele,null,TouchManager._tEleArr);
+			var tO;
+			if (!preO){
+				this.sendEvents(arrs,/*laya.events.Event.MOUSE_OVER*/"mouseover",touchID);
+				this.preOvers.push(this.createTouchO(ele,touchID));
+				}else {
+				this.checkMouseOutAndOverOfMove(ele,preO.tar);
+				preO.tar=ele;
+			}
+			this.sendEvents(arrs,/*laya.events.Event.MOUSE_MOVE*/"mousemove",touchID);
+		}
+
+		__proto.getLastOvers=function(){
+			TouchManager._tEleArr.length=0;
+			if (this.preOvers.length > 0 && this.preOvers[0].tar){
+				return this.getEles(this.preOvers[0].tar,null,TouchManager._tEleArr);
+			}
+			TouchManager._tEleArr.push(Laya.stage);
+			return TouchManager._tEleArr;
+		}
+
+		/**
+		*处理TouchEnd事件
+		*@param ele 根节点
+		*@param touchID touchID
+		*@param isLeft 是否为左键
+		*/
+		__proto.onMouseUp=function(ele,touchID,isLeft){
+			(isLeft===void 0)&& (isLeft=false);
+			if (!this.enable)
+				return;
+			var preO;
+			var tO;
+			var arrs;
+			var oldArr;
+			var i=0,len=0;
+			var tar;
+			var sendArr;
+			var onMobile=Browser.onMobile;
+			arrs=this.getEles(ele,null,TouchManager._tEleArr);
+			this.sendEvents(arrs,isLeft ? /*laya.events.Event.MOUSE_UP*/"mouseup" :/*laya.events.Event.RIGHT_MOUSE_UP*/"rightmouseup",touchID);
+			var preDowns;
+			preDowns=isLeft ? this.preDowns :this.preRightDowns;
+			preO=this.getTouchFromArr(touchID,preDowns);
+			if (!preO){
+				}else {
+				var isDouble=false;
+				var now=Browser.now();
+				isDouble=now-this._lastClickTime < 300;
+				this._lastClickTime=now;
+				if (ele==preO.tar){
+					sendArr=arrs;
+					}else {
+					oldArr=this.getEles(preO.tar,null,TouchManager._oldArr);
+					sendArr=TouchManager._newArr;
+					sendArr.length=0;
+					len=oldArr.length;
+					for (i=0;i < len;i++){
+						tar=oldArr[i];
+						if (arrs.indexOf(tar)>=0){
+							sendArr.push(tar);
+						}
+					}
+				}
+				if (sendArr.length > 0){
+					this.sendEvents(sendArr,isLeft ? /*laya.events.Event.CLICK*/"click" :/*laya.events.Event.RIGHT_CLICK*/"rightclick",touchID);
+				}
+				if (isLeft && isDouble){
+					this.sendEvents(sendArr,/*laya.events.Event.DOUBLE_CLICK*/"doubleclick",touchID);
+				}
+				this.removeTouchFromArr(touchID,preDowns);
+				preO.tar=null;
+				Pool.recover("TouchData",preO);
+			}
+			preO=this.getTouchFromArr(touchID,this.preOvers);
+			if (!preO){
+				}else {
+				if (onMobile){
+					sendArr=this.getEles(preO.tar,null,sendArr);
+					if (sendArr && sendArr.length > 0){
+						this.sendEvents(sendArr,/*laya.events.Event.MOUSE_OUT*/"mouseout",touchID);
+					}
+					this.removeTouchFromArr(touchID,this.preOvers);
+					preO.tar=null;
+					Pool.recover("TouchData",preO);
+				}
+			}
+		}
+
+		TouchManager._oldArr=[];
+		TouchManager._newArr=[];
+		TouchManager._tEleArr=[];
+		__static(TouchManager,
+		['I',function(){return this.I=new TouchManager();}
+		]);
+		return TouchManager;
 	})()
 
 
@@ -2912,6 +3200,7 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*@private
 	*<code>ColorFilterAction</code> 是一个颜色滤镜应用类。
 	*/
 	//class laya.filters.ColorFilterAction
@@ -3087,7 +3376,7 @@ var Laya=window.Laya=(function(window,document){
 				default :
 					return [];
 				}
-			while(this._controlPoints.length<=count){
+			while (this._controlPoints.length <=count){
 				this._controlPoints.push(new Point());
 			}
 			for (i=0;i < count *2;i+=2){
@@ -3339,13 +3628,12 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
-	*<code>Matrix</code> 类表示一个转换矩阵，它确定如何将点从一个坐标空间映射到另一个坐标空间。
+	*<p> <code>Matrix</code> 类表示一个转换矩阵，它确定如何将点从一个坐标空间映射到另一个坐标空间。</p>
+	*<p>您可以对一个显示对象执行不同的图形转换，方法是设置 Matrix 对象的属性，将该 Matrix 对象应用于 Transform 对象的 matrix 属性，然后应用该 Transform 对象作为显示对象的 transform 属性。这些转换函数包括平移（x 和 y 重新定位）、旋转、缩放和倾斜。</p>
 	*/
 	//class laya.maths.Matrix
 	var Matrix=(function(){
 		function Matrix(a,b,c,d,tx,ty){
-			this.cos=1;
-			this.sin=0;
 			//this.a=NaN;
 			//this.b=NaN;
 			//this.c=NaN;
@@ -3372,7 +3660,7 @@ var Laya=window.Laya=(function(window,document){
 		__class(Matrix,'laya.maths.Matrix');
 		var __proto=Matrix.prototype;
 		/**
-		*为每个矩阵属性设置一个值。
+		*将本矩阵设置为单位矩阵。
 		*@return 返回当前矩形。
 		*/
 		__proto.identity=function(){
@@ -3400,10 +3688,10 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*沿 x 和 y 轴平移矩阵，由 x 和 y 参数指定。
+		*沿 x 和 y 轴平移矩阵，平移的变化量由 x 和 y 参数指定。
 		*@param x 沿 x 轴向右移动的量（以像素为单位）。
 		*@param y 沿 y 轴向下移动的量（以像素为单位）。
-		*@return 返回此矩形。
+		*@return 返回此矩形对象。
 		*/
 		__proto.translate=function(x,y){
 			this.tx+=x;
@@ -3431,8 +3719,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param angle 以弧度为单位的旋转角度。
 		*/
 		__proto.rotate=function(angle){
-			var cos=this.cos=Math.cos(angle);
-			var sin=this.sin=Math.sin(angle);
+			var cos=Math.cos(angle);
+			var sin=Math.sin(angle);
 			var a1=this.a;
 			var c1=this.c;
 			var tx1=this.tx;
@@ -3494,7 +3782,7 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*将 Matrix 对象表示的几何转换应用于指定点忽略tx ty。
+		*将 Matrix 对象表示的几何转换应用于指定点，忽略tx、ty。
 		*@param out 用来设定输出结果的点。
 		*@return 返回out
 		*/
@@ -3606,6 +3894,7 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
+		*@private
 		*对矩阵应用缩放转换。反向相乘
 		*@param x 用于沿 x 轴缩放对象的乘数。
 		*@param y 用于沿 y 轴缩放对象的乘数。
@@ -3617,8 +3906,7 @@ var Laya=window.Laya=(function(window,document){
 				this.b=x *bb;
 				this.c=y *bc;
 				this.d=y *bd;
-			}
-			else{
+				}else {
 				this.a=x *ba;
 				this.b=0 *bd;
 				this.c=0 *ba;
@@ -3628,6 +3916,7 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
+		*@private
 		*对 Matrix 对象应用旋转转换。反向相乘
 		*@param angle 以弧度为单位的旋转角度。
 		*/
@@ -3640,8 +3929,7 @@ var Laya=window.Laya=(function(window,document){
 				this.b=cos *bb+sin *bd;
 				this.c=-sin *ba+cos *bc;
 				this.d=-sin *bb+cos *bd;
-			}
-			else{
+				}else {
 				this.a=cos *ba;
 				this.b=sin *bd;
 				this.c=-sin *ba;
@@ -3651,8 +3939,8 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*返回一个新的 Matrix 对象，它是此矩阵的克隆，带有与所含对象完全相同的副本。
-		*@return 一个 Matrix 对象。
+		*返回此 Matrix 对象的副本。
+		*@return 与原始实例具有完全相同的属性的新 Matrix 实例。
 		*/
 		__proto.clone=function(){
 			var no=Matrix._cache;
@@ -3860,10 +4148,10 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*计算当前点和目标x，y点的距离
+		*计算当前点和目标点(x，y)的距离。
 		*@param x 水平坐标。
 		*@param y 垂直坐标。
-		*@return 返回之间的距离
+		*@return 返回当前点和目标点之间的距离。
 		*/
 		__proto.distance=function(x,y){
 			return Math.sqrt((this.x-x)*(this.x-x)+(this.y-y)*(this.y-y));
@@ -3875,7 +4163,7 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*标准化向量
+		*标准化向量。
 		*/
 		__proto.normalize=function(){
 			var d=Math.sqrt(this.x *this.x+this.y *this.y);
@@ -3893,7 +4181,8 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
-	*<code>Rectangle</code> 对象是按其位置（由它左上角的点 (x,y)确定）以及宽度和高度定义的区域。
+	*<p><code>Rectangle</code> 对象是按其位置（由它左上角的点 (x,y)确定）以及宽度和高度定义的区域。</p>
+	*<p>Rectangle 类的 x、y、width 和 height 属性相互独立；更改一个属性的值不会影响其他属性。</p>
 	*/
 	//class laya.maths.Rectangle
 	var Rectangle=(function(){
@@ -3944,7 +4233,7 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*检测此矩形对象是否包含指定的点。
+		*确定由此 Rectangle 对象定义的矩形区域内是否包含指定的点。
 		*@param x 点的 X 轴坐标值（水平位置）。
 		*@param y 点的 Y 轴坐标值（垂直位置）。
 		*@return 如果 Rectangle 对象包含指定的点，则值为 true；否则为 false。
@@ -3960,7 +4249,7 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*检测传入的矩形对象是否与此对象相交。
+		*确定在 rect 参数中指定的对象是否与此 Rectangle 对象相交。此方法检查指定的 Rectangle 对象的 x、y、width 和 height 属性，以查看它是否与此 Rectangle 对象相交。
 		*@param rect Rectangle 对象。
 		*@return 如果传入的矩形对象与此对象相交，则返回 true 值，否则返回 false。
 		*/
@@ -3969,9 +4258,9 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*获取此对象与传入的矩形对象的相交区域。并将相交区域赋值给传入的输出矩形对象。
+		*如果在 rect 参数中指定的 Rectangle 对象与此 Rectangle 对象相交，则返回交集区域作为 Rectangle 对象。如果矩形不相交，则此方法返回null。
 		*@param rect 待比较的矩形区域。
-		*@param out 待输出的矩形区域。如果为空则创建一个新的。建议：尽量复用对象，减少对象创建消耗。
+		*@param out （可选）待输出的矩形区域。如果为空则创建一个新的。建议：尽量复用对象，减少对象创建消耗。
 		*@return 返回相交的矩形区域对象。
 		*/
 		__proto.intersection=function(rect,out){
@@ -3985,10 +4274,11 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*矩形联合，通过填充两个矩形之间的水平和垂直空间，将这两个矩形组合在一起以创建一个新的 Rectangle 对象。
-		*@param 目标矩形对象。
-		*@param out 待输出结果的矩形对象。如果为空则创建一个新的。建议：尽量复用对象，减少对象创建消耗。
-		*@return 两个矩形后联合的 Rectangle 对象 out 。
+		*<p>矩形联合，通过填充两个矩形之间的水平和垂直空间，将这两个矩形组合在一起以创建一个新的 Rectangle 对象。</p>
+		*<p>注意：union()方法忽略高度或宽度值为 0 的矩形，如：var rect2:Rectangle=new Rectangle(300,300,50,0);</p>
+		*@param 要添加到此 Rectangle 对象的 Rectangle 对象。
+		*@param out 用于存储输出结果的矩形对象。如果为空，则创建一个新的。建议：尽量复用对象，减少对象创建消耗。Rectangle.TEMP对象用于对象复用。
+		*@return 充当两个矩形的联合的新 Rectangle 对象。
 		*/
 		__proto.union=function(source,out){
 			out || (out=new Rectangle());
@@ -4001,8 +4291,8 @@ var Laya=window.Laya=(function(window,document){
 
 		/**
 		*返回一个 Rectangle 对象，其 x、y、width 和 height 属性的值与当前 Rectangle 对象的对应值相同。
-		*@param out 待输出的矩形对象。如果为空则创建一个新的。建议：尽量复用对象，减少对象创建消耗。
-		*@return Rectangle 对象 out ，其 x、y、width 和 height 属性的值与当前 Rectangle 对象的对应值相同。
+		*@param out （可选）用于存储结果的矩形对象。如果为空，则创建一个新的。建议：尽量复用对象，减少对象创建消耗。。Rectangle.TEMP对象用于对象复用。
+		*@return Rectangle 对象，其 x、y、width 和 height 属性的值与当前 Rectangle 对象的对应值相同。
 		*/
 		__proto.clone=function(out){
 			out || (out=new Rectangle());
@@ -4031,7 +4321,8 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*在当前矩形区域中加一个点。
+		*<p>为当前矩形对象加一个点，以使当前矩形扩展为包含当前矩形和此点的最小矩形。</p>
+		*<p>此方法会修改本对象。</p>
 		*@param x 点的 X 坐标。
 		*@param y 点的 Y 坐标。
 		*@return 返回此 Rectangle 对象。
@@ -4057,18 +4348,21 @@ var Laya=window.Laya=(function(window,document){
 			return rst;
 		}
 
-		/**确定此 Rectangle 对象是否为空。*/
+		/**
+		*确定此 Rectangle 对象是否为空。
+		*@return 如果 Rectangle 对象的宽度或高度小于等于 0，则返回 true 值，否则返回 false。
+		*/
 		__proto.isEmpty=function(){
 			if (this.width <=0 || this.height <=0)return true;
 			return false;
 		}
 
-		/**此矩形的右边距。 x 和 width 属性的和。*/
+		/**此矩形右侧的 X 轴坐标。 x 和 width 属性的和。*/
 		__getset(0,__proto,'right',function(){
 			return this.x+this.width;
 		});
 
-		/**此矩形的底边距。y 和 height 属性的和。*/
+		/**此矩形底端的 Y 轴坐标。y 和 height 属性的和。*/
 		__getset(0,__proto,'bottom',function(){
 			return this.y+this.height;
 		});
@@ -4120,7 +4414,6 @@ var Laya=window.Laya=(function(window,document){
 		*/
 		/**
 		*表示是否失去焦点后自动停止背景音乐。
-		*@return
 		*/
 		__getset(1,SoundManager,'autoStopMusic',function(){
 			return SoundManager._autoStopMusic;
@@ -4189,12 +4482,13 @@ var Laya=window.Laya=(function(window,document){
 		SoundManager._visibilityChange=function(){
 			if (Laya.stage.isVisibility){
 				SoundManager._stageOnFocus();
-				}else{
+				}else {
 				SoundManager._stageOnBlur();
 			}
 		}
 
 		SoundManager._stageOnBlur=function(){
+			SoundManager._isActive=false;
 			if (SoundManager._musicChannel){
 				if (!SoundManager._musicChannel.isStopped){
 					SoundManager._blurPaused=true;
@@ -4205,12 +4499,16 @@ var Laya=window.Laya=(function(window,document){
 					Laya.stage.once(/*laya.events.Event.MOUSE_DOWN*/"mousedown",null,SoundManager._stageOnFocus);
 				}
 			}
+			SoundManager.stopAllSound();
 		}
 
 		SoundManager._stageOnFocus=function(){
+			SoundManager._isActive=true;
 			Laya.stage.off(/*laya.events.Event.MOUSE_DOWN*/"mousedown",null,SoundManager._stageOnFocus);
 			if (SoundManager._blurPaused){
-				SoundManager.playMusic(SoundManager._tMusic,SoundManager._musicLoops,SoundManager._musicCompleteHandler,SoundManager._musicPosition);
+				if (SoundManager._tMusic){
+					SoundManager.playMusic(SoundManager._tMusic,SoundManager._musicLoops,SoundManager._musicCompleteHandler,SoundManager._musicPosition);
+				}
 				SoundManager._blurPaused=false;
 			}
 		}
@@ -4218,12 +4516,18 @@ var Laya=window.Laya=(function(window,document){
 		SoundManager.playSound=function(url,loops,complete,soundClass,startTime){
 			(loops===void 0)&& (loops=1);
 			(startTime===void 0)&& (startTime=0);
-			if (SoundManager._muted)
-				return null;
-			url=URL.formatURL(url);
+			if (!SoundManager._isActive)return null;
+			if (SoundManager._muted)return null;
 			if (url==SoundManager._tMusic){
 				if (SoundManager._musicMuted)return null;
 				}else {
+				if (Render.isConchApp){
+					var ext=Utils.getFileExtension(url);
+					if (ext !="wav" && ext !="ogg"){
+						alert("The sound only supports wav or ogg format,for optimal performance reason,please refer to the official website document.");
+						return null;
+					}
+				}
 				if (SoundManager._soundMuted)return null;
 			};
 			var tSound=Laya.loader.getRes(url);
@@ -4252,15 +4556,12 @@ var Laya=window.Laya=(function(window,document){
 		SoundManager.playMusic=function(url,loops,complete,startTime){
 			(loops===void 0)&& (loops=0);
 			(startTime===void 0)&& (startTime=0);
-			url=URL.formatURL(url);
 			SoundManager._tMusic=url;
-			if (SoundManager._musicChannel)
-				SoundManager._musicChannel.stop();
+			if (SoundManager._musicChannel)SoundManager._musicChannel.stop();
 			return SoundManager._musicChannel=SoundManager.playSound(url,loops,complete,null,startTime);
 		}
 
 		SoundManager.stopSound=function(url){
-			url=URL.formatURL(url);
 			var i=0;
 			var channel;
 			for (i=SoundManager._channels.length-1;i >=0;i--){
@@ -4294,13 +4595,11 @@ var Laya=window.Laya=(function(window,document){
 
 		SoundManager.stopMusic=function(){
 			SoundManager._tMusic=null;
-			if (SoundManager._musicChannel)
-				SoundManager._musicChannel.stop();
+			if (SoundManager._musicChannel)SoundManager._musicChannel.stop();
 		}
 
 		SoundManager.setSoundVolume=function(volume,url){
 			if (url){
-				url=URL.formatURL(url);
 				SoundManager._setVolume(url,volume);
 				}else {
 				SoundManager.soundVolume=volume;
@@ -4342,6 +4641,7 @@ var Laya=window.Laya=(function(window,document){
 		SoundManager._channels=[];
 		SoundManager._autoStopMusic=false;
 		SoundManager._blurPaused=false;
+		SoundManager._isActive=true;
 		SoundManager._musicLoops=0;
 		SoundManager._musicPosition=0;
 		SoundManager._musicCompleteHandler=null;
@@ -4406,7 +4706,7 @@ var Laya=window.Laya=(function(window,document){
 					try {
 						Storage.support && Storage.items.setItem(key,value);
 						}catch (e){
-						console.log("set localStorage failed",e);
+						console.warn("set localStorage failed",e);
 					}
 				}
 				Storage.getItem=function(key){
@@ -4416,7 +4716,7 @@ var Laya=window.Laya=(function(window,document){
 					try {
 						Storage.support && Storage.items.setItem(key,JSON.stringify(value));
 						}catch (e){
-						console.log("set localStorage failed",e);
+						console.warn("set localStorage failed",e);
 					}
 				}
 				Storage.getJSON=function(key){
@@ -4435,6 +4735,38 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		return LocalStorage;
+	})()
+
+
+	/**
+	*资源版本的生成由layacmd或IDE完成，使用ResourceVersion简化使用过程。
+	*调用enable启用资源版本管理。
+	*/
+	//class laya.net.ResourceVersion
+	var ResourceVersion=(function(){
+		function ResourceVersion(){};
+		__class(ResourceVersion,'laya.net.ResourceVersion');
+		ResourceVersion.enable=function(manifestFile,callback){
+			Laya.loader.load(manifestFile,Handler.create(null,ResourceVersion.onManifestLoaded,[callback]),null,/*laya.net.Loader.JSON*/"json");
+			URL.customFormat=ResourceVersion.addVersionPrefix;
+		}
+
+		ResourceVersion.onManifestLoaded=function(callback,data){
+			ResourceVersion.manifest=data;
+			callback.run();
+			if (!data){
+				console.warn("资源版本清单文件不存在，不使用资源版本管理。忽略ERR_FILE_NOT_FOUND错误。");
+			}
+		}
+
+		ResourceVersion.addVersionPrefix=function(originURL){
+			if (ResourceVersion.manifest && ResourceVersion.manifest[originURL])
+				return ResourceVersion.manifest[originURL]+"/"+originURL;
+			return originURL;
+		}
+
+		ResourceVersion.manifest=null
+		return ResourceVersion;
 	})()
 
 
@@ -4463,30 +4795,31 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		URL.formatURL=function(url,base){
-			if (URL.customFormat !=null)url=URL.customFormat(url,base);
 			if (!url)return "null path";
-			if (url.indexOf("data:image")===0)return url;
-			if (Render.isConchApp==false){
-				URL.version[url] && (url+="?v="+URL.version[url]);
+			if (url.indexOf(":")> 0)return url;
+			if (URL.customFormat !=null)url=URL.customFormat(url,base);
+			var char1=url.charAt(0);
+			if (char1==="."){
+				return URL.formatRelativePath((base || URL.basePath)+url);
+				}else if (char1==='~'){
+				return URL.rootPath+url.substring(1);
+				}else if (char1==="d"){
+				if (url.indexOf("data:image")===0)return url;
+				}else if (char1==="/"){
+				return url;
 			}
-			if (url.charAt(0)=='~')return URL.rootPath+url.substring(1);
-			if (URL.isAbsolute(url))return url;
-			var retVal=(base || URL.basePath)+url;
-			return URL.formatRelativePath(retVal);
+			return (base || URL.basePath)+url;
 		}
 
 		URL.formatRelativePath=function(value){
-			if (value.indexOf("../")>-1){
-				var parts=value.split("/");
-				for (var i=0,len=parts.length;i < len;i++){
-					if (parts[i]=='..'){
-						parts.splice(i-1,2);
-						i-=2;
-					}
+			var parts=value.split("/");
+			for (var i=0,len=parts.length;i < len;i++){
+				if (parts[i]=='..'){
+					parts.splice(i-1,2);
+					i-=2;
 				}
-				return parts.join('/');
 			}
-			return value;
+			return parts.join('/');
 		}
 
 		URL.isAbsolute=function(url){
@@ -4506,7 +4839,12 @@ var Laya=window.Laya=(function(window,document){
 		URL.version={};
 		URL.basePath="";
 		URL.rootPath="";
-		URL.customFormat=null
+		URL.customFormat=function(url){
+			var newUrl=URL.version[url];
+			if (!Render.isConchApp && newUrl)url+="?v="+newUrl;
+			return url;
+		}
+
 		return URL;
 	})()
 
@@ -4523,14 +4861,12 @@ var Laya=window.Laya=(function(window,document){
 			style.position='absolute';
 			style.top=style.left="0px";
 			style.background="#000000";
-			Render._mainCanvas.source.id=Render._mainCanvas.source.id || "layaCanvas";
+			Render._mainCanvas.source.id="layaCanvas";
 			var isWebGl=laya.renders.Render.isWebGL;
 			Render._mainCanvas.source.width=width;
 			Render._mainCanvas.source.height=height;
 			isWebGl && Render.WebGL.init(Render._mainCanvas,width,height);
-			if (Render._mainCanvas.source.nodeName || laya.renders.Render.isConchApp){
-				Browser.container.appendChild(Render._mainCanvas.source);
-			}
+			Browser.container.appendChild(Render._mainCanvas.source);
 			Render._context=new RenderContext(width,height,isWebGl ? null :Render._mainCanvas);
 			Render._context.ctx.setIsMainContext();
 			Browser.window.requestAnimationFrame(loop);
@@ -4545,7 +4881,7 @@ var Laya=window.Laya=(function(window,document){
 		var __proto=Render.prototype;
 		/**@private */
 		__proto._onVisibilitychange=function(){
-			if (Laya.stage.isVisibility){
+			if (!Laya.stage.isVisibility){
 				this._timeId=Browser.window.setInterval(this._enterFrame,1000);
 				}else if (this._timeId !=0){
 				Browser.window.clearInterval(this._timeId);
@@ -4557,37 +4893,9 @@ var Laya=window.Laya=(function(window,document){
 			Laya.stage._loop();
 		}
 
-		/**是否是加速器 只读*/
-		__getset(1,Render,'isConchApp',function(){
-			return /*__JS__ */(window.ConchRenderType & 0x04)==0x04;
-		});
-
 		/**目前使用的渲染器。*/
 		__getset(1,Render,'context',function(){
 			return Render._context;
-		});
-
-		/**加速器模式下设置是否是节点模式 如果是否就是非节点模式 默认为canvas模式 如果设置了isConchWebGL则是webGL模式*/
-		__getset(1,Render,'isConchNode',function(){
-			return /*__JS__ */(window.ConchRenderType & 5)==5;
-			},function(b){
-			if (b){
-				/*__JS__ */window.ConchRenderType |=0x01;
-				}else {
-				/*__JS__ */window.ConchRenderType &=~ 0x01;
-			}
-		});
-
-		/**加速器模式下设置是否是WebGL模式*/
-		__getset(1,Render,'isConchWebGL',function(){
-			return /*__JS__ */window.ConchRenderType==6;
-			},function(b){
-			if (b){
-				Render.isConchNode=false;
-				/*__JS__ */window.ConchRenderType |=0x02;
-				}else {
-				/*__JS__ */window.ConchRenderType &=~ 0x02;
-			}
 		});
 
 		/**渲染使用的原生画布引用。 */
@@ -4598,9 +4906,9 @@ var Laya=window.Laya=(function(window,document){
 		Render._context=null
 		Render._mainCanvas=null
 		Render.WebGL=null
-		Render.NODE=0x01;
-		Render.WEBGL=0x02;
-		Render.CONCH=0x04;
+		Render.isConchNode=false;
+		Render.isConchApp=false;
+		Render.isConchWebGL=false;
 		Render.isWebGL=false;
 		Render.is3DMode=false;
 		Render.optimizeTextureMemory=function(url,texture){
@@ -4608,8 +4916,12 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		Render.__init$=function(){
-			/*__JS__ */window.ConchRenderType=window.ConchRenderType||1;;
-			/*__JS__ */window.ConchRenderType|=(!window.conch?0:0x04);;;
+			/*__JS__ */window.ConchRenderType=window.ConchRenderType||1;
+			/*__JS__ */window.ConchRenderType|=(!window.conch?0:0x04);;{
+				Render.isConchNode=/*__JS__ */(window.ConchRenderType & 5)==5;
+				Render.isConchApp=/*__JS__ */(window.ConchRenderType & 0x04)==0x04;
+				Render.isConchWebGL=/*__JS__ */window.ConchRenderType==6;
+			};;
 		}
 
 		return Render;
@@ -5193,7 +5505,7 @@ var Laya=window.Laya=(function(window,document){
 				if (mask.numChildren > 0 || !mask.graphics._isOnlyOne()){
 					mask.cacheAsBitmap=true;
 				}
-				mask.render(context,x,y);
+				mask.render(context,x-sprite.pivotX,y-sprite.pivotY);
 			}
 			context.ctx.globalCompositeOperation="source-over";
 		}
@@ -5218,7 +5530,7 @@ var Laya=window.Laya=(function(window,document){
 		__proto._alpha=function(sprite,context,x,y){
 			var style=sprite._style;
 			var alpha;
-			if ((alpha=style.alpha)> 0.01){
+			if ((alpha=style.alpha)> 0.01 || sprite._needRepaint()){
 				var temp=context.ctx.globalAlpha;
 				context.ctx.globalAlpha *=alpha;
 				var next=this._next;
@@ -5456,8 +5768,8 @@ var Laya=window.Laya=(function(window,document){
 		__proto.setIsMainContext=function(){}
 		__proto.drawTextures=function(tex,pos,tx,ty){
 			Stat.drawCall+=pos.length / 2;
-			var w=tex.bitmap.width;
-			var h=tex.bitmap.height;
+			var w=tex.width;
+			var h=tex.height;
 			for (var i=0,sz=pos.length;i < sz;i+=2){
 				this.drawTexture(tex,pos[i],pos[i+1],w,h,tx,ty);
 			}
@@ -5669,7 +5981,7 @@ var Laya=window.Laya=(function(window,document){
 			to.__strokeText=to.strokeText;
 			var funs=['drawTextures','fillWords','fillBorderWords','setIsMainContext','fillRect','strokeText','fillTexture','fillText','transformByMatrix','setTransformByMatrix','clipRect','drawTexture','drawTexture2','drawTextureWithTransform','flush','clear','destroy','drawCanvas','fillBorderText','drawCurves'];
 			funs.forEach(function(i){
-				to[i]=from[i] || to[i];
+				to[i]=from[i];
 			});
 		}
 
@@ -5679,6 +5991,7 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*@private
 	*<code>ResourceManager</code> 是资源管理类。它用于资源的载入、获取、销毁。
 	*/
 	//class laya.resource.ResourceManager
@@ -5975,72 +6288,6 @@ var Laya=window.Laya=(function(window,document){
 	/**
 	*@private
 	*/
-	//class laya.resource.WXCanvas
-	var WXCanvas=(function(){
-		function WXCanvas(id){
-			this._ctx=null;
-			this._id=null;
-			this.style={};
-			this._id=id;
-		}
-
-		__class(WXCanvas,'laya.resource.WXCanvas');
-		var __proto=WXCanvas.prototype;
-		__proto.getContext=function(){
-			var wx=laya.resource.WXCanvas.wx;
-			var ctx=wx.createContext();
-			ctx.id=this._id;
-			ctx.fillRect=function (x,y,w,h){
-				this.rect(x,y,w,h);
-				this.fill();
-			}
-			ctx.strokeRect=function (x,y,w,h){
-				this.rect(x,y,w,h);
-				this.stroke();
-			}
-			ctx.___drawImage=ctx.drawImage;
-			ctx.drawImage=function (){
-				var img=arguments[0].tempFilePath;
-				if (img==null)return;
-				switch(arguments.length){
-					case 3:
-						this.___drawImage(img,arguments[1],arguments[2],arguments[0].width,arguments[0].height);
-						return;
-					case 5:
-						this.___drawImage(img,arguments[1],arguments[2],arguments[3],arguments[4]);
-						return;
-					case 9:
-						this.___drawImage(img,arguments[5],arguments[6],arguments[7],arguments[8]);
-						return;
-					}
-			}
-			Object.defineProperty(ctx,"strokeStyle",{set:function (value){this.setStrokeStyle(value)},enumerable:false });
-			Object.defineProperty(ctx,"fillStyle",{set:function (value){this.setFillStyle(value)},enumerable:false });
-			Object.defineProperty(ctx,"fontSize",{set:function (value){this.setFontSize(value)},enumerable:false });
-			Object.defineProperty(ctx,"lineWidth",{set:function (value){this.setLineWidth(value)},enumerable:false });
-			Context.__init__(ctx);
-			ctx.flush=function (){
-				wx.drawCanvas({canvasId:this.id,actions:this.getActions()});
-			}
-			return ctx;
-		}
-
-		__proto.oncontextmenu=function(e){}
-		__proto.addEventListener=function(){}
-		__getset(0,__proto,'id',function(){
-			return this._id;
-			},function(value){
-			this._id=value;
-		});
-
-		WXCanvas.wx=null;
-		return WXCanvas;
-	})()
-
-
-	/**
-	*@private
-	*/
 	//class laya.system.System
 	var System=(function(){
 		function System(){};
@@ -6162,36 +6409,7 @@ var Laya=window.Laya=(function(window,document){
 			/*__JS__ */Browser.enableTouch=(('ontouchstart' in window)|| window.DocumentTouch && document instanceof DocumentTouch);
 			/*__JS__ */window.focus();
 			/*__JS__ */SoundManager._soundClass=Sound;;
-			var MainCanvas=null;
-			if (Browser.window.MainCanvasID){
-				var _wx=/*__JS__ */wx;
-				if (_wx && !_wx.createContext)_wx=null;
-				if ((WXCanvas.wx=_wx)!=null){
-					MainCanvas=new WXCanvas(Browser.window.MainCanvasID);
-					var from=Context.prototype;
-					from.flush=null;
-					Browser.window.Image=function (){
-						this.setSrc=function (url){
-							this.__src=url;
-							var _this=this;
-							this.success();
-						}
-						this.success=function (res){
-							this.width=200;
-							this.height=200;
-							this.tempFilePath=res ? res.tempFilePath :this.__src;
-							this.onload && this.onload();
-						}
-						this.getSrc=function (){
-							return this.__src;
-						}
-						Object.defineProperty(this,"src",{get:this.getSrc,set:this.setSrc,enumerable:false });
-					}
-					}else {
-					MainCanvas=Browser.document.getElementById(Browser.window.MainCanvasID);
-				}
-			}
-			Render._mainCanvas=Render._mainCanvas || HTMLCanvas.create('2D',MainCanvas);
+			Render._mainCanvas=Render._mainCanvas || HTMLCanvas.create('2D');
 			if (Browser.canvas)return;
 			Browser.canvas=HTMLCanvas.create('2D');
 			Browser.context=Browser.canvas.getContext('2d');
@@ -6204,7 +6422,7 @@ var Laya=window.Laya=(function(window,document){
 				Browser.window.innerHeight=e.data.height;
 				Browser.window.__innerHeight=e.data.clientHeight;
 				if (!Browser.document.createEvent){
-					console.log("no document.createEvent");
+					console.warn("no document.createEvent");
 					return;
 				};
 				var evt=Browser.document.createEvent("HTMLEvents");
@@ -6782,6 +7000,7 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*@private
 	*对象缓存统一管理类
 	*/
 	//class laya.utils.CacheManger
@@ -6868,7 +7087,7 @@ var Laya=window.Laya=(function(window,document){
 			if (compClass)
 				return new compClass();
 			else
-			console.log("[error] Undefined class:",className);
+			console.warn("[error] Undefined class:",className);
 			return null;
 		}
 
@@ -6895,7 +7114,11 @@ var Laya=window.Laya=(function(window,document){
 							}else {
 							var tChild=ClassUtils.createByJson(data,null,root,customHandler,instanceHandler)
 							if (data.type=="Script"){
-								tChild["owner"]=node;
+								if (tChild.hasOwnProperty("owner")){
+									tChild["owner"]=node;
+									}else if (tChild.hasOwnProperty("target")){
+									tChild["target"]=node;
+								}
 								}else if (data.props.renderType=="mask"){
 								node.mask=tChild;
 								}else {
@@ -7115,6 +7338,7 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*@private
 	*<code>Color</code> 是一个颜色值处理类。
 	*/
 	//class laya.utils.Color
@@ -7270,6 +7494,7 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*@private
 	*<code>Dragging</code> 类是触摸滑动控件。
 	*/
 	//class laya.utils.Dragging
@@ -7872,6 +8097,7 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*@private
 	*<code>HTMLChar</code> 是一个 HTML 字符类。
 	*/
 	//class laya.utils.HTMLChar
@@ -8118,6 +8344,7 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*@private
 	*基于个数的对象缓存管理器
 	*/
 	//class laya.utils.PoolCache
@@ -8212,7 +8439,7 @@ var Laya=window.Laya=(function(window,document){
 				Stat._view[i].x=4;
 				Stat._view[i].y=i *Stat._fontSize+2 *pixel;
 			}
-			Stat._height=pixel *(Stat._view.length *12+3 *pixel);
+			Stat._height=pixel *(Stat._view.length *12+3 *pixel)+4;
 			if (!Stat._canvas){
 				Stat._canvas=new HTMLCanvas('2D');
 				Stat._canvas.size(Stat._width,Stat._height);
@@ -8233,8 +8460,10 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		Stat.hide=function(){
-			Browser.removeElement(Stat._canvas.source);
-			Laya.timer.clear(Stat,Stat.loop);
+			if (Stat._canvas){
+				Browser.removeElement(Stat._canvas.source);
+				Laya.timer.clear(Stat,Stat.loop);
+			}
 		}
 
 		Stat.clear=function(){
@@ -8310,6 +8539,7 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*@private
 	*<code>StringKey</code> 类用于存取字符串对应的数字。
 	*/
 	//class laya.utils.StringKey
@@ -8447,7 +8677,7 @@ var Laya=window.Laya=(function(window,document){
 
 		/**@private */
 		__proto._recoverHandler=function(handler){
-			this._map[handler.key]=null;
+			if(this._map[handler.key]==handler)this._map[handler.key]=null;
 			handler.clear();
 			Timer._pool.push(handler);
 		}
@@ -8467,7 +8697,7 @@ var Laya=window.Laya=(function(window,document){
 					handler.caller=caller;
 					handler.method=method;
 					handler.args=args;
-					handler.exeTime=delay+(useFrame ? this.currFrame :Browser.now());
+					handler.exeTime=delay+(useFrame ? this.currFrame :this.currTimer+Browser.now()-this._lastTimer);
 					return;
 				}
 			}
@@ -8478,7 +8708,7 @@ var Laya=window.Laya=(function(window,document){
 			handler.caller=caller;
 			handler.method=method;
 			handler.args=args;
-			handler.exeTime=delay+(useFrame ? this.currFrame :Browser.now());
+			handler.exeTime=delay+(useFrame ? this.currFrame :this.currTimer+Browser.now()-this._lastTimer);
 			this._indexHandler(handler);
 			this._handlers.push(handler);
 		}
@@ -8655,12 +8885,12 @@ var Laya=window.Laya=(function(window,document){
 					this.method=null;
 					this.args=null;
 				}
-				__proto.run=function(widthClear){
+				__proto.run=function(withClear){
 					var caller=this.caller;
 					if (caller && caller.destroyed)return this.clear();
 					var method=this.method;
 					var args=this.args;
-					widthClear && this.clear();
+					withClear && this.clear();
 					if (method==null)return;
 					args ? method.apply(caller,args):method.call(caller);
 				}
@@ -9084,6 +9314,70 @@ var Laya=window.Laya=(function(window,document){
 			return null;
 		}
 
+		Utils.getTransformRelativeToWindow=function(coordinateSpace,x,y){
+			var stage=Laya.stage;
+			var globalTransform=laya.utils.Utils.getGlobalPosAndScale(coordinateSpace);
+			var canvasMatrix=stage._canvasTransform.clone();
+			var canvasLeft=canvasMatrix.tx;
+			var canvasTop=canvasMatrix.ty;
+			canvasMatrix.rotate(-Math.PI / 180 *Laya.stage.canvasDegree);
+			canvasMatrix.scale(Laya.stage.clientScaleX,Laya.stage.clientScaleY);
+			var perpendicular=(Laya.stage.canvasDegree % 180 !=0);
+			var tx=NaN,ty=NaN;
+			if (perpendicular){
+				tx=y+globalTransform.y;
+				ty=x+globalTransform.x;
+				tx *=canvasMatrix.d;
+				ty *=canvasMatrix.a;
+				if (Laya.stage.canvasDegree==90){
+					tx=canvasLeft-tx;
+					ty+=canvasTop;
+				}
+				else{
+					tx+=canvasLeft;
+					ty=canvasTop-ty;
+				}
+			}
+			else{
+				tx=x+globalTransform.x;
+				ty=y+globalTransform.y;
+				tx *=canvasMatrix.a;
+				ty *=canvasMatrix.d;
+				tx+=canvasLeft;
+				ty+=canvasTop;
+			}
+			ty+=Laya.stage['_safariOffsetY'];
+			var domScaleX=NaN,domScaleY=NaN;
+			if (perpendicular){
+				domScaleX=canvasMatrix.d *globalTransform.height;
+				domScaleY=canvasMatrix.a *globalTransform.width;
+			}
+			else{
+				domScaleX=canvasMatrix.a *globalTransform.width;
+				domScaleY=canvasMatrix.d *globalTransform.height;
+			}
+			return {
+				x:tx,
+				y:ty,
+				scaleX:domScaleX,
+				scaleY:domScaleY
+			};
+		}
+
+		Utils.fitDOMElementInArea=function(dom,coordinateSpace,x,y,width,height){
+			if (!dom._fitLayaAirInitialized){
+				dom._fitLayaAirInitialized=true;
+				dom.style.transformOrigin=dom.style.webKittransformOrigin="left top";
+				dom.style.position="absolute"
+			};
+			var transform=Utils.getTransformRelativeToWindow(coordinateSpace,x,y);
+			dom.style.transform=dom.style.webkitTransform="scale("+transform.scaleX+","+transform.scaleY+") rotate("+(Laya.stage.canvasDegree)+"deg)";
+			dom.style.width=width+'px';
+			dom.style.height=height+'px';
+			dom.style.left=transform.x+'px';
+			dom.style.top=transform.y+'px';
+		}
+
 		Utils._gid=1;
 		Utils._pi=180 / Math.PI;
 		Utils._pi2=Math.PI / 180;
@@ -9280,6 +9574,7 @@ var Laya=window.Laya=(function(window,document){
 	//class laya.display.Node extends laya.events.EventDispatcher
 	var Node=(function(_super){
 		function Node(){
+			this._bits=0;
 			this._displayedInStage=false;
 			this._parent=null;
 			this.conchModel=null;
@@ -9295,13 +9590,89 @@ var Laya=window.Laya=(function(window,document){
 		__class(Node,'laya.display.Node',_super);
 		var __proto=Node.prototype;
 		/**@private */
+		__proto._setBit=function(type,value){
+			if (type==0x1){
+				var preValue=this._getBit(type);
+				if (preValue !=value){
+					this._updateDisplayedInstage();
+				}
+			}
+			if (value){
+				this._bits |=type;
+				}else {
+				this._bits &=~type;
+			}
+		}
+
+		/**@private */
+		__proto._getBit=function(type){
+			return (this._bits & type)!=0;
+		}
+
+		/**@private */
+		__proto._setUpNoticeChain=function(){
+			if (this._getBit(0x1)){
+				this._setUpNoticeType(0x1);
+			}
+		}
+
+		/**@private */
+		__proto._setUpNoticeType=function(type){
+			var ele=this;
+			ele._setBit(type,true);
+			ele=ele.parent;
+			while (ele){
+				if (ele._getBit(type))return;
+				ele._setBit(type,true);
+				ele=ele.parent;
+			}
+		}
+
+		/**
+		*<p>增加事件侦听器，以使侦听器能够接收事件通知。</p>
+		*<p>如果侦听鼠标事件，则会自动设置自己和父亲节点的属性 mouseEnabled 的值为 true(如果父节点mouseEnabled=false，则停止设置父节点mouseEnabled属性)。</p>
+		*@param type 事件的类型。
+		*@param caller 事件侦听函数的执行域。
+		*@param listener 事件侦听函数。
+		*@param args （可选）事件侦听函数的回调参数。
+		*@return 此 EventDispatcher 对象。
+		*/
+		__proto.on=function(type,caller,listener,args){
+			if (type===/*laya.events.Event.DISPLAY*/"display" || type===/*laya.events.Event.UNDISPLAY*/"undisplay"){
+				if (!this._getBit(0x1)){
+					this._setUpNoticeType(0x1);
+				}
+			}
+			return this._createListener(type,caller,listener,args,false);
+		}
+
+		/**
+		*<p>增加事件侦听器，以使侦听器能够接收事件通知，此侦听事件响应一次后则自动移除侦听。</p>
+		*<p>如果侦听鼠标事件，则会自动设置自己和父亲节点的属性 mouseEnabled 的值为 true(如果父节点mouseEnabled=false，则停止设置父节点mouseEnabled属性)。</p>
+		*@param type 事件的类型。
+		*@param caller 事件侦听函数的执行域。
+		*@param listener 事件侦听函数。
+		*@param args （可选）事件侦听函数的回调参数。
+		*@return 此 EventDispatcher 对象。
+		*/
+		__proto.once=function(type,caller,listener,args){
+			if (type===/*laya.events.Event.DISPLAY*/"display" || type===/*laya.events.Event.UNDISPLAY*/"undisplay"){
+				if (!this._getBit(0x1)){
+					this._setUpNoticeType(0x1);
+				}
+			}
+			return this._createListener(type,caller,listener,args,true);
+		}
+
+		/**@private */
 		__proto.createConchModel=function(){
 			return null;
 		}
 
 		/**
 		*<p>销毁此对象。destroy对象默认会把自己从父节点移除，并且清理自身引用关系，等待js自动垃圾回收机制回收。destroy后不能再使用。</p>
-		*@param destroyChild 是否同时销毁子节点，若值为true,则销毁子节点，否则不销毁子节点。
+		*<p>destroy时会移除自身的事情监听，自身的timer监听，移除子对象及从父节点移除自己。</p>
+		*@param destroyChild （可选）是否同时销毁子节点，若值为true,则销毁子节点，否则不销毁子节点。
 		*/
 		__proto.destroy=function(destroyChild){
 			(destroyChild===void 0)&& (destroyChild=true);
@@ -9314,6 +9685,7 @@ var Laya=window.Laya=(function(window,document){
 			this._childs=null;
 			this._$P=null;
 			this.offAll();
+			this.timer.clearAll(this);
 		}
 
 		/**
@@ -9417,9 +9789,11 @@ var Laya=window.Laya=(function(window,document){
 		*/
 		__proto.getChildByName=function(name){
 			var nodes=this._childs;
-			for (var i=0,n=nodes.length;i < n;i++){
-				var node=nodes[i];
-				if (node.name===name)return node;
+			if (nodes){
+				for (var i=0,n=nodes.length;i < n;i++){
+					var node=nodes[i];
+					if (node.name===name)return node;
+				}
 			}
 			return null;
 		}
@@ -9570,6 +9944,25 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**@private */
+		__proto._updateDisplayedInstage=function(){
+			var ele;
+			ele=this;
+			var stage=Laya.stage;
+			this._displayedInStage=false;
+			while (ele){
+				if (ele._getBit(0x1)){
+					this._displayedInStage=ele._displayedInStage;
+					break ;
+				}
+				if (ele==stage || ele._displayedInStage){
+					this._displayedInStage=true;
+					break ;
+				}
+				ele=ele.parent;
+			}
+		}
+
+		/**@private */
 		__proto._setDisplay=function(value){
 			if (this._displayedInStage!==value){
 				this._displayedInStage=value;
@@ -9589,17 +9982,21 @@ var Laya=window.Laya=(function(window,document){
 			if (childs){
 				for (var i=0,n=childs.length;i < n;i++){
 					var child=childs[i];
-					child._setDisplay(display);
-					child._childs.length && this._displayChild(child,display);
+					if (!child._getBit(0x1))continue ;
+					if (child._childs.length > 0){
+						this._displayChild(child,display);
+						}else {
+						child._setDisplay(display);
+					}
 				}
 			}
 			node._setDisplay(display);
 		}
 
 		/**
-		*当前容器是否包含 <code>node</code> 节点。
-		*@param node 某一个节点 <code>Node</code>。
-		*@return 一个布尔值表示是否包含<code>node</code>节点。
+		*当前容器是否包含指定的 <code>Node</code> 节点对象 。
+		*@param node 指定的 <code>Node</code> 节点对象 。
+		*@return 一个布尔值表示是否包含指定的 <code>Node</code> 节点对象 。
 		*/
 		__proto.contains=function(node){
 			if (node===this)return true;
@@ -9615,8 +10012,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param delay 间隔时间(单位毫秒)。
 		*@param caller 执行域(this)。
 		*@param method 结束时的回调方法。
-		*@param args 回调参数。
-		*@param coverBefore 是否覆盖之前的延迟执行，默认为true。
+		*@param args （可选）回调参数。
+		*@param coverBefore （可选）是否覆盖之前的延迟执行，默认为true。
 		*/
 		__proto.timerLoop=function(delay,caller,method,args,coverBefore){
 			(coverBefore===void 0)&& (coverBefore=true);
@@ -9628,8 +10025,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param delay 延迟时间(单位毫秒)。
 		*@param caller 执行域(this)。
 		*@param method 结束时的回调方法。
-		*@param args 回调参数。
-		*@param coverBefore 是否覆盖之前的延迟执行，默认为true。
+		*@param args （可选）回调参数。
+		*@param coverBefore （可选）是否覆盖之前的延迟执行，默认为true。
 		*/
 		__proto.timerOnce=function(delay,caller,method,args,coverBefore){
 			(coverBefore===void 0)&& (coverBefore=true);
@@ -9641,8 +10038,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param delay 间隔几帧(单位为帧)。
 		*@param caller 执行域(this)。
 		*@param method 结束时的回调方法。
-		*@param args 回调参数。
-		*@param coverBefore 是否覆盖之前的延迟执行，默认为true。
+		*@param args （可选）回调参数。
+		*@param coverBefore （可选）是否覆盖之前的延迟执行，默认为true。
 		*/
 		__proto.frameLoop=function(delay,caller,method,args,coverBefore){
 			(coverBefore===void 0)&& (coverBefore=true);
@@ -9654,8 +10051,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param delay 延迟几帧(单位为帧)。
 		*@param caller 执行域(this)
 		*@param method 结束时的回调方法
-		*@param args 回调参数
-		*@param coverBefore 是否覆盖之前的延迟执行，默认为true
+		*@param args （可选）回调参数
+		*@param coverBefore （可选）是否覆盖之前的延迟执行，默认为true
 		*/
 		__proto.frameOnce=function(delay,caller,method,args,coverBefore){
 			(coverBefore===void 0)&& (coverBefore=true);
@@ -9669,7 +10066,7 @@ var Laya=window.Laya=(function(window,document){
 		*/
 		__proto.clearTimer=function(caller,method){
 			this.timer.clear(caller,method);
-		}	
+		}
 
 		/**
 		*子对象数量。
@@ -9686,12 +10083,15 @@ var Laya=window.Laya=(function(window,document){
 				if (value){
 					this._parent=value;
 					this.event(/*laya.events.Event.ADDED*/"added");
-					value.displayedInStage && this._displayChild(this,true);
+					if (this._getBit(0x1)){
+						this._setUpNoticeChain();
+						value.displayedInStage && this._displayChild(this,true);
+					}
 					value._childChanged(this);
 					}else {
 					this.event(/*laya.events.Event.REMOVED*/"removed");
 					this._parent._childChanged();
-					this._displayChild(this,false);
+					if (this._getBit(0x1))this._displayChild(this,false);
 					this._parent=value;
 				}
 			}
@@ -9699,11 +10099,15 @@ var Laya=window.Laya=(function(window,document){
 
 		/**表示是否在显示列表中显示。*/
 		__getset(0,__proto,'displayedInStage',function(){
+			if (this._getBit(0x1))return this._displayedInStage;
+			this._setUpNoticeType(0x1);
 			return this._displayedInStage;
 		});
 
 		Node.ARRAY_EMPTY=[];
 		Node.PROP_EMPTY={};
+		Node.NOTICE_DISPLAY=0x1;
+		Node.MOUSEENABLE=0x2;
 		return Node;
 	})(EventDispatcher)
 
@@ -10427,6 +10831,7 @@ var Laya=window.Laya=(function(window,document){
 		*
 		*/
 		__proto.load=function(url){
+			url=URL.formatURL(url);
 			this.url=url;
 			var ad=AudioSound._audioCache[url];
 			if (ad && ad.readyState >=2){
@@ -10479,7 +10884,15 @@ var Laya=window.Laya=(function(window,document){
 			if (!ad)return null;
 			var tAd;
 			tAd=Pool.getItem("audio:"+this.url);
-			tAd=tAd?tAd:ad.cloneNode(true);
+			if (Render.isConchApp){
+				if (!tAd){
+					tAd=Browser.createElement("audio");
+					tAd.src=ad.src;
+				}
+			}
+			else{
+				tAd=tAd ? tAd :ad.cloneNode(true);
+			};
 			var channel=new AudioSoundChannel(tAd);
 			channel.url=this.url;
 			channel.loops=loops;
@@ -10529,6 +10942,14 @@ var Laya=window.Laya=(function(window,document){
 		*停止。
 		*/
 		__proto.stop=function(){}
+		/**
+		*暂停。
+		*/
+		__proto.pause=function(){}
+		/**
+		*继续播放。
+		*/
+		__proto.resume=function(){}
 		/**
 		*private
 		*/
@@ -10633,6 +11054,7 @@ var Laya=window.Laya=(function(window,document){
 		*/
 		__proto.load=function(url){
 			var me=this;
+			url=URL.formatURL(url);
 			this.url=url;
 			this.audioBuffer=WebAudioSound._dataCache[url];
 			if (this.audioBuffer){
@@ -10687,7 +11109,7 @@ var Laya=window.Laya=(function(window,document){
 			var tParams;
 			for (i=0;i < len;i++){
 				tParams=toPlays[i];
-				if(tParams[2]&&!(tParams [2]).isStopped){
+				if (tParams[2] && !(tParams [2]).isStopped){
 					this.play(tParams[0],tParams[1],tParams[2]);
 				}
 			}
@@ -10756,7 +11178,9 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		WebAudioSound._playEmptySound=function(){
-			if (WebAudioSound.ctx==null){return;};
+			if (WebAudioSound.ctx==null){
+				return;
+			};
 			var source=WebAudioSound.ctx.createBufferSource();
 			source.buffer=WebAudioSound._miniBuffer;
 			source.connect(WebAudioSound.ctx.destination);
@@ -10764,8 +11188,10 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		WebAudioSound._unlock=function(){
-			if (WebAudioSound._unlocked){return;}
-				WebAudioSound._playEmptySound();
+			if (WebAudioSound._unlocked){
+				return;
+			}
+			WebAudioSound._playEmptySound();
 			if (WebAudioSound.ctx.state=="running"){
 				Browser.document.removeEventListener("mousedown",WebAudioSound._unlock,true);
 				Browser.document.removeEventListener("touchend",WebAudioSound._unlock,true);
@@ -10828,7 +11254,7 @@ var Laya=window.Laya=(function(window,document){
 				for (var i=0;i < headers.length;i++){
 					http.setRequestHeader(headers[i++],headers[i]);
 				}
-				}else {
+				}else if(!Render.isConchApp){
 				if (!data || (typeof data=='string'))http.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 				else http.setRequestHeader("Content-Type","application/json");
 			}
@@ -10977,9 +11403,9 @@ var Laya=window.Laya=(function(window,document){
 		__proto.load=function(url,type,cache,group,ignoreCache){
 			(cache===void 0)&& (cache=true);
 			(ignoreCache===void 0)&& (ignoreCache=false);
-			if (url.indexOf("data:image")===0)type="image";
-			url=URL.formatURL(url);
 			this._url=url;
+			if (url.indexOf("data:image")===0)type="image";
+			else url=URL.formatURL(url);
 			this._type=type || (type=this.getTypeFromUrl(url));
 			this._cache=cache;
 			this._data=null;
@@ -11025,7 +11451,7 @@ var Laya=window.Laya=(function(window,document){
 		__proto.getTypeFromUrl=function(url){
 			var type=Utils.getFileExtension(url);
 			if (type)return Loader.typeMap[type];
-			console.log("Not recognize the resources suffix",url);
+			console.warn("Not recognize the resources suffix",url);
 			return "text";
 		}
 
@@ -11035,6 +11461,7 @@ var Laya=window.Laya=(function(window,document){
 		*@param url 资源地址。
 		*/
 		__proto._loadImage=function(url){
+			url=URL.formatURL(url);
 			var _this=this;
 			var image;
 			function clear (){
@@ -11119,11 +11546,8 @@ var Laya=window.Laya=(function(window,document){
 							var split=this._url.indexOf("/")>=0 ? "/" :"\\";
 							var idx=this._url.lastIndexOf(split);
 							var folderPath=idx >=0 ? this._url.substr(0,idx+1):"";
-							idx=this._url.indexOf("?");
-							var ver;
-							ver=idx >=0 ? this._url.substr(idx):"";
 							for (var i=0,len=toloadPics.length;i < len;i++){
-								toloadPics[i]=folderPath+toloadPics[i]+ver;
+								toloadPics[i]=folderPath+toloadPics[i];
 							}
 							}else {
 							toloadPics=[this._url.replace(".json",".png")];
@@ -11133,23 +11557,24 @@ var Laya=window.Laya=(function(window,document){
 						data.pics=[];
 					}
 					this.event(/*laya.events.Event.PROGRESS*/"progress",0.3+1 / toloadPics.length *0.6);
-					return this._loadImage(URL.formatURL(toloadPics.pop()));
+					return this._loadImage(toloadPics.pop());
 					}else {
 					this._data.pics.push(data);
 					if (this._data.toLoads.length > 0){
 						this.event(/*laya.events.Event.PROGRESS*/"progress",0.3+1 / this._data.toLoads.length *0.6);
-						return this._loadImage(URL.formatURL(this._data.toLoads.pop()));
+						return this._loadImage(this._data.toLoads.pop());
 					};
 					var frames=this._data.frames;
 					var cleanUrl=this._url.split("?")[0];
-					var directory=(this._data.meta && this._data.meta.prefix)? URL.basePath+this._data.meta.prefix :cleanUrl.substring(0,cleanUrl.lastIndexOf("."))+"/";
+					var directory=(this._data.meta && this._data.meta.prefix)? this._data.meta.prefix :cleanUrl.substring(0,cleanUrl.lastIndexOf("."))+"/";
 					var pics=this._data.pics;
-					var map=Loader.atlasMap[this._url] || (Loader.atlasMap[this._url]=[]);
+					var atlasURL=URL.formatURL(this._url);
+					var map=Loader.atlasMap[atlasURL] || (Loader.atlasMap[atlasURL]=[]);
 					map.dir=directory;
 					for (var name in frames){
 						var obj=frames[name];
 						var tPic=pics[obj.frame.idx ? obj.frame.idx :0];
-						var url=directory+name;
+						var url=URL.formatURL(directory+name);
 						Loader.cacheRes(url,Texture.create(tPic,obj.frame.x,obj.frame.y,obj.frame.w,obj.frame.h,obj.spriteSourceSize.x,obj.spriteSourceSize.y,obj.sourceSize.w,obj.sourceSize.h));
 						Loader.loadedMap[url].url=url;
 						map.push(url);
@@ -11160,10 +11585,9 @@ var Laya=window.Laya=(function(window,document){
 				if (!data.src){
 					this._data=data;
 					this.event(/*laya.events.Event.PROGRESS*/"progress",0.5);
-					return this._loadImage(URL.formatURL(this._url.replace(".fnt",".png")));
+					return this._loadImage(this._url.replace(".fnt",".png"));
 					}else {
-					var bFont;
-					bFont=new BitmapFont();
+					var bFont=new BitmapFont();
 					bFont.parseFont(this._data,data);
 					var tArr=this._url.split(".fnt")[0].split("/");
 					var fontName=tArr[tArr.length-1];
@@ -11226,7 +11650,7 @@ var Laya=window.Laya=(function(window,document){
 				Loader._loaders[Loader._startIndex].endLoad();
 				Loader._startIndex++;
 				if (Browser.now()-startTimer > Loader.maxTimeOut){
-					console.log("loader callback cost a long time:"+(Browser.now()-startTimer)+" url="+Loader._loaders[Loader._startIndex-1].url);
+					console.warn("loader callback cost a long time:"+(Browser.now()-startTimer)+" url="+Loader._loaders[Loader._startIndex-1].url);
 					Laya.timer.frameOnce(1,null,Loader.checkNext);
 					return;
 				}
@@ -11239,7 +11663,7 @@ var Laya=window.Laya=(function(window,document){
 		Loader.clearRes=function(url,forceDispose){
 			(forceDispose===void 0)&& (forceDispose=false);
 			url=URL.formatURL(url);
-			var arr=Loader.atlasMap[url];
+			var arr=Loader.getAtlas(url);
 			if (arr){
 				for (var i=0,n=arr.length;i < n;i++){
 					var resUrl=arr[i];
@@ -11270,7 +11694,7 @@ var Laya=window.Laya=(function(window,document){
 		Loader.cacheRes=function(url,data){
 			url=URL.formatURL(url);
 			if (Loader.loadedMap[url] !=null){
-				console.log("Resources already exist,is repeated loading:",url);
+				console.warn("Resources already exist,is repeated loading:",url);
 				}else {
 				Loader.loadedMap[url]=data;
 			}
@@ -11300,9 +11724,9 @@ var Laya=window.Laya=(function(window,document){
 		Loader.FONT="font";
 		Loader.typeMap={"png":"image","jpg":"image","jpeg":"image","txt":"text","json":"json","xml":"xml","als":"atlas","atlas":"atlas","mp3":"sound","ogg":"sound","wav":"sound","part":"json","fnt":"font"};
 		Loader.parserMap={};
-		Loader.loadedMap={};
 		Loader.groupMap={};
 		Loader.maxTimeOut=100;
+		Loader.loadedMap={};
 		Loader.atlasMap={};
 		Loader._loaders=[];
 		Loader._isWorking=false;
@@ -11312,7 +11736,8 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
-	*<p><code>ColorFilter</code> 是颜色滤镜。</p>
+	*<p><code>ColorFilter</code> 是颜色滤镜。使用 ColorFilter 类可以将 4 x 5 矩阵转换应用于输入图像上的每个像素的 RGBA 颜色和 Alpha 值，以生成具有一组新的 RGBA 颜色和 Alpha 值的结果。该类允许饱和度更改、色相旋转、亮度转 Alpha 以及各种其他效果。您可以将滤镜应用于任何显示对象（即，从 Sprite 类继承的对象）。</p>
+	*<p>注意：对于 RGBA 值，最高有效字节代表红色通道值，其后的有效字节分别代表绿色、蓝色和 Alpha 通道值。</p>
 	*/
 	//class laya.filters.ColorFilter extends laya.filters.Filter
 	var ColorFilter=(function(_super){
@@ -11346,7 +11771,7 @@ var Laya=window.Laya=(function(window,document){
 		*/
 		__proto.callNative=function(sp){
 			var t=sp._$P.cf=this;
-			sp.conchModel && sp.conchModel.setFilterMatrix&&sp.conchModel.setFilterMatrix(this._mat,this._alpha);
+			sp.conchModel && sp.conchModel.setFilterMatrix && sp.conchModel.setFilterMatrix(this._mat,this._alpha);
 		}
 
 		/**@private */
@@ -11359,37 +11784,26 @@ var Laya=window.Laya=(function(window,document){
 			return this._action;
 		});
 
-		__getset(1,ColorFilter,'DEFAULT',function(){
-			if (!ColorFilter._DEFAULT){
-				ColorFilter._DEFAULT=new ColorFilter([1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0]);
-			}
-			return ColorFilter._DEFAULT;
-		},laya.filters.Filter._$SET_DEFAULT);
-
-		__getset(1,ColorFilter,'GRAY',function(){
-			if (!ColorFilter._GRAY){
-				ColorFilter._GRAY=new ColorFilter([0.3,0.59,0.11,0,0,0.3,0.59,0.11,0,0,0.3,0.59,0.11,0,0,0,0,0,1,0]);
-			}
-			return ColorFilter._GRAY;
-		},laya.filters.Filter._$SET_GRAY);
-
-		ColorFilter._DEFAULT=null
-		ColorFilter._GRAY=null
 		return ColorFilter;
 	})(Filter)
 
 
 	/**
 	*<p> <code>LoaderManager</code> 类用于用于批量加载资源、数据。</p>
-	*<p>批量加载器，单例，可以通过Laya.loader访问。</p>
-	*多线程(默认5个线程)，5个优先级(0最快，4最慢,默认为1)
-	*某个资源加载失败后，会按照最低优先级重试加载(属性retryNum决定重试几次)，如果重试后失败，则调用complete函数，并返回null
+	*<p>批量加载器，单例，可以通过Laya.loader访问，注意大小写。</p>
+	*多线程：默认5个线程，可以通过maxLoader属性修改线程数量
+	*多优先级：默认5个优先级，0最快，4最慢，默认为1
+	*重复过滤：自动过滤重复加载以及已经加载过的地址，防止重复加载
+	*错误重试：资源加载失败后，会重试加载（按照最低优先级），retryNum设定加载失败后重试次数，retryDelay设定加载重试的时间间隔
+	*如果单个地址加载方式，加载重试后仍然失败，则调用complete回调，并返回null。如果多地址加载方式，重试后仍然失败，则调用complete回调，返回为success=false
+	*全部队列加载完成，会派发complete事件，如果队列中任意一个加载失败，会派发error事件
 	*/
 	//class laya.net.LoaderManager extends laya.events.EventDispatcher
 	var LoaderManager=(function(_super){
 		var ResInfo;
 		function LoaderManager(){
 			this.retryNum=1;
+			this.retryDelay=0;
 			this.maxLoader=5;
 			this._loaders=[];
 			this._loaderCount=0;
@@ -11408,8 +11822,8 @@ var Laya=window.Laya=(function(window,document){
 		*@param url 资源地址或者数组，比如[{url:xx,clas:xx,priority:xx,params:xx},{url:xx,clas:xx,priority:xx,params:xx}]
 		*@param progress 进度回调，回调参数为当前文件加载的进度信息(0-1)。
 		*@param clas 资源类名，比如Texture
-		*@param type 资源类型
-		*@param priority 优先级
+		*@param type 资源类型，比如：Loader.IMAGE
+		*@param priority 优先级，默认5个优先级，0最快，4最慢，默认为1
 		*@param cache 是否缓存
 		*@return 返回资源对象
 		*/
@@ -11472,9 +11886,8 @@ var Laya=window.Laya=(function(window,document){
 						if (complete)complete.run();
 					}
 					if (cache){
-						var formatURL=URL.formatURL(url);
-						LoaderManager.cacheRes(formatURL,item);
-						item.url=formatURL;
+						this.cacheRes(url,item);
+						item.url=url;
 					}
 				}
 				}else {
@@ -11486,13 +11899,13 @@ var Laya=window.Laya=(function(window,document){
 
 		/**
 		*加载资源。
-		*@param url 地址，或者资源对象数组(简单数组：["a.png","b.png"]，复杂数组[{url:"a.png",type:Loader.IMAGE,size:100,priority:1},{url:"b.json",type:Loader.JSON,size:50,priority:1}])。
+		*@param url 单个资源地址，或者资源地址数组(简单数组：["a.png","b.png"]，复杂数组[{url:"a.png",type:Loader.IMAGE,size:100,priority:1},{url:"b.json",type:Loader.JSON,size:50,priority:1}])。
 		*@param complete 结束回调，如果加载失败，则返回 null 。
 		*@param progress 进度回调，回调参数为当前文件加载的进度信息(0-1)。
-		*@param type 资源类型。
-		*@param priority 优先级，0-4，五个优先级，0优先级最高，默认为1。
+		*@param type 资源类型。比如：Loader.IMAGE
+		*@param priority 优先级，0-4，5个优先级，0优先级最高，默认为1。
 		*@param cache 是否缓存加载结果。
-		*@param group 分组。
+		*@param group 分组，方便对资源进行管理。
 		*@param ignoreCache 是否忽略缓存，强制重新加载
 		*@return 此 LoaderManager 对象。
 		*/
@@ -11501,7 +11914,6 @@ var Laya=window.Laya=(function(window,document){
 			(cache===void 0)&& (cache=true);
 			(ignoreCache===void 0)&& (ignoreCache=false);
 			if ((url instanceof Array))return this._loadAssets(url,complete,progress,type,priority,cache,group);
-			url=URL.formatURL(url);
 			var content=Loader.getRes(url);
 			if (content !=null){
 				progress && progress.runWith(1);
@@ -11565,15 +11977,15 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		__proto._endLoad=function(resInfo,content){
-			if (content===null){
+			if (content==null){
 				var errorCount=this._failRes[resInfo.url] || 0;
 				if (errorCount < this.retryNum){
-					console.log("[warn]Retry to load:",resInfo.url);
+					console.warn("[warn]Retry to load:",resInfo.url);
 					this._failRes[resInfo.url]=errorCount+1;
-					this._resInfos[this._maxPriority-1].push(resInfo);
+					Laya.timer.once(this.retryDelay,this,this._addReTry,[resInfo],false);
 					return;
 					}else {
-					console.log("[error]Failed to load:",resInfo.url);
+					console.warn("[error]Failed to load:",resInfo.url);
 					this.event(/*laya.events.Event.ERROR*/"error",resInfo.url);
 				}
 			}
@@ -11581,6 +11993,11 @@ var Laya=window.Laya=(function(window,document){
 			resInfo.event(/*laya.events.Event.COMPLETE*/"complete",content);
 			resInfo.offAll();
 			this._infoPool.push(resInfo);
+		}
+
+		__proto._addReTry=function(resInfo){
+			this._resInfos[this._maxPriority-1].push(resInfo);
+			this._next();
 		}
 
 		/**
@@ -11600,6 +12017,32 @@ var Laya=window.Laya=(function(window,document){
 		*/
 		__proto.getRes=function(url){
 			return Loader.getRes(url);
+		}
+
+		/**
+		*缓存资源。
+		*@param url 资源地址。
+		*@param data 要缓存的内容。
+		*/
+		__proto.cacheRes=function(url,data){
+			Loader.cacheRes(url,data);
+		}
+
+		/**
+		*设置资源分组。
+		*@param url 资源地址。
+		*@param group 分组名
+		*/
+		__proto.setGroup=function(url,group){
+			Loader.setGroup(url,group);
+		}
+
+		/**
+		*根据分组清理资源
+		*@param group 分组名
+		*/
+		__proto.clearResByGroup=function(group){
+			Loader.clearResByGroup(group);
 		}
 
 		/**清理当前未完成的加载，所有未加载的内容全部停止加载。*/
@@ -11635,7 +12078,6 @@ var Laya=window.Laya=(function(window,document){
 		*@param url 资源地址
 		*/
 		__proto.cancelLoadByUrl=function(url){
-			url=URL.formatURL(url);
 			for (var i=0;i < this._maxPriority;i++){
 				var infos=this._resInfos[i];
 				for (var j=infos.length-1;j >-1;j--){
@@ -11661,10 +12103,10 @@ var Laya=window.Laya=(function(window,document){
 			var loadedCount=0;
 			var totalSize=0;
 			var items=[];
-			var defaultType=type || /*laya.net.Loader.IMAGE*/"image";
+			var success=true;
 			for (var i=0;i < itemCount;i++){
 				var item=arr[i];
-				if ((typeof item=='string'))item={url:item,type:defaultType,size:1,priority:priority};
+				if ((typeof item=='string'))item={url:item,type:type,size:1,priority:priority};
 				if (!item.size)item.size=1;
 				item.progress=0;
 				totalSize+=item.size;
@@ -11676,8 +12118,9 @@ var Laya=window.Laya=(function(window,document){
 			function loadComplete (item,content){
 				loadedCount++;
 				item.progress=1;
+				if (!content)success=false;
 				if (loadedCount===itemCount && complete){
-					complete.run();
+					complete.runWith(success);
 				}
 			}
 			function loadProgress (item,value){
@@ -12013,6 +12456,7 @@ var Laya=window.Laya=(function(window,document){
 					break ;
 				}
 			if (Render.isWebGL){
+				canvas.memorySize=0;
 				/*__JS__ */canvas=new laya.webgl.resource.WebGLImage(canvas,data.url);;
 			}
 			this.event(data.url,canvas);
@@ -12104,6 +12548,7 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*@private
 	*<code>Resource</code> 资源存取类。
 	*/
 	//class laya.resource.Resource extends laya.events.EventDispatcher
@@ -12450,7 +12895,7 @@ var Laya=window.Laya=(function(window,document){
 		__proto.load=function(url){
 			var _$this=this;
 			this._loaded=false;
-			var fileBitmap=(this.bitmap || (this.bitmap=HTMLImage.create(URL.formatURL(url))));
+			var fileBitmap=(this.bitmap || (this.bitmap=HTMLImage.create(url)));
 			if (fileBitmap)fileBitmap.useNum++;
 			var _this=this;
 			fileBitmap.onload=function (){
@@ -12844,6 +13289,7 @@ var Laya=window.Laya=(function(window,document){
 		__proto.play=function(timeOrLabel,loop){
 			(timeOrLabel===void 0)&& (timeOrLabel=0);
 			(loop===void 0)&& (loop=false);
+			if (!this._tweenDataList)return;
 			if (this._startTimeSort){
 				this._startTimeSort=false;
 				function Compare (paraA,paraB){
@@ -12894,6 +13340,7 @@ var Laya=window.Laya=(function(window,document){
 			if (this._currTime >=this._startTime){
 				if (this._loopKey){
 					this._complete();
+					if (!this._tweenDataList)return;
 					this.gotoTime(0);
 					}else {
 					for (var p in this._tweenDic){
@@ -13043,13 +13490,12 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
-	*<p> <code>Sprite</code> 类是基本显示对象节点，通过graphics可以绘制图片或者矢量图，支持旋转，缩放，位移等操作。Sprite同时也是容器类，用来添加多个子节点。</p>
-	*LayaAir引擎API设计精简巧妙。核心显示类只有一个Sprite。Sprite针对不同的情况做了渲染优化，所以保证一个类实现丰富功能的同时，又达到高性能。
-	*Sprite默认没有宽高，可以手动设置宽高，或者通过getbounds函数获取，还可以设置autoSize=true，然后再获取宽高。Sprite的宽高只是用来做碰撞使用，并不影响显示大小，如果更改显示大小，需要使用scaleX，scaleY。
-	*Sprite默认不接受鼠标事件，即mouseEnabled=false，但是只要对其监听任意鼠标事件，会自动打开自己以及所有父对象的mouseEnabled=true。所以一般也无需手动设置mouseEnabled。
+	*<p> <code>Sprite</code> 是基本显示列表构造块：一个可显示图形的显示列表节点。通过<code>graphics</code>可以绘制图片或者矢量图，支持旋转，缩放，位移等操作。<code>Sprite</code>同时也是容器类，用来添加多个子节点。</p>
+	*<p>LayaAir引擎API设计精简巧妙。核心显示类只有一个<code>Sprite</code>。<code>Sprite</code>针对不同的情况做了渲染优化，所以保证一个类实现丰富功能的同时，又达到高性能。</p>
+	*<p><code>Sprite</code>默认没有宽高，可以手动设置宽高，或者通过<code>getbounds</code>函数获取，还可以设置<code>autoSize=true</code>，然后再获取宽高。<code>Sprite</code>的宽高只是用来做碰撞使用，并不影响显示大小，如果更改显示大小，需要使用<code>scaleX</code>，<code>scaleY</code>。</p>
+	*<p><code>Sprite</code>默认不接受鼠标事件，即<code>mouseEnabled=false</code>，但是只要对其监听任意鼠标事件，会自动打开自己以及所有父对象的<code>mouseEnabled=true</code>。所以一般也无需手动设置<code>mouseEnabled</code>。</p>
 	*
-	*@example 以下示例代码，创建了一个 <code>Sprite</code> 实例。
-	*<listing version="3.0">
+	*@example <caption>创建了一个 <code>Sprite</code> 实例。</caption>
 	*package
 	*{
 		*import laya.display.Sprite;
@@ -13098,8 +13544,8 @@ var Laya=window.Laya=(function(window,document){
 				*}
 			*}
 		*}
-	*</listing>
-	*<listing version="3.0">
+	*
+	*@example
 	*var sprite;
 	*var shape;
 	*Sprite_Example();
@@ -13140,8 +13586,8 @@ var Laya=window.Laya=(function(window,document){
 		*console.log("点击 shape 对象。");
 		*shape.rotation+=5;//旋转 shape 对象。
 		*}
-	*</listing>
-	*<listing version="3.0">
+	*
+	*@example
 	*import Sprite=laya.display.Sprite;
 	*class Sprite_Example {
 		*private sprite:Sprite;
@@ -13180,7 +13626,6 @@ var Laya=window.Laya=(function(window,document){
 			*this.shape.rotation+=5;//旋转 shape 对象。
 			*}
 		*}
-	*</listing>
 	*/
 	//class laya.display.Sprite extends laya.display.Node
 	var Sprite=(function(_super){
@@ -13232,10 +13677,11 @@ var Laya=window.Laya=(function(window,document){
 		/**在设置cacheAs的情况下，调用此方法会重新刷新缓存。*/
 		__proto.reCache=function(){
 			if (this._$P.cacheCanvas)this._$P.cacheCanvas.reCache=true;
+			this._repaint=1;
 		}
 
 		/**
-		*设置bounds大小，如果有设置，则不再通过getBounds计算，合理使用能提高性能。
+		*设置对象bounds大小，如果有设置，则不再通过getBounds计算，合理使用能提高性能。
 		*@param bound bounds矩形区域
 		*/
 		__proto.setBounds=function(bound){
@@ -13243,7 +13689,7 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*获取本对象在父容器坐标系的矩形显示区域。
+		*<p>获取本对象在父容器坐标系的矩形显示区域。</p>
 		*<p><b>注意：</b>计算量较大，尽量少用。</p>
 		*@return 矩形区域。
 		*/
@@ -13266,7 +13712,7 @@ var Laya=window.Laya=(function(window,document){
 		*@private
 		*获取本对象在父容器坐标系的显示区域多边形顶点列表。
 		*当显示对象链中有旋转时，返回多边形顶点列表，无旋转时返回矩形的四个顶点。
-		*@param ifRotate 之前的对象链中是否有旋转。
+		*@param ifRotate （可选）之前的对象链中是否有旋转。
 		*@return 顶点列表。结构：[x1,y1,x2,y2,x3,y3,...]。
 		*/
 		__proto._boundPointsToParent=function(ifRotate){
@@ -13287,7 +13733,7 @@ var Laya=window.Laya=(function(window,document){
 				pList=ifRotate ? GrahamScan.scanPList(pList):Rectangle._getWrapRec(pList,Rectangle.TEMP)._getBoundPoints();
 			}
 			if (!this.transform){
-				Utils.transPointList(pList,this.x-pX,this.y-pY);
+				Utils.transPointList(pList,this._x-pX,this._y-pY);
 				return pList;
 			};
 			var tPoint=Point.TEMP;
@@ -13304,17 +13750,19 @@ var Laya=window.Laya=(function(window,document){
 
 		/**
 		*返回此实例中的绘图对象（ <code>Graphics</code> ）的显示区域，不包括子对象。
+		*@param realSize （可选）使用图片的真实大小，默认为false
 		*@return 一个 Rectangle 对象，表示获取到的显示区域。
 		*/
-		__proto.getGraphicBounds=function(){
+		__proto.getGraphicBounds=function(realSize){
+			(realSize===void 0)&& (realSize=false);
 			if (!this._graphics)return Rectangle.TEMP.setTo(0,0,0,0);
-			return this._graphics.getBounds();
+			return this._graphics.getBounds(realSize);
 		}
 
 		/**
 		*@private
 		*获取自己坐标系的显示区域多边形顶点列表
-		*@param ifRotate 当前的显示对象链是否由旋转
+		*@param ifRotate （可选）当前的显示对象链是否由旋转
 		*@return 顶点列表。结构：[x1,y1,x2,y2,x3,y3,...]。
 		*/
 		__proto._getBoundPointsM=function(ifRotate){
@@ -13395,10 +13843,11 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*设置坐标位置。相当于分别设置x和y属性。
-		*@param x X 轴坐标。
-		*@param y Y 轴坐标。
-		*@param speedMode 是否极速模式，正常是调用this.x=value进行赋值，极速模式直接调用内部函数处理，如果未重写x,y属性，建议设置为急速模式性能更高。
+		*<p>设置坐标位置。相当于分别设置x和y属性。</p>
+		*<p>因为返回值为Sprite对象本身，所以可以使用如下语法：spr.pos(...).scale(...);</p>
+		*@param x X轴坐标。
+		*@param y Y轴坐标。
+		*@param speedMode （可选）是否极速模式，正常是调用this.x=value进行赋值，极速模式直接调用内部函数处理，如果未重写x,y属性，建议设置为急速模式性能更高。
 		*@return 返回对象本身。
 		*/
 		__proto.pos=function(x,y,speedMode){
@@ -13410,8 +13859,14 @@ var Laya=window.Laya=(function(window,document){
 					this._y=y;
 					this.conchModel && this.conchModel.pos(this._x,this._y);
 					var p=this._parent;
-					p && p._repaint===0 && (p._repaint=1,p.parentRepaint());
-					this._$P.maskParent && this._$P.maskParent._repaint===0 && (this._$P.maskParent._repaint=1,this._$P.maskParent.parentRepaint());
+					if (p && p._repaint===0){
+						p._repaint=1;
+						p.parentRepaint();
+					}
+					if (this._$P.maskParent && this._$P.maskParent._repaint===0){
+						this._$P.maskParent._repaint=1;
+						this._$P.maskParent.parentRepaint();
+					}
 					}else {
 					this.x=x;
 					this.y=y;
@@ -13421,7 +13876,8 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*设置轴心点。相当于分别设置pivotX和pivotY属性。
+		*<p>设置轴心点。相当于分别设置pivotX和pivotY属性。</p>
+		*<p>因为返回值为Sprite对象本身，所以可以使用如下语法：spr.pivot(...).pos(50,100);</p>
 		*@param x X轴心点。
 		*@param y Y轴心点。
 		*@return 返回对象本身。
@@ -13433,7 +13889,8 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*设置宽高。相当于分别设置width和height属性。
+		*<p>设置宽高。相当于分别设置width和height属性。</p>
+		*<p>因为返回值为Sprite对象本身，所以可以使用如下语法：spr.size(...).pos(50,100);</p>
 		*@param width 宽度值。
 		*@param hegiht 高度值。
 		*@return 返回对象本身。
@@ -13445,10 +13902,11 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*设置缩放。相当于分别设置scaleX和scaleY属性。
+		*<p>设置缩放。相当于分别设置scaleX和scaleY属性。</p>
+		*<p>因为返回值为Sprite对象本身，所以可以使用如下语法：spr.scale(...).pos(50,100);</p>
 		*@param scaleX X轴缩放比例。
 		*@param scaleY Y轴缩放比例。
-		*@param speedMode 是否极速模式，正常是调用this.scaleX=value进行赋值，极速模式直接调用内部函数处理，如果未重写scaleX,scaleY属性，建议设置为急速模式性能更高。
+		*@param speedMode （可选）是否极速模式，正常是调用this.scaleX=value进行赋值，极速模式直接调用内部函数处理，如果未重写scaleX,scaleY属性，建议设置为急速模式性能更高。
 		*@return 返回对象本身。
 		*/
 		__proto.scale=function(scaleX,scaleY,speedMode){
@@ -13463,7 +13921,10 @@ var Laya=window.Laya=(function(window,document){
 					this.conchModel && this.conchModel.scale(scaleX,scaleY);
 					this._renderType |=/*laya.renders.RenderSprite.TRANSFORM*/0x04;
 					var p=this._parent;
-					p && p._repaint===0 && (p._repaint=1,p.parentRepaint());
+					if (p && p._repaint===0){
+						p._repaint=1;
+						p.parentRepaint();
+					}
 					}else {
 					this.scaleX=scaleX;
 					this.scaleY=scaleY;
@@ -13473,7 +13934,8 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*设置倾斜角度。相当于分别设置skewX和skewY属性。
+		*<p>设置倾斜角度。相当于分别设置skewX和skewY属性。</p>
+		*<p>因为返回值为Sprite对象本身，所以可以使用如下语法：spr.skew(...).pos(50,100);</p>
 		*@param skewX 水平倾斜角度。
 		*@param skewY 垂直倾斜角度。
 		*@return 返回对象本身
@@ -13497,8 +13959,21 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*绘制 当前<code>Sprite</code> 到 <code>Canvas</code> 上，并返回一个HtmlCanvas
-		*注意：HtmlCanvas不是浏览器原生的canvas对象，可以通过canvas.source来获取原生的canvas对象。
+		*<p>绘制 当前<code>Sprite</code> 到 <code>Canvas</code> 上，并返回一个HtmlCanvas。</p>
+		*<p>绘制的结果可以当作图片源，再次绘制到其他Sprite里面，示例：</p>
+		*
+		*var htmlCanvas:HTMLCanvas=sprite.drawToCanvas(100,100,0,0);//把精灵绘制到canvas上面
+		*var texture:Texture=new Texture(htmlCanvas);//使用htmlCanvas创建Texture
+		*var sp:Sprite=new Sprite().pos(0,200);//创建精灵并把它放倒200位置
+		*sp.graphics.drawTexture(texture);//把截图绘制到精灵上
+		*Laya.stage.addChild(sp);//把精灵显示到舞台
+		*
+		*<p>也可以获取原始图片数据，分享到网上，从而实现截图效果，示例：</p>
+		*
+		*var htmlCanvas:HTMLCanvas=sprite.drawToCanvas(100,100,0,0);//把精灵绘制到canvas上面
+		*var canvas:*=htmlCanvas.getCanvas();//获取原生的canvas对象
+		*trace(canvas.toDataURL("image/png"));//打印图片base64信息，可以发给服务器或者保存为图片
+		*
 		*@param canvasWidth 画布宽度。
 		*@param canvasHeight 画布高度。
 		*@param x 绘制的 X 轴偏移量。
@@ -13506,11 +13981,19 @@ var Laya=window.Laya=(function(window,document){
 		*@return HTMLCanvas 对象。
 		*/
 		__proto.drawToCanvas=function(canvasWidth,canvasHeight,offsetX,offsetY){
-			return RunDriver.drawToCanvas(this,this._renderType,canvasWidth,canvasHeight,offsetX,offsetY);
+			if (Render.isConchNode){
+				var canvas=HTMLCanvas.create("2D");
+				var context=new RenderContext(canvasWidth,canvasHeight,canvas);
+				context.ctx.setCanvasType(1);
+				this.conchModel.drawToCanvas(canvas.source,offsetX,offsetY);
+				return canvas;
+				}else {
+				return RunDriver.drawToCanvas(this,this._renderType,canvasWidth,canvasHeight,offsetX,offsetY);
+			}
 		}
 
 		/**
-		*自定义更新、呈现显示对象。一般用来扩展渲染模式，请合理使用，可能会导致在加速器上无法渲染。
+		*<p>自定义更新、呈现显示对象。一般用来扩展渲染模式，请合理使用，可能会导致在加速器上无法渲染。</p>
 		*<p><b>注意</b>不要在此函数内增加或删除树节点，否则会对树节点遍历造成影响。</p>
 		*@param context 渲染的上下文引用。
 		*@param x X轴坐标。
@@ -13559,12 +14042,11 @@ var Laya=window.Laya=(function(window,document){
 		/**
 		*把本地坐标转换为相对stage的全局坐标。
 		*@param point 本地坐标点。
-		*@param createNewPoint 是否创建一个新的Point对象作为返回值，默认为false，使用输入的point对象返回，减少对象创建开销。
+		*@param createNewPoint （可选）是否创建一个新的Point对象作为返回值，默认为false，使用输入的point对象返回，减少对象创建开销。
 		*@return 转换后的坐标的点。
 		*/
 		__proto.localToGlobal=function(point,createNewPoint){
 			(createNewPoint===void 0)&& (createNewPoint=false);
-			if (!this._displayedInStage || !point)return point;
 			if (createNewPoint===true){
 				point=new Point(point.x,point.y);
 			};
@@ -13580,12 +14062,11 @@ var Laya=window.Laya=(function(window,document){
 		/**
 		*把stage的全局坐标转换为本地坐标。
 		*@param point 全局坐标点。
-		*@param createNewPoint 是否创建一个新的Point对象作为返回值，默认为false，使用输入的point对象返回，减少对象创建开销。
+		*@param createNewPoint （可选）是否创建一个新的Point对象作为返回值，默认为false，使用输入的point对象返回，减少对象创建开销。
 		*@return 转换后的坐标的点。
 		*/
 		__proto.globalToLocal=function(point,createNewPoint){
 			(createNewPoint===void 0)&& (createNewPoint=false);
-			if (!this._displayedInStage || !point)return point;
 			if (createNewPoint){
 				point=new Point(point.x,point.y);
 			};
@@ -13650,60 +14131,71 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*增加事件侦听器，以使侦听器能够接收事件通知。
-		*如果侦听鼠标事件，则会自动设置自己和父亲节点的属性 mouseEnabled 的值为 true(如果父节点mouseEnabled=false，则停止设置父节点mouseEnabled属性)。
+		*<p>增加事件侦听器，以使侦听器能够接收事件通知。</p>
+		*<p>如果侦听鼠标事件，则会自动设置自己和父亲节点的属性 mouseEnabled 的值为 true(如果父节点mouseEnabled=false，则停止设置父节点mouseEnabled属性)。</p>
 		*@param type 事件的类型。
 		*@param caller 事件侦听函数的执行域。
 		*@param listener 事件侦听函数。
-		*@param args 事件侦听函数的回调参数。
+		*@param args （可选）事件侦听函数的回调参数。
 		*@return 此 EventDispatcher 对象。
 		*/
 		__proto.on=function(type,caller,listener,args){
 			if (this._mouseEnableState!==1 && this.isMouseEvent(type)){
-				if (this._displayedInStage)this._$2__onDisplay();
-				else laya.events.EventDispatcher.prototype.once.call(this,/*laya.events.Event.DISPLAY*/"display",this,this._$2__onDisplay);
+				this.mouseEnabled=true;
+				this._setBit(/*laya.display.Node.MOUSEENABLE*/0x2,true);
+				if (this._parent){
+					this._$2__onDisplay();
+				}
+				return this._createListener(type,caller,listener,args,false);
 			}
-			return laya.events.EventDispatcher.prototype.on.call(this,type,caller,listener,args);
+			return _super.prototype.on.call(this,type,caller,listener,args);
 		}
 
 		/**
-		*增加事件侦听器，以使侦听器能够接收事件通知，此侦听事件响应一次后则自动移除侦听。
-		*如果侦听鼠标事件，则会自动设置自己和父亲节点的属性 mouseEnabled 的值为 true(如果父节点mouseEnabled=false，则停止设置父节点mouseEnabled属性)。
+		*<p>增加事件侦听器，以使侦听器能够接收事件通知，此侦听事件响应一次后则自动移除侦听。</p>
+		*<p>如果侦听鼠标事件，则会自动设置自己和父亲节点的属性 mouseEnabled 的值为 true(如果父节点mouseEnabled=false，则停止设置父节点mouseEnabled属性)。</p>
 		*@param type 事件的类型。
 		*@param caller 事件侦听函数的执行域。
 		*@param listener 事件侦听函数。
-		*@param args 事件侦听函数的回调参数。
+		*@param args （可选）事件侦听函数的回调参数。
 		*@return 此 EventDispatcher 对象。
 		*/
 		__proto.once=function(type,caller,listener,args){
 			if (this._mouseEnableState!==1 && this.isMouseEvent(type)){
-				if (this._displayedInStage)this._$2__onDisplay();
-				else laya.events.EventDispatcher.prototype.once.call(this,/*laya.events.Event.DISPLAY*/"display",this,this._$2__onDisplay);
+				this.mouseEnabled=true;
+				this._setBit(/*laya.display.Node.MOUSEENABLE*/0x2,true);
+				if (this._parent){
+					this._$2__onDisplay();
+				}
+				return this._createListener(type,caller,listener,args,true);
 			}
-			return laya.events.EventDispatcher.prototype.once.call(this,type,caller,listener,args);
+			return _super.prototype.once.call(this,type,caller,listener,args);
 		}
 
 		/**@private */
 		__proto._$2__onDisplay=function(){
 			if (this._mouseEnableState!==1){
 				var ele=this;
+				ele=ele.parent;
 				while (ele && ele._mouseEnableState!==1){
+					if (ele._getBit(/*laya.display.Node.MOUSEENABLE*/0x2))break ;
 					ele.mouseEnabled=true;
+					ele._setBit(/*laya.display.Node.MOUSEENABLE*/0x2,true);
 					ele=ele.parent;
 				}
 			}
 		}
 
 		/**
-		*加载并显示一个图片。功能等同于graphics.loadImage方法。支持异步加载。
-		*注意：多次调用loadImage绘制不同的图片，会同时显示。
+		*<p>加载并显示一个图片。功能等同于graphics.loadImage方法。支持异步加载。</p>
+		*<p>注意：多次调用loadImage绘制不同的图片，会同时显示。</p>
 		*@param url 图片地址。
-		*@param x 显示图片的x位置
-		*@param y 显示图片的y位置
-		*@param width 显示图片的宽度，设置为0表示使用图片默认宽度
-		*@param height 显示图片的高度，设置为0表示使用图片默认高度
-		*@param complete 加载完成回调
-		*@return 返回精灵对象本身
+		*@param x （可选）显示图片的x位置。
+		*@param y （可选）显示图片的y位置。
+		*@param width （可选）显示图片的宽度，设置为0表示使用图片默认宽度。
+		*@param height （可选）显示图片的高度，设置为0表示使用图片默认高度。
+		*@param complete （可选）加载完成回调。
+		*@return 返回精灵对象本身。
 		*/
 		__proto.loadImage=function(url,x,y,width,height,complete){
 			var _$this=this;
@@ -13725,7 +14217,10 @@ var Laya=window.Laya=(function(window,document){
 		/**cacheAs后，设置自己和父对象缓存失效。*/
 		__proto.repaint=function(){
 			this.conchModel && this.conchModel.repaint && this.conchModel.repaint();
-			(this._repaint===0)&& (this._repaint=1,this.parentRepaint());
+			if (this._repaint===0){
+				this._repaint=1;
+				this.parentRepaint();
+			}
 			if (this._$P && this._$P.maskParent){
 				this._$P.maskParent.repaint();
 			}
@@ -13751,18 +14246,21 @@ var Laya=window.Laya=(function(window,document){
 		/**cacheAs时，设置所有父对象缓存失效。 */
 		__proto.parentRepaint=function(){
 			var p=this._parent;
-			p && p._repaint===0 && (p._repaint=1,p.parentRepaint());
+			if (p && p._repaint===0){
+				p._repaint=1;
+				p.parentRepaint();
+			}
 		}
 
 		/**
 		*开始拖动此对象。
-		*@param area 拖动区域，此区域为当前对象注册点活动区域（不包括对象宽高），可选。
-		*@param hasInertia 鼠标松开后，是否还惯性滑动，默认为false，可选。
-		*@param elasticDistance 橡皮筋效果的距离值，0为无橡皮筋效果，默认为0，可选。
-		*@param elasticBackTime 橡皮筋回弹时间，单位为毫秒，默认为300毫秒，可选。
-		*@param data 拖动事件携带的数据，可选。
-		*@param disableMouseEvent 禁用其他对象的鼠标检测，默认为false，设置为true能提高性能。
-		*@param ratio 惯性阻尼系数，影响惯性力度和时长。
+		*@param area （可选）拖动区域，此区域为当前对象注册点活动区域（不包括对象宽高），可选。
+		*@param hasInertia （可选）鼠标松开后，是否还惯性滑动，默认为false，可选。
+		*@param elasticDistance （可选）橡皮筋效果的距离值，0为无橡皮筋效果，默认为0，可选。
+		*@param elasticBackTime （可选）橡皮筋回弹时间，单位为毫秒，默认为300毫秒，可选。
+		*@param data （可选）拖动事件携带的数据，可选。
+		*@param disableMouseEvent （可选）禁用其他对象的鼠标检测，默认为false，设置为true能提高性能。
+		*@param ratio （可选）惯性阻尼系数，影响惯性力度和时长。
 		*/
 		__proto.startDrag=function(area,hasInertia,elasticDistance,elasticBackTime,data,disableMouseEvent,ratio){
 			(hasInertia===void 0)&& (hasInertia=false);
@@ -13781,12 +14279,13 @@ var Laya=window.Laya=(function(window,document){
 
 		/**@private */
 		__proto._setDisplay=function(value){
-			if (!value && this._$P.cacheCanvas && this._$P.cacheCanvas.ctx){
-				Pool.recover("RenderContext",this._$P.cacheCanvas.ctx);
-				this._$P.cacheCanvas.ctx.canvas.size(0,0);
-				this._$P.cacheCanvas.ctx=null;
-			}
 			if (!value){
+				var cc=this._$P.cacheCanvas;
+				if (cc && cc.ctx){
+					Pool.recover("RenderContext",cc.ctx);
+					cc.ctx.canvas.size(0,0);
+					cc.ctx=null;
+				};
 				var fc=this._$P._filterCache;
 				if (fc){
 					fc.destroy();
@@ -13914,7 +14413,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*指定显示对象是否缓存为静态图像。功能同cacheAs的normal模式。
+		*指定显示对象是否缓存为静态图像。功能同cacheAs的normal模式。建议优先使用cacheAs代替。
 		*/
 		__getset(0,__proto,'cacheAsBitmap',function(){
 			return this.cacheAs!=="none";
@@ -13924,12 +14423,16 @@ var Laya=window.Laya=(function(window,document){
 
 		/**
 		*<p>指定显示对象是否缓存为静态图像，cacheAs时，子对象发生变化，会自动重新缓存，同时也可以手动调用reCache方法更新缓存。</p>
+		*<p>
 		*建议把不经常变化的“复杂内容”缓存为静态图像，能极大提高渲染性能。cacheAs有"none"，"normal"和"bitmap"三个值可选。
 		*<li>默认为"none"，不做任何缓存。</li>
 		*<li>当值为"normal"时，canvas模式下进行画布缓存，webgl模式下进行命令缓存。</li>
 		*<li>当值为"bitmap"时，canvas模式下进行依然是画布缓存，webgl模式下使用renderTarget缓存。</li>
-		*webgl下renderTarget缓存模式有最大2048大小限制，会额外增加内存开销，不断重绘时开销比较大，但是会减少drawcall，渲染性能最高。
-		*webgl下命令缓存模式只会减少节点遍历及命令组织，不会减少drawcall，性能中等。
+		*</p>
+		*<p>
+		*webgl下renderTarget缓存模式缺点：会额外创建renderTarget对象，增加内存开销，缓存面积有最大2048限制，不断重绘时会增加CPU开销。优点：大幅减少drawcall，渲染性能最高。
+		*webgl下命令缓存模式缺点：只会减少节点遍历及命令组织，不会减少drawcall数，性能中等。优点：没有额外内存开销，无需renderTarget支持。
+		*</p>
 		*/
 		__getset(0,__proto,'cacheAs',function(){
 			return this._$P.cacheCanvas==null ? "none" :this._$P.cacheCanvas.type;
@@ -13937,6 +14440,7 @@ var Laya=window.Laya=(function(window,document){
 			var cacheCanvas=this._$P.cacheCanvas;
 			if (value===(cacheCanvas ? cacheCanvas.type :"none"))return;
 			if (value!=="none"){
+				if (!this._getBit(/*laya.display.Node.NOTICE_DISPLAY*/0x1))this._setUpNoticeType(/*laya.display.Node.NOTICE_DISPLAY*/0x1);
 				cacheCanvas || (cacheCanvas=this._set$P("cacheCanvas",Pool.getItemByClass("cacheCanvas",Object)));
 				cacheCanvas.type=value;
 				cacheCanvas.reCache=true;
@@ -13981,19 +14485,27 @@ var Laya=window.Laya=(function(window,document){
 				this.conchModel && this.conchModel.rotate(value);
 				this._renderType |=/*laya.renders.RenderSprite.TRANSFORM*/0x04;
 				var p=this._parent;
-				p && p._repaint===0 && (p._repaint=1,p.parentRepaint());
+				if (p && p._repaint===0){
+					p._repaint=1;
+					p.parentRepaint();
+				}
 			}
 		});
 
 		/**
-		*表示显示对象的宽度，以像素为单位。
-		*宽度默认为0，可以手动设置，或者通过getbounds获取实际宽度。设置此宽度只用来做鼠标碰撞使用，改变后并不影响显示对象大小。
+		*<p>显示对象的宽度，单位为像素，默认为0。</p>
+		*<p>此宽度用于鼠标碰撞检测，并不影响显示对象图像大小。需要对显示对象的图像进行缩放，请使用scale、scaleX、scaleY。</p>
+		*<p>可以通过getbounds获取显示对象图像的实际宽度。</p>
 		*/
 		__getset(0,__proto,'width',function(){
 			if (!this.autoSize)return this._width;
 			return this.getSelfBounds().width;
 			},function(value){
-			this._width!==value && (this._width=value,this.conchModel && this.conchModel.size(value,this._height),this.repaint());
+			if (this._width!==value){
+				this._width=value;
+				this.conchModel && this.conchModel.size(value,this._height)
+				this.repaint();
+			}
 		});
 
 		/**表示显示对象相对于父容器的水平方向坐标值。*/
@@ -14005,8 +14517,14 @@ var Laya=window.Laya=(function(window,document){
 				this._x=value;
 				this.conchModel && this.conchModel.pos(value,this._y);
 				var p=this._parent;
-				p && p._repaint===0 && (p._repaint=1,p.parentRepaint());
-				this._$P.maskParent && this._$P.maskParent._repaint===0 && (this._$P.maskParent._repaint=1,this._$P.maskParent.parentRepaint());
+				if (p && p._repaint===0){
+					p._repaint=1;
+					p.parentRepaint();
+				}
+				if (this._$P.maskParent && this._$P.maskParent._repaint===0){
+					this._$P.maskParent._repaint=1;
+					this._$P.maskParent.parentRepaint();
+				}
 			}
 		});
 
@@ -14024,8 +14542,9 @@ var Laya=window.Laya=(function(window,document){
 			return scale;
 		});
 
-		/**可以设置一个Rectangle区域作为点击区域，或者设置一个<code>HitArea</code>实例作为点击区域，HitArea内可以设置可点击和不可点击区域。
-		*如果不设置hitArea，则根据宽高形成的区域进行碰撞。
+		/**
+		*<p>可以设置一个Rectangle区域作为点击区域，或者设置一个<code>HitArea</code>实例作为点击区域，HitArea内可以设置可点击和不可点击区域。</p>
+		*<p>如果不设置hitArea，则根据宽高形成的区域进行碰撞。</p>
 		*/
 		__getset(0,__proto,'hitArea',function(){
 			return this._$P.hitArea;
@@ -14038,9 +14557,7 @@ var Laya=window.Laya=(function(window,document){
 			return this._$P.staticCache;
 			},function(value){
 			this._set$P("staticCache",value);
-			if (!value && this._$P.cacheCanvas){
-				this._$P.cacheCanvas.reCache=true;
-			}
+			if (!value)this.reCache();
 		});
 
 		/**设置一个Texture实例，并显示此图片（如果之前有其他绘制，则会被清除掉）。等同于graphics.clear();graphics.drawTexture()*/
@@ -14062,20 +14579,31 @@ var Laya=window.Laya=(function(window,document){
 				this._y=value;
 				this.conchModel && this.conchModel.pos(this._x,value);
 				var p=this._parent;
-				p && p._repaint===0 && (p._repaint=1,p.parentRepaint());
-				this._$P.maskParent && this._$P.maskParent._repaint===0 && (this._$P.maskParent._repaint=1,this._$P.maskParent.parentRepaint());
+				if (p && p._repaint===0){
+					p._repaint=1;
+					p.parentRepaint();
+				}
+				if (this._$P.maskParent && this._$P.maskParent._repaint===0){
+					this._$P.maskParent._repaint=1;
+					this._$P.maskParent.parentRepaint();
+				}
 			}
 		});
 
 		/**
-		*表示显示对象的高度，以像素为单位。
-		*高度默认为0，可以手动设置，或者通过getbounds获取实际宽度。设置此高度只用来做鼠标碰撞使用，改变后并不影响显示对象大小。
+		*<p>显示对象的高度，单位为像素，默认为0。</p>
+		*<p>此高度用于鼠标碰撞检测，并不影响显示对象图像大小。需要对显示对象的图像进行缩放，请使用scale、scaleX、scaleY。</p>
+		*<p>可以通过getbounds获取显示对象图像的实际高度。</p>
 		*/
 		__getset(0,__proto,'height',function(){
 			if (!this.autoSize)return this._height;
 			return this.getSelfBounds().height;
 			},function(value){
-			this._height!==value && (this._height=value,this.conchModel && this.conchModel.size(this._width,value),this.repaint());
+			if (this._height!==value){
+				this._height=value;
+				this.conchModel && this.conchModel.size(this._width,value);
+				this.repaint();
+			}
 		});
 
 		/**指定要使用的混合模式。目前只支持"lighter"。*/
@@ -14140,15 +14668,21 @@ var Laya=window.Laya=(function(window,document){
 				this._tfChanged=true;
 				this._renderType |=/*laya.renders.RenderSprite.TRANSFORM*/0x04;
 				var p=this._parent;
-				p && p._repaint===0 && (p._repaint=1,p.parentRepaint());
+				if (p && p._repaint===0){
+					p._repaint=1;
+					p.parentRepaint();
+				}
 			}
 		});
 
-		/**显示对象的滚动矩形范围，具有裁剪效果(如果只想限制子对象渲染区域，请使用viewport)，设置optimizeScrollRect=true，可以优化裁剪区域外的内容不进行渲染。
-		*srollRect和viewport的区别：
-		*1.srollRect自带裁剪效果，viewport只影响子对象渲染是否渲染，不具有裁剪效果（性能更高）。
+		/**
+		*<p>显示对象的滚动矩形范围，具有裁剪效果(如果只想限制子对象渲染区域，请使用viewport)，设置optimizeScrollRect=true，可以优化裁剪区域外的内容不进行渲染。</p>
+		*<p>
+		*srollRect和viewport的区别：<br/>
+		*1.srollRect自带裁剪效果，viewport只影响子对象渲染是否渲染，不具有裁剪效果（性能更高）。<br/>
 		*2.设置rect的x,y属性均能实现区域滚动效果，但scrollRect会保持0,0点位置不变。
-		**/
+		*</p>
+		*/
 		__getset(0,__proto,'scrollRect',function(){
 			return this._style.scrollRect;
 			},function(value){
@@ -14179,13 +14713,16 @@ var Laya=window.Laya=(function(window,document){
 				this.conchModel && this.conchModel.skew(style._tf.skewX,value);
 				this._renderType |=/*laya.renders.RenderSprite.TRANSFORM*/0x04;
 				var p=this._parent;
-				p && p._repaint===0 && (p._repaint=1,p.parentRepaint());
+				if (p && p._repaint===0){
+					p._repaint=1;
+					p.parentRepaint();
+				}
 			}
 		});
 
 		/**
-		*对象的矩阵信息。通过设置矩阵可以实现节点旋转，缩放，位移效果。
-		*矩阵更多信息请参考 <code>Matrix</code>
+		*<p>对象的矩阵信息。通过设置矩阵可以实现节点旋转，缩放，位移效果。</p>
+		*<p>矩阵更多信息请参考 <code>Matrix</code></p>
 		*/
 		__getset(0,__proto,'transform',function(){
 			return this._tfChanged ? this._adjustTransform():this._transform;
@@ -14299,6 +14836,7 @@ var Laya=window.Laya=(function(window,document){
 				}
 			}
 			if (value && value.length > 0){
+				if (!this._getBit(/*laya.display.Node.NOTICE_DISPLAY*/0x1))this._setUpNoticeType(/*laya.display.Node.NOTICE_DISPLAY*/0x1);
 				if (!(Render.isWebGL && value.length==1 && (((value[0])instanceof laya.filters.ColorFilter )))){
 					if (this.cacheAs !="bitmap"){
 						if (!Render.isConchNode)this.cacheAs="bitmap";
@@ -14315,8 +14853,17 @@ var Laya=window.Laya=(function(window,document){
 			this.repaint();
 		});
 
-		/**遮罩，可以设置一个对象(支持位图和矢量图)，根据对象形状进行遮罩显示。
-		*【注意】遮罩对象坐标系是相对遮罩对象本身的，和Flash机制不同*/
+		__getset(0,__proto,'parent',_super.prototype._$get_parent,function(value){
+			_super.prototype._$set_parent.call(this,value);
+			if (value && this._getBit(/*laya.display.Node.MOUSEENABLE*/0x2)){
+				this._$2__onDisplay();
+			}
+		});
+
+		/**
+		*<p>遮罩，可以设置一个对象(支持位图和矢量图)，根据对象形状进行遮罩显示。</p>
+		*<p>【注意】遮罩对象坐标系是相对遮罩对象本身的，和Flash机制不同</p>
+		*/
 		__getset(0,__proto,'mask',function(){
 			return this._$P._mask;
 			},function(value){
@@ -14435,6 +14982,7 @@ var Laya=window.Laya=(function(window,document){
 		*播放
 		*/
 		__proto.play=function(){
+			this.isStopped=false;
 			try {
 				this._audio.playbackRate=SoundManager.playbackRate;
 				this._audio.currentTime=this.startTime;
@@ -14442,6 +14990,7 @@ var Laya=window.Laya=(function(window,document){
 				this._audio.addEventListener("canplay",this._resumePlay);
 				return;
 			}
+			SoundManager.addChannel(this);
 			Browser.container.appendChild(this._audio);
 			if("play" in this._audio)
 				this._audio.play();
@@ -14457,13 +15006,32 @@ var Laya=window.Laya=(function(window,document){
 			this.completeHandler=null;
 			if (!this._audio)
 				return;
-			if("pause" in this._audio)
-				this._audio.pause();
+			if ("pause" in this._audio)
+				if (Render.isConchApp){
+				this._audio.stop();
+			}
+			this._audio.pause();
 			this._audio.removeEventListener("ended",this._onEnd);
 			this._audio.removeEventListener("canplay",this._resumePlay);
 			Pool.recover("audio:"+this.url,this._audio);
 			Browser.removeElement(this._audio);
 			this._audio=null;
+		}
+
+		__proto.pause=function(){
+			this.isStopped=true;
+			SoundManager.removeChannel(this);
+			if("pause" in this._audio)
+				this._audio.pause();
+		}
+
+		__proto.resume=function(){
+			if (!this._audio)
+				return;
+			this.isStopped=false;
+			SoundManager.addChannel(this);
+			if("play" in this._audio)
+				this._audio.play();
 		}
 
 		/**
@@ -14521,6 +15089,7 @@ var Laya=window.Laya=(function(window,document){
 			this._currentTime=0;
 			this._volume=1;
 			this._startTime=0;
+			this._pauseTime=0;
 			this._onPlayEnd=null;
 			this.context=WebAudioSound.ctx;
 			WebAudioSoundChannel.__super.call(this);
@@ -14538,6 +15107,8 @@ var Laya=window.Laya=(function(window,document){
 		*播放声音
 		*/
 		__proto.play=function(){
+			SoundManager.addChannel(this);
+			this.isStopped=false;
 			this._clearBufferSource();
 			if (!this.audioBuffer)return;
 			var context=this.context;
@@ -14550,6 +15121,7 @@ var Laya=window.Laya=(function(window,document){
 				gain.disconnect();
 			gain.connect(context.destination);
 			bufferSource.onended=this._onPlayEnd;
+			if (this.startTime >=this.duration)this.startTime=0;
 			this._startTime=Browser.now();
 			this.gain.gain.value=this._volume;
 			if (this.loops==0){
@@ -14592,6 +15164,10 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		__proto._tryClearBuffer=function(sourceNode){
+			if (!Browser.onIOS){
+				WebAudioSoundChannel._tryCleanFailed=true;
+				return;
+			}
 			try {sourceNode.buffer=WebAudioSound._miniBuffer;}catch (e){WebAudioSoundChannel._tryCleanFailed=true;}
 		}
 
@@ -14606,6 +15182,22 @@ var Laya=window.Laya=(function(window,document){
 			this.isStopped=true;
 			SoundManager.removeChannel(this);
 			this.completeHandler=null;
+		}
+
+		__proto.pause=function(){
+			if (!this.isStopped){
+				this._pauseTime=this.position;
+			}
+			this._clearBufferSource();
+			if (this.gain)
+				this.gain.disconnect();
+			this.isStopped=true;
+			SoundManager.removeChannel(this);
+		}
+
+		__proto.resume=function(){
+			this.startTime=this._pauseTime;
+			this.play();
 		}
 
 		/**
@@ -14698,7 +15290,8 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
-	*动画播放基类
+	*<p>动画播放基类，提供了基础的动画播放控制方法和帧标签事件相关功能。</p>
+	*<p>可以继承此类，但不要直接实例化此类，因为有些方法需要由子类实现。</p>
 	*/
 	//class laya.display.AnimationPlayerBase extends laya.display.Sprite
 	var AnimationPlayerBase=(function(_super){
@@ -14715,15 +15308,17 @@ var Laya=window.Laya=(function(window,document){
 			this._actionName=null;
 			AnimationPlayerBase.__super.call(this);
 			this._interval=Config.animationInterval;
+			this._setUpNoticeType(/*laya.display.Node.NOTICE_DISPLAY*/0x1);
 		}
 
 		__class(AnimationPlayerBase,'laya.display.AnimationPlayerBase',_super);
 		var __proto=AnimationPlayerBase.prototype;
 		/**
-		*播放动画。
-		*@param start 开始播放的动画索引或label。
-		*@param loop 是否循环。
-		*@param name 如果name为空(可选)，则播放当前动画，如果不为空，则播放全局缓存动画（如果有）
+		*<p>开始播放动画。play(...)方法被设计为在创建实例后的任何时候都可以被调用，当相应的资源加载完毕、调用动画帧填充方法(set frames)或者将实例显示在舞台上时，会判断是否正在播放中，如果是，则进行播放。</p>
+		*<p>配合wrapMode属性，可设置动画播放顺序类型。</p>
+		*@param start （可选）指定动画播放开始的索引(int)或帧标签(String)。帧标签可以通过addLabel(...)和removeLabel(...)进行添加和删除。
+		*@param loop （可选）是否循环播放。
+		*@param name （可选）动画名称。
 		*/
 		__proto.play=function(start,loop,name){
 			(start===void 0)&& (start=0);
@@ -14743,7 +15338,7 @@ var Laya=window.Laya=(function(window,document){
 		__proto._getFrameByLabel=function(label){
 			var i=0;
 			for (i=0;i < this._count;i++){
-				if (this._labels[i]==label)return i;
+				if (this._labels[i] && (this._labels [i]).indexOf(label)>=0)return i;
 			}
 			return 0;
 		}
@@ -14793,24 +15388,24 @@ var Laya=window.Laya=(function(window,document){
 		/**@private */
 		__proto._setControlNode=function(node){
 			if (this._controlNode){
-				this._controlNode.off(/*laya.events.Event.DISPLAY*/"display",this,this._$3__onDisplay);
-				this._controlNode.off(/*laya.events.Event.UNDISPLAY*/"undisplay",this,this._$3__onDisplay);
+				this._controlNode.off(/*laya.events.Event.DISPLAY*/"display",this,this._checkResumePlaying);
+				this._controlNode.off(/*laya.events.Event.UNDISPLAY*/"undisplay",this,this._checkResumePlaying);
 			}
 			this._controlNode=node;
 			if (node && node !=this){
-				node.on(/*laya.events.Event.DISPLAY*/"display",this,this._$3__onDisplay);
-				node.on(/*laya.events.Event.UNDISPLAY*/"undisplay",this,this._$3__onDisplay);
+				node.on(/*laya.events.Event.DISPLAY*/"display",this,this._checkResumePlaying);
+				node.on(/*laya.events.Event.UNDISPLAY*/"undisplay",this,this._checkResumePlaying);
 			}
 		}
 
 		/**@private */
 		__proto._setDisplay=function(value){
 			_super.prototype._setDisplay.call(this,value);
-			this._$3__onDisplay();
+			this._checkResumePlaying();
 		}
 
 		/**@private */
-		__proto._$3__onDisplay=function(){
+		__proto._checkResumePlaying=function(){
 			if (this._isPlaying){
 				if (this._controlNode.displayedInStage)this.play(this._index,this.loop,this._actionName);
 				else this.clearTimer(this,this._frameLoop);
@@ -14818,7 +15413,7 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*停止播放。
+		*停止动画播放。
 		*/
 		__proto.stop=function(){
 			this._isPlaying=false;
@@ -14826,34 +15421,42 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*增加一个标签到index帧上，播放到此index后会派发label事件
-		*@param label 标签名称
-		*@param index 索引位置
+		*增加一个帧标签到指定索引的帧上。当动画播放到此索引的帧时会派发Event.LABEL事件，派发事件是在完成当前帧画面更新之后。
+		*@param label 帧标签名称
+		*@param index 帧索引
 		*/
 		__proto.addLabel=function(label,index){
 			if (!this._labels)this._labels={};
-			this._labels[index]=label;
+			if (!this._labels[index])this._labels[index]=[];
+			this._labels[index].push(label);
 		}
 
 		/**
-		*删除某个标签
-		*@param label 标签名字，如果label为空，则删除所有Label
+		*删除指定的帧标签。
+		*@param label 帧标签名称。注意：如果为空，则删除所有帧标签！
 		*/
 		__proto.removeLabel=function(label){
 			if (!label)this._labels=null;
 			else if (this._labels){
 				for (var name in this._labels){
-					if (this._labels[name]===label){
-						delete this._labels[name];
-						break ;
-					}
+					this._removeLabelFromLabelList(this._labels[name],label);
+				}
+			}
+		}
+
+		/**@private */
+		__proto._removeLabelFromLabelList=function(list,label){
+			if (!list)return;
+			for (var i=list.length-1;i >=0;i--){
+				if (list[i]==label){
+					list.splice(i,1);
 				}
 			}
 		}
 
 		/**
-		*切换到某帧并停止
-		*@param position 帧索引或label
+		*将动画切换到指定帧并停在那里。
+		*@param position 帧索引或帧标签
 		*/
 		__proto.gotoAndStop=function(position){
 			this.index=((typeof position=='string'))? this._getFrameByLabel(position):position;
@@ -14866,13 +15469,18 @@ var Laya=window.Laya=(function(window,document){
 		*@param value 帧索引
 		*/
 		__proto._displayToIndex=function(value){}
-		/**清理。方便对象复用。*/
+		/**
+		*停止动画播放，并清理对象属性。之后可存入对象池，方便对象复用。
+		*/
 		__proto.clear=function(){
 			this.stop();
 			this._labels=null;
 		}
 
-		/**播放间隔(单位：毫秒)，默认为50毫秒，可以通过Config.animationInterval修改默认时间间隔。*/
+		/**
+		*<p>动画播放的帧间隔时间(单位：毫秒)。默认值依赖于Config.animationInterval=50，通过Config.animationInterval可以修改默认帧间隔时间。</p>
+		*<p>要想为某动画设置独立的帧间隔时间，可以使用set interval，注意：如果动画正在播放，设置后会重置帧循环定时器的起始时间为当前时间，也就是说，如果频繁设置interval，会导致动画帧更新的时间间隔会比预想的要慢，甚至不更新。</p>
+		*/
 		__getset(0,__proto,'interval',function(){
 			return this._interval;
 			},function(value){
@@ -14886,34 +15494,45 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*是否在播放中
+		*是否正在播放中。
 		*/
 		__getset(0,__proto,'isPlaying',function(){
 			return this._isPlaying;
 		});
 
-		/**当前播放索引。*/
+		/**
+		*动画当前帧的索引。
+		*/
 		__getset(0,__proto,'index',function(){
 			return this._index;
 			},function(value){
 			this._index=value;
 			this._displayToIndex(value);
-			if (this._labels && this._labels[value])this.event(/*laya.events.Event.LABEL*/"label",this._labels[value]);
+			if (this._labels && this._labels[value]){
+				var tArr=this._labels[value];
+				for (var i=0,len=tArr.length;i < len;i++){
+					this.event(/*laya.events.Event.LABEL*/"label",tArr[i]);
+				}
+			}
 		});
 
-		/**动画长度。*/
+		/**
+		*当前动画中帧的总数。
+		*/
 		__getset(0,__proto,'count',function(){
 			return this._count;
 		});
 
+		AnimationPlayerBase.WRAP_POSITIVE=0;
+		AnimationPlayerBase.WRAP_REVERSE=1;
+		AnimationPlayerBase.WRAP_PINGPONG=2;
 		return AnimationPlayerBase;
 	})(Sprite)
 
 
 	/**
 	*<p> <code>Text</code> 类用于创建显示对象以显示文本。</p>
-	*@example 以下示例代码，创建了一个 <code>Text</code> 实例。
-	*<listing version="3.0">
+	*@example
 	*package
 	*{
 		*import laya.display.Text;
@@ -14944,8 +15563,7 @@ var Laya=window.Laya=(function(window,document){
 				*}
 			*}
 		*}
-	*</listing>
-	*<listing version="3.0">
+	*@example
 	*Text_Example();
 	*function Text_Example()
 	*{
@@ -14970,8 +15588,7 @@ var Laya=window.Laya=(function(window,document){
 		*text.borderColor="#fff000";//设置 text 的文本边框颜色。
 		*Laya.stage.addChild(text);//将 text 添加到显示列表。
 		*}
-	*</listing>
-	*<listing version="3.0">
+	*@example
 	*class Text_Example {
 		*constructor(){
 			*Laya.init(640,800);//设置游戏画布宽高、渲染模式。
@@ -14995,7 +15612,6 @@ var Laya=window.Laya=(function(window,document){
 			*Laya.stage.addChild(text);//将 text 添加到显示列表。
 			*}
 		*}
-	*</listing>
 	*/
 	//class laya.display.Text extends laya.display.Sprite
 	var Text=(function(_super){
@@ -15048,7 +15664,8 @@ var Laya=window.Laya=(function(window,document){
 		/**
 		*@inheritDoc
 		*/
-		__proto.getGraphicBounds=function(){
+		__proto.getGraphicBounds=function(realSize){
+			(realSize===void 0)&& (realSize=false);
 			var rec=Rectangle.TEMP;
 			rec.setTo(0,0,this.width,this.height);
 			return rec;
@@ -15260,7 +15877,7 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*快速更改显示文本。不进行排版计算，效率较高。
+		*<p>快速更改显示文本。不进行排版计算，效率较高。</p>
 		*<p>如果只更改文字内容，不更改文字样式，建议使用此接口，能提高效率。</p>
 		*@param text 文本内容。
 		*/
@@ -15335,7 +15952,7 @@ var Laya=window.Laya=(function(window,document){
 					if (this.wordWrap){
 						var newLine=line.substring(startIndex,j);
 						if (newLine.charCodeAt(newLine.length-1)< 255){
-							execResult=/[^\x20-]+$/.exec(newLine);
+							execResult=/(?:\w|-)+$/.exec(newLine);
 							if (execResult){
 								j=execResult.index+startIndex;
 								if (execResult.index==0)
@@ -15396,10 +16013,10 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*返回字符的位置信息。
+		*返回字符在本类实例的父坐标系下的坐标。
 		*@param charIndex 索引位置。
-		*@param out 输出的Point引用。
-		*@return 返回Point位置信息。
+		*@param out （可选）输出的Point引用。
+		*@return Point 字符在本类实例的父坐标系下的坐标。如果out参数不为空，则将结果赋值给指定的Point对象，否则创建一个新的Point对象返回。建议使用Point.TEMP作为out参数，可以省去Point对象创建和垃圾回收的开销，尤其是在需要频繁执行的逻辑中，比如帧循环和MOUSE_MOVE事件回调函数里面。
 		*/
 		__proto.getCharPoint=function(charIndex,out){
 			this._isChanged && Laya.timer.runCallLater(this,this.typeset);
@@ -15463,7 +16080,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*边距信息。
+		*<p>边距信息。</p>
 		*<p>数据格式：[上边距，右边距，下边距，左边距]（边距以像素为单位）。</p>
 		*/
 		__getset(0,__proto,'padding',function(){
@@ -15474,7 +16091,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*指定文本是否为粗体字。
+		*<p>指定文本是否为粗体字。</p>
 		*<p>默认值为 false，这意味着不使用粗体字。如果值为 true，则文本为粗体字。</p>
 		*/
 		__getset(0,__proto,'bold',function(){
@@ -15496,7 +16113,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*表示文本的颜色值。可以通过 <code>Text.defaultColor</code> 设置默认颜色。
+		*<p>表示文本的颜色值。可以通过 <code>Text.defaultColor</code> 设置默认颜色。</p>
 		*<p>默认值为黑色。</p>
 		*/
 		__getset(0,__proto,'color',function(){
@@ -15513,7 +16130,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*文本的字体名称，以字符串形式表示。
+		*<p>文本的字体名称，以字符串形式表示。</p>
 		*<p>默认值为："Arial"，可以通过Font.defaultFont设置默认字体。</p>
 		*@see laya.display.css.Font#defaultFamily
 		*/
@@ -15532,7 +16149,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*指定文本的字体大小（以像素为单位）。
+		*<p>指定文本的字体大小（以像素为单位）。</p>
 		*<p>默认为20像素，可以通过 <code>Text.defaultSize</code> 设置默认大小。</p>
 		*/
 		__getset(0,__proto,'fontSize',function(){
@@ -15543,7 +16160,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*表示使用此文本格式的文本是否为斜体。
+		*<p>表示使用此文本格式的文本是否为斜体。</p>
 		*<p>默认值为 false，这意味着不使用斜体。如果值为 true，则文本为斜体。</p>
 		*/
 		__getset(0,__proto,'italic',function(){
@@ -15554,7 +16171,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*表示文本的水平显示方式。
+		*<p>表示文本的水平显示方式。</p>
 		*<p><b>取值：</b>
 		*<li>"left"： 居左对齐显示。</li>
 		*<li>"center"： 居中对齐显示。</li>
@@ -15569,7 +16186,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*表示文本的垂直显示方式。
+		*<p>表示文本的垂直显示方式。</p>
 		*<p><b>取值：</b>
 		*<li>"top"： 居顶部对齐显示。</li>
 		*<li>"middle"： 居中对齐显示。</li>
@@ -15584,7 +16201,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*表示文本是否自动换行，默认为false。
+		*<p>表示文本是否自动换行，默认为false。</p>
 		*<p>若值为true，则自动换行；否则不自动换行。</p>
 		*/
 		__getset(0,__proto,'wordWrap',function(){
@@ -15626,7 +16243,7 @@ var Laya=window.Laya=(function(window,document){
 
 		/**
 		*<p>描边宽度（以像素为单位）。</p>
-		*默认值0，表示不描边。
+		*<p>默认值0，表示不描边。<p>q
 		*/
 		__getset(0,__proto,'stroke',function(){
 			return this._getCSSStyle().stroke;
@@ -15637,7 +16254,7 @@ var Laya=window.Laya=(function(window,document){
 
 		/**
 		*<p>描边颜色，以字符串表示。</p>
-		*默认值为 "#000000"（黑色）;
+		*<p>默认值为 "#000000"（黑色）;</p>
 		*/
 		__getset(0,__proto,'strokeColor',function(){
 			return this._getCSSStyle().strokeColor;
@@ -15657,7 +16274,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*设置横向滚动量。
+		*<p>设置横向滚动量。</p>
 		*<p>即使设置超出滚动范围的值，也会被自动限制在可能的最大值处。</p>
 		*/
 		/**
@@ -15716,6 +16333,8 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		__getset(0,__proto,'lines',function(){
+			if (this._isChanged)
+				this.typeset();
 			return this._lines;
 		});
 
@@ -15755,19 +16374,20 @@ var Laya=window.Laya=(function(window,document){
 
 	/**
 	*<p> <code>Stage</code> 是舞台类，显示列表的根节点，所有显示对象都在舞台上显示。通过 Laya.stage 单例访问。</p>
-	*Stage提供几种适配模式，不同的适配模式会产生不同的画布大小，画布越大，渲染压力越大，所以要选择合适的适配方案。
-	*Stage提供不同的帧率模式，帧率越高，渲染压力越大，越费电，合理使用帧率甚至动态更改帧率有利于改进手机耗电。
+	*<p>Stage提供几种适配模式，不同的适配模式会产生不同的画布大小，画布越大，渲染压力越大，所以要选择合适的适配方案。<p>
+	*<p>Stage提供不同的帧率模式，帧率越高，渲染压力越大，越费电，合理使用帧率甚至动态更改帧率有利于改进手机耗电。<p>
 	*/
 	//class laya.display.Stage extends laya.display.Sprite
 	var Stage=(function(_super){
 		function Stage(){
 			this.focus=null;
 			this.frameRate="fast";
-			this.desginWidth=0;
-			this.desginHeight=0;
+			this.designWidth=0;
+			this.designHeight=0;
 			this.canvasRotation=false;
 			this.canvasDegree=0;
 			this.renderingEnabled=true;
+			this.screenAdaptationEnabled=true;
 			this._screenMode="none";
 			this._scaleMode="noscale";
 			this._alignV="top";
@@ -15777,7 +16397,6 @@ var Laya=window.Laya=(function(window,document){
 			this._renderCount=0;
 			this._safariOffsetY=0;
 			this._frameStartTime=NaN;
-			this._previousOrientation=0;
 			this._isFocused=false;
 			this._isVisibility=false;
 			this._scenes=null;
@@ -15785,6 +16404,7 @@ var Laya=window.Laya=(function(window,document){
 			Stage.__super.call(this);
 			this.offset=new Point();
 			this._canvasTransform=new Matrix();
+			this._previousOrientation=Browser.window.orientation;
 			var _$this=this;
 			this.transform=Matrix.create();
 			this._scenes=[];
@@ -15867,16 +16487,14 @@ var Laya=window.Laya=(function(window,document){
 
 		/**@private */
 		__proto._resetCanvas=function(){
+			if (!this.screenAdaptationEnabled)return;
 			var canvas=Render._mainCanvas;
 			var canvasStyle=canvas.source.style;
-			canvas.size(1,1);
-			canvasStyle.transform=canvasStyle.webkitTransform=canvasStyle.msTransform=canvasStyle.mozTransform=canvasStyle.oTransform="";
-			this.visible=false;
 			Laya.timer.once(100,this,this._changeCanvasSize);
 		}
 
 		/**
-		*设置屏幕大小，场景会根据屏幕大小进行适配。
+		*设置屏幕大小，场景会根据屏幕大小进行适配。可以动态调用此方法，来更改游戏显示的大小。
 		*@param screenWidth 屏幕宽度。
 		*@param screenHeight 屏幕高度。
 		*/
@@ -15896,30 +16514,30 @@ var Laya=window.Laya=(function(window,document){
 			var canvasStyle=canvas.source.style;
 			var mat=this._canvasTransform.identity();
 			var scaleMode=this._scaleMode;
-			var scaleX=screenWidth / this.desginWidth;
-			var scaleY=screenHeight / this.desginHeight;
-			var canvasWidth=this.desginWidth;
-			var canvasHeight=this.desginHeight;
+			var scaleX=screenWidth / this.designWidth;
+			var scaleY=screenHeight / this.designHeight;
+			var canvasWidth=this.designWidth;
+			var canvasHeight=this.designHeight;
 			var realWidth=screenWidth;
 			var realHeight=screenHeight;
 			var pixelRatio=Browser.pixelRatio;
-			this._width=this.desginWidth;
-			this._height=this.desginHeight;
+			this._width=this.designWidth;
+			this._height=this.designHeight;
 			switch (scaleMode){
 				case "noscale":
 					scaleX=scaleY=1;
-					realWidth=this.desginWidth;
-					realHeight=this.desginHeight;
+					realWidth=this.designWidth;
+					realHeight=this.designHeight;
 					break ;
 				case "showall":
 					scaleX=scaleY=Math.min(scaleX,scaleY);
-					canvasWidth=realWidth=Math.round(this.desginWidth *scaleX);
-					canvasHeight=realHeight=Math.round(this.desginHeight *scaleY);
+					canvasWidth=realWidth=Math.round(this.designWidth *scaleX);
+					canvasHeight=realHeight=Math.round(this.designHeight *scaleY);
 					break ;
 				case "noborder":
 					scaleX=scaleY=Math.max(scaleX,scaleY);
-					realWidth=Math.round(this.desginWidth *scaleX);
-					realHeight=Math.round(this.desginHeight *scaleY);
+					realWidth=Math.round(this.designWidth *scaleX);
+					realHeight=Math.round(this.designHeight *scaleY);
 					break ;
 				case "full":
 					scaleX=scaleY=1;
@@ -15928,13 +16546,20 @@ var Laya=window.Laya=(function(window,document){
 					break ;
 				case "fixedwidth":
 					scaleY=scaleX;
-					this._height=screenHeight / scaleX;
-					canvasHeight=Math.round(screenHeight / scaleX);
+					this._height=canvasHeight=Math.round(screenHeight / scaleX);
 					break ;
 				case "fixedheight":
 					scaleX=scaleY;
-					this._width=screenWidth / scaleY;
-					canvasWidth=Math.round(screenWidth / scaleY);
+					this._width=canvasWidth=Math.round(screenWidth / scaleY);
+					break ;
+				case "fixedauto":
+					if ((screenWidth / screenHeight)< (this.designWidth / this.designHeight)){
+						scaleY=scaleX;
+						this._height=canvasHeight=Math.round(screenHeight / scaleX);
+						}else {
+						scaleX=scaleY;
+						this._width=canvasWidth=Math.round(screenWidth / scaleY);
+					}
 					break ;
 				}
 			scaleX *=this.scaleX;
@@ -16014,8 +16639,10 @@ var Laya=window.Laya=(function(window,document){
 			this._mouseMoveTime=Browser.now();
 		}
 
-		/**获得距当前帧开始后，过了多少时间，单位为毫秒
-		*可以用来判断函数内时间消耗，通过合理控制每帧函数处理消耗时长，避免一帧做事情太多，对复杂计算分帧处理，能有效降低帧率波动。*/
+		/**
+		*<p>获得距当前帧开始后，过了多少时间，单位为毫秒。</p>
+		*<p>可以用来判断函数内时间消耗，通过合理控制每帧函数处理消耗时长，避免一帧做事情太多，对复杂计算分帧处理，能有效降低帧率波动。</p>
+		*/
 		__proto.getTimeFromFrameStart=function(){
 			return Browser.now()-this._frameStartTime;
 		}
@@ -16029,7 +16656,7 @@ var Laya=window.Laya=(function(window,document){
 			}
 			this._renderCount++;
 			Render.isFlash && this.repaint();
-			if (!this.visible){
+			if (!this._style.visible){
 				if (this._renderCount % 5===0){
 					Stat.loopCount++;
 					MouseManager.instance.runEvent();
@@ -16106,7 +16733,7 @@ var Laya=window.Laya=(function(window,document){
 			Laya.stage.event(/*laya.events.Event.FULL_SCREEN_CHANGE*/"fullscreenchange");
 		}
 
-		/**退出全屏*/
+		/**退出全屏模式*/
 		__proto.exitFullscreen=function(){
 			var document=Browser.document;
 			if (document.exitFullscreen){
@@ -16124,7 +16751,7 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		__getset(0,__proto,'width',_super.prototype._$get_width,function(value){
-			this.desginWidth=value;
+			this.designWidth=value;
 			_super.prototype._$set_width.call(this,value);
 			Laya.timer.callLater(this,this._changeCanvasSize);
 		});
@@ -16137,13 +16764,12 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*水平对齐方式。
+		*<p>水平对齐方式。默认值为"left"。</p>
 		*<p><ul>取值范围：
 		*<li>"left" ：居左对齐；</li>
 		*<li>"center" ：居中对齐；</li>
 		*<li>"right" ：居右对齐；</li>
 		*</ul></p>
-		*默认值为"left"。
 		*/
 		__getset(0,__proto,'alignH',function(){
 			return this._alignH;
@@ -16153,20 +16779,42 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		__getset(0,__proto,'height',_super.prototype._$get_height,function(value){
-			this.desginHeight=value;
+			this.designHeight=value;
 			_super.prototype._$set_height.call(this,value);
 			Laya.timer.callLater(this,this._changeCanvasSize);
 		});
 
+		__getset(0,__proto,'transform',function(){
+			if (this._tfChanged)this._adjustTransform();
+			return this._transform=this._transform|| Matrix.create();
+		},_super.prototype._$set_transform);
+
 		/**
-		*舞台是否处于可见状态。
+		*舞台是否处于可见状态(是否进入后台)。
 		*/
 		__getset(0,__proto,'isVisibility',function(){
 			return this._isVisibility;
 		});
 
+		//[Deprecated]
+		__getset(0,__proto,'desginWidth',function(){
+			console.debug("desginWidth已经弃用，请使用designWidth代替");
+			return this.designWidth;
+		});
+
+		/**当前视窗由缩放模式导致的 X 轴缩放系数。*/
+		__getset(0,__proto,'clientScaleX',function(){
+			return this._transform ? this._transform.getScaleX():1;
+		});
+
+		//[Deprecated]
+		__getset(0,__proto,'desginHeight',function(){
+			console.debug("desginHeight已经弃用，请使用designHeight代替");
+			return this.designHeight;
+		});
+
 		/**
-		*<p>缩放模式。</p>
+		*<p>缩放模式。默认值为 "noscale"。</p>
 		*<p><ul>取值范围：
 		*<li>"noscale" ：不缩放；</li>
 		*<li>"exactfit" ：全屏不等比缩放；</li>
@@ -16175,8 +16823,8 @@ var Laya=window.Laya=(function(window,document){
 		*<li>"full" ：不缩放，stage的宽高等于屏幕宽高；</li>
 		*<li>"fixedwidth" ：宽度不变，高度根据屏幕比缩放；</li>
 		*<li>"fixedheight" ：高度不变，宽度根据屏幕比缩放；</li>
+		*<li>"fixedauto" ：根据宽高比，自动选择使用fixedwidth或fixedheight；</li>
 		*</ul></p>
-		*默认值为 "noscale"。
 		*/
 		__getset(0,__proto,'scaleMode',function(){
 			return this._scaleMode;
@@ -16186,13 +16834,12 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*垂直对齐方式。
+		*<p>垂直对齐方式。默认值为"top"。</p>
 		*<p><ul>取值范围：
 		*<li>"top" ：居顶部对齐；</li>
 		*<li>"middle" ：居中对齐；</li>
 		*<li>"bottom" ：居底部对齐；</li>
 		*</ul></p>
-		*默认值为"top"。
 		*/
 		__getset(0,__proto,'alignV',function(){
 			return this._alignV;
@@ -16231,13 +16878,8 @@ var Laya=window.Laya=(function(window,document){
 			return Math.round(MouseManager.instance.mouseY / this.clientScaleY);
 		});
 
-		/**当前视窗由缩放模式导致的 X 轴缩放系数。*/
-		__getset(0,__proto,'clientScaleX',function(){
-			return this._transform ? this._transform.getScaleX():1;
-		});
-
 		/**
-		*场景布局类型。
+		*<p>场景布局类型。</p>
 		*<p><ul>取值范围：
 		*<li>"none" ：不更改屏幕</li>
 		*<li>"horizontal" ：自动横屏</li>
@@ -16258,7 +16900,10 @@ var Laya=window.Laya=(function(window,document){
 			}
 		});
 
-		/**是否开启全屏，用户点击后进入全屏*/
+		/**
+		*<p>是否开启全屏，用户点击后进入全屏。</p>
+		*<p>兼容性提示：部分浏览器不允许点击进入全屏，比如Iphone等。</p>
+		*/
 		__getset(0,__proto,'fullScreenEnabled',null,function(value){
 			var document=Browser.document;
 			var canvas=Render.canvas;
@@ -16286,6 +16931,7 @@ var Laya=window.Laya=(function(window,document){
 		Stage.SCALE_FULL="full";
 		Stage.SCALE_FIXED_WIDTH="fixedwidth";
 		Stage.SCALE_FIXED_HEIGHT="fixedheight";
+		Stage.SCALE_FIXED_AUTO="fixedauto";
 		Stage.ALIGN_LEFT="left";
 		Stage.ALIGN_RIGHT="right";
 		Stage.ALIGN_CENTER="center";
@@ -16303,6 +16949,9 @@ var Laya=window.Laya=(function(window,document){
 	})(Sprite)
 
 
+	/**
+	*@private
+	*/
 	//class laya.media.SoundNode extends laya.display.Sprite
 	var SoundNode=(function(_super){
 		function SoundNode(){
@@ -16423,28 +17072,6 @@ var Laya=window.Laya=(function(window,document){
 	})(Sprite)
 
 
-	//class laya.scene.Scene2D extends laya.display.Sprite
-	var Scene2D=(function(_super){
-		function Scene2D(){
-			Scene2D.__super.call(this);
-			this.createChildren();
-		}
-
-		__class(Scene2D,'laya.scene.Scene2D',_super);
-		var __proto=Scene2D.prototype;
-		/**
-		*<p>创建并添加控件子节点。</p>
-		*@internal 子类可在此函数内创建并添加子节点。
-		*/
-		__proto.createChildren=function(){}
-		__proto.createView=function(sceneData){
-			ClassUtils.createByJson(sceneData,this,this);
-		}
-
-		return Scene2D;
-	})(Sprite)
-
-
 	/**
 	*@private
 	*<code>FileBitmap</code> 是图片文件资源类。
@@ -16490,7 +17117,7 @@ var Laya=window.Laya=(function(window,document){
 	*/
 	//class laya.resource.HTMLCanvas extends laya.resource.Bitmap
 	var HTMLCanvas=(function(_super){
-		function HTMLCanvas(type,canvas){
+		function HTMLCanvas(type){
 			//this._ctx=null;
 			this._is2D=false;
 			HTMLCanvas.__super.call(this);
@@ -16498,7 +17125,7 @@ var Laya=window.Laya=(function(window,document){
 			this._source=this;
 			if (type==="2D" || (type==="AUTO" && !Render.isWebGL)){
 				this._is2D=true;
-				this._source=canvas || Browser.createElement("canvas");
+				this._source=Browser.createElement("canvas");
 				var o=this;
 				o.getContext=function (contextID,other){
 					if (_$this._ctx)return _$this._ctx;
@@ -16511,7 +17138,6 @@ var Laya=window.Laya=(function(window,document){
 					return ctx;
 				}
 			}
-			else this._source={};
 		}
 
 		__class(HTMLCanvas,'laya.resource.HTMLCanvas',_super);
@@ -16577,6 +17203,10 @@ var Laya=window.Laya=(function(window,document){
 			}
 		}
 
+		__proto.getCanvas=function(){
+			return this._source;
+		}
+
 		/**
 		*Canvas 渲染上下文。
 		*/
@@ -16590,8 +17220,8 @@ var Laya=window.Laya=(function(window,document){
 		__getset(0,__proto,'asBitmap',null,function(value){
 		});
 
-		HTMLCanvas.create=function(type,canvas){
-			return new HTMLCanvas(type,canvas);
+		HTMLCanvas.create=function(type){
+			return new HTMLCanvas(type);
 		}
 
 		HTMLCanvas.TYPE2D="2D";
@@ -16624,10 +17254,11 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
-	*<p> <code>Animation</code> 是Graphics动画类（不断切换Graphics来实现动画），实现了基于Graphics的动画创建，播放控制接口。</p>
-	*<p> <code>Animation</code> 可以加载一组图片集合或图集文件或IDE设计好的动画进行播放。</p>
-	*@example 以下示例代码，创建了一个 <code>Text</code> 实例。
-	*<listing version="3.0">
+	*<p> <code>Animation</code> 是Graphics动画类。实现了基于Graphics的动画创建、播放、控制接口。</p>
+	*<p>本类使用了动画模版缓存池，它以一定的内存开销来节省CPU开销，当相同的动画模版被多次使用时，相比于每次都创建新的动画模版，使用动画模版缓存池，只需创建一次，缓存之后多次复用，从而节省了动画模版创建的开销。</p>
+	*<p>动画模版缓存池，以key-value键值对存储，key可以自定义，也可以从指定的配置文件中读取，value为对应的动画模版，是一个Graphics对象数组，每个Graphics对象对应一个帧图像，动画的播放实质就是定时切换Graphics对象。</p>
+	*<p>使用set source、loadImages(...)、loadAtlas(...)、loadAnimation(...)方法可以创建动画模版。使用play(...)可以播放指定动画。</p>
+	*@example <caption>以下示例代码，创建了一个 <code>Text</code> 实例。</caption>
 	*package
 	*{
 		*import laya.display.Animation;
@@ -16653,8 +17284,8 @@ var Laya=window.Laya=(function(window,document){
 				*}
 			*}
 		*}
-	*</listing>
-	*<listing version="3.0">
+	*
+	*@example
 	*Animation_Example();
 	*function Animation_Example(){
 		*Laya.init(640,800);//设置游戏画布宽高、渲染模式。
@@ -16671,8 +17302,8 @@ var Laya=window.Laya=(function(window,document){
 		*animation.play();//播放动画。
 		*Laya.stage.addChild(animation);//将 animation 对象添加到显示列表。
 		*}
-	*</listing>
-	*<listing version="3.0">
+	*
+	*@example
 	*import Animation=laya.display.Animation;
 	*class Animation_Example {
 		*constructor(){
@@ -16691,7 +17322,6 @@ var Laya=window.Laya=(function(window,document){
 			*}
 		*}
 	*new Animation_Example();
-	*</listing>
 	*/
 	//class laya.display.Animation extends laya.display.AnimationPlayerBase
 	var Animation=(function(_super){
@@ -16714,10 +17344,12 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*播放动画。可以指定name属性，播放缓存中某个动画。
-		*@param start 开始播放的动画索引或label。
-		*@param loop 是否循环播放。
-		*@param name 如果name为空(可选)，则播放当前动画，如果不为空，则播放全局缓存动画（如果有）
+		*<p>开始播放动画。会在动画模版缓存池中查找key值为name的动画模版，存在则用此动画模版初始化当前序列帧， 如果不存在，则使用当前序列帧。</p>
+		*<p>play(...)方法被设计为在创建实例后的任何时候都可以被调用，调用后就处于播放状态，当相应的资源加载完毕、调用动画帧填充方法(set frames)或者将实例显示在舞台上时，会判断是否处于播放状态，如果是，则开始播放。</p>
+		*<p>配合wrapMode属性，可设置动画播放顺序类型。</p>
+		*@param start （可选）指定动画播放开始的索引(int)或帧标签(String)。帧标签可以通过addLabel(...)和removeLabel(...)进行添加和删除。
+		*@param loop （可选）是否循环播放。
+		*@param name （可选）动画模板在动画模版缓存池中的key，也可认为是动画名称。如果name为空，则播放当前动画序列帧；如果不为空，则在动画模版缓存池中寻找key值为name的动画模版，如果存在则用此动画模版初始化当前序列帧并播放，如果不存在，则仍然播放当前动画序列帧；如果没有当前动画的帧数据，则不播放，但该实例仍然处于播放状态。
 		*/
 		__proto.play=function(start,loop,name){
 			(start===void 0)&& (start=0);
@@ -16736,14 +17368,41 @@ var Laya=window.Laya=(function(window,document){
 
 		/**@private */
 		__proto._setFramesFromCache=function(name){
+			var showWarn=name !="";
 			if (this._url)name=this._url+"#"+name;
 			if (name && Animation.framesMap[name]){
-				this._frames=Animation.framesMap[name];
-				this._count=this._frames.length;
-				if (!this._frameRateChanged && Animation.framesMap[name+"$len"])this._interval=Animation.framesMap[name+"$len"];
+				var tAniO;
+				tAniO=Animation.framesMap[name];
+				if ((tAniO instanceof Array)){
+					this._frames=Animation.framesMap[name];
+					this._count=this._frames.length;
+					}else {
+					if (tAniO.nodeRoot){
+						Animation.framesMap[name]=this._parseGraphicAnimationByData(tAniO);
+						tAniO=Animation.framesMap[name];
+					}
+					this._frames=tAniO.frames;
+					this._count=this._frames.length;
+					if (!this._frameRateChanged)this._interval=tAniO.interval;
+					this._labels=this._copyLabels(tAniO.labels);
+				}
 				return true;
+				}else {
+				if (showWarn)console.log("ani not found:",name);
 			}
 			return false;
+		}
+
+		/**@private */
+		__proto._copyLabels=function(labels){
+			if (!labels)return null;
+			var rst;
+			rst={};
+			var key;
+			for (key in labels){
+				rst[key]=Utils.copyArray([],labels[key]);
+			}
+			return rst;
 		}
 
 		/**@private */
@@ -16758,7 +17417,9 @@ var Laya=window.Laya=(function(window,document){
 			if (this._frames)this.graphics=this._frames[value];
 		}
 
-		/**清理。方便对象复用。*/
+		/**
+		*停止动画播放，并清理对象属性。之后可存入对象池，方便对象复用。
+		*/
 		__proto.clear=function(){
 			this.stop();
 			this.graphics=null;
@@ -16767,10 +17428,12 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*加载图片集合作为动画。
-		*@param urls 图片地址集合。如：[url1,url2,url3,...]。
-		*@param cacheName 缓存的动画模板名称。此模板为全局模板，缓存后，可以使用play(start,loop,name)接口进行播放，无需重复创建动画模板（相同动画能节省创建动画模板开销），设置为空则不缓存。
-		*@return 返回动画本身。
+		*<p>根据指定的动画模版初始化当前动画序列帧。选择动画模版的过程如下：1. 动画模版缓存池中key为cacheName的动画模版；2. 如果不存在，则加载指定的图片集合并创建动画模版。注意：只有指定不为空的cacheName，才能将创建好的动画模版以此为key缓存到动画模版缓存池，否则不进行缓存。<p/>
+		*<p>动画模版缓存池是以一定的内存开销来节省CPU开销，当相同的动画模版被多次使用时，相比于每次都创建新的动画模版，使用动画模版缓存池，只需创建一次，缓存之后多次复用，从而节省了动画模版创建的开销。</p>
+		*<p>因为返回值为Animation对象本身，所以可以使用如下语法：loadImages(...).loadImages(...).play(...);。</p>
+		*@param urls 图片路径集合。需要创建动画模版时，会以此为数据源。参数形如：[url1,url2,url3,...]。
+		*@param cacheName （可选）动画模板在动画模版缓存池中的key。如果此参数不为空，表示使用动画模版缓存池。如果动画模版缓存池中存在key为cacheName的动画模版，则使用此模版。否则，创建新的动画模版，如果cacheName不为空，则以cacheName为key缓存到动画模版缓存池中，如果cacheName为空，不进行缓存。
+		*@return 返回Animation对象本身。
 		*/
 		__proto.loadImages=function(urls,cacheName){
 			(cacheName===void 0)&& (cacheName="");
@@ -16782,10 +17445,13 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*加载一个图集作为动画。
-		*@param url 图集地址。
-		*@param loaded 加载完毕回调。
-		*@param cacheName 缓存的动画模板名称。此模板为全局模板，缓存后，可以使用play(start,loop,name)接口进行播放，无需重复创建动画模板（相同动画能节省创建动画模板开销），设置为空则不缓存。
+		*<p>根据指定的动画模版初始化当前动画序列帧。选择动画模版的过程如下：1. 动画模版缓存池中key为cacheName的动画模版；2. 如果不存在，则加载指定的图集并创建动画模版。</p>
+		*<p>注意：只有指定不为空的cacheName，才能将创建好的动画模版以此为key缓存到动画模版缓存池，否则不进行缓存。<p/>
+		*<p>动画模版缓存池是以一定的内存开销来节省CPU开销，当相同的动画模版被多次使用时，相比于每次都创建新的动画模版，使用动画模版缓存池，只需创建一次，缓存之后多次复用，从而节省了动画模版创建的开销。</p>
+		*<p>因为返回值为Animation对象本身，所以可以使用如下语法：loadAtlas(...).loadAtlas(...).play(...);。</p>
+		*@param url 图集路径。需要创建动画模版时，会以此为数据源。
+		*@param loaded （可选）使用指定图集初始化动画完毕的回调。
+		*@param cacheName （可选）动画模板在动画模版缓存池中的key。如果此参数不为空，表示使用动画模版缓存池。如果动画模版缓存池中存在key为cacheName的动画模版，则使用此模版。否则，创建新的动画模版，如果cacheName不为空，则以cacheName为key缓存到动画模版缓存池中，如果cacheName为空，不进行缓存。
 		*@return 返回动画本身。
 		*/
 		__proto.loadAtlas=function(url,loaded,cacheName){
@@ -16806,52 +17472,72 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*加载由IDE制作的动画。播放的帧率则按照IDE设计的帧率。加载后，默认会根据 "url+动画名称" 缓存为动画模板。
-		*【注意】加载解析IDE动画之前，请确保动画使用的图片被预加载，否则会导致动画创建失败。
-		*@param url 动画地址。
-		*@param loaded 加载完毕回调。
+		*<p>加载并解析由LayaAir IDE制作的动画文件，此文件中可能包含多个动画。默认帧率为在IDE中设计的帧率，如果调用过set interval，则使用此帧间隔对应的帧率。加载后创建动画模版，并缓存到动画模版缓存池，key "url#动画名称" 对应相应动画名称的动画模板，key "url#" 对应动画模版集合的默认动画模版。</p>
+		*<p>注意：如果调用本方法前，还没有预加载动画使用的图集，请将atlas参数指定为对应的图集路径，否则会导致动画创建失败。</p>
+		*<p>动画模版缓存池是以一定的内存开销来节省CPU开销，当相同的动画模版被多次使用时，相比于每次都创建新的动画模版，使用动画模版缓存池，只需创建一次，缓存之后多次复用，从而节省了动画模版创建的开销。</p>
+		*<p>因为返回值为Animation对象本身，所以可以使用如下语法：loadAnimation(...).loadAnimation(...).play(...);。</p>
+		*@param url 动画文件路径。可由LayaAir IDE创建并发布。
+		*@param loaded （可选）使用指定动画资源初始化动画完毕的回调。
+		*@param atlas （可选）动画用到的图集地址（可选）。
 		*@return 返回动画本身。
 		*/
-		__proto.loadAnimation=function(url,loaded){
+		__proto.loadAnimation=function(url,loaded,atlas){
 			this._url=url;
 			var _this=this;
+			if (!this._actionName)this._actionName="";
 			if (!_this._setFramesFromCache("")){
-				function onLoaded (loadUrl){
-					if (url===loadUrl){
-						if (!Animation.framesMap[url+"#"]){
-							var aniData=_this._parseGraphicAnimation(Loader.getRes(url));
-							if (!aniData)return;
-							var obj=aniData.animationDic;
-							var flag=true;
-							for (var name in obj){
-								var info=obj[name];
-								if (info.frames.length){
-									Animation.framesMap[url+"#"+name]=info.frames;
-									Animation.framesMap[url+"#"+name+"$len"]=info.interval;
-									}else {
-									flag=false;
-								}
-							}
-							if (!_this._frameRateChanged)_this._interval=aniData.animationList[0].interval;
-							_this.frames=aniData.animationList[0].frames;
-							if (flag){
-								Animation.framesMap[url+"#$len"]=aniData.animationList[0].interval;
-								Animation.framesMap[url+"#"]=_this.frames;
-							}
-							}else {
-							if (!_this._frameRateChanged)_this._interval=Animation.framesMap[url+"#$len"];
-							_this.frames=Animation.framesMap[url+"#"];
-						}
-						if (loaded)loaded.run();
-					}
+				if (!atlas || Loader.getAtlas(atlas)){
+					this._loadAnimationData(url,loaded,atlas);
+					}else {
+					Laya.loader.load(atlas,Handler.create(this,this._loadAnimationData,[url,loaded,atlas]),null,/*laya.net.Loader.ATLAS*/"atlas")
 				}
-				if (Loader.getRes(url))onLoaded(url);
-				else Laya.loader.load(url,Handler.create(null,onLoaded,[url]),null,/*laya.net.Loader.JSON*/"json");
-				Loader.clearRes(url);
 				}else {
+				_this._setFramesFromCache(this._actionName);
 				if (loaded)loaded.run();
 			}
 			return this;
+		}
+
+		/**@private */
+		__proto._loadAnimationData=function(url,loaded,atlas){
+			var _$this=this;
+			if (atlas && !Loader.getAtlas(atlas)){
+				console.warn("atlas load fail:"+atlas);
+				return;
+			};
+			var _this=this;
+			function onLoaded (loadUrl){
+				if (!Loader.getRes(loadUrl))return;
+				if (url===loadUrl){
+					var tAniO;
+					if (!Animation.framesMap[url+"#"]){
+						var aniData=_this._parseGraphicAnimation(Loader.getRes(url));
+						if (!aniData)return;
+						var aniList=aniData.animationList;
+						var i=0,len=aniList.length;
+						var defaultO;
+						for (i=0;i < len;i++){
+							tAniO=aniList[i];
+							Animation.framesMap[url+"#"+tAniO.name]=tAniO;
+							if (!defaultO)defaultO=tAniO;
+						}
+						if (defaultO){
+							Animation.framesMap[url+"#"]=defaultO;
+							_this._setFramesFromCache(_$this._actionName);
+							_$this.index=0;
+						}
+						_$this._checkResumePlaying();
+						}else {
+						_this._setFramesFromCache(_$this._actionName);
+						_$this.index=0;
+						_$this._checkResumePlaying();
+					}
+					if (loaded)loaded.run();
+				}
+			}
+			if (Loader.getRes(url))onLoaded(url);
+			else Laya.loader.load(url,Handler.create(null,onLoaded,[url]),null,/*laya.net.Loader.JSON*/"json");
+			Loader.clearRes(url);
 		}
 
 		/**@private */
@@ -16859,7 +17545,14 @@ var Laya=window.Laya=(function(window,document){
 			return GraphicAnimation.parseAnimationData(animationData)
 		}
 
-		/**动画帧信息，里面存储的是Graphics数组，Animation本身就是不断切换Graphics来实现动画效果。*/
+		/**@private */
+		__proto._parseGraphicAnimationByData=function(animationObject){
+			return GraphicAnimation.parseAnimationByData(animationObject);
+		}
+
+		/**
+		*当前动画的帧图像数组。本类中，每个帧图像是一个Graphics对象，而动画播放就是定时切换Graphics对象的过程。
+		*/
 		__getset(0,__proto,'frames',function(){
 			return this._frames;
 			},function(value){
@@ -16871,19 +17564,35 @@ var Laya=window.Laya=(function(window,document){
 			}
 		});
 
-		/**是否自动播放，默认为false，如果设置为true，则动画被添加到舞台后，就会自动播放*/
+		/**
+		*是否自动播放，默认为false。如果设置为true，则动画被创建并添加到舞台后自动播放。
+		*/
 		__getset(0,__proto,'autoPlay',null,function(value){
 			if (value)this.play();
 			else this.stop();
 		});
 
-		/**动画数据源，可以是图集，图片集合，IDE动画
-		*比如：图集："xx/a1.json" 图片集合："a1.png,a2.png,a3.png" IDE动画"xx/a1.ani"
+		/**
+		*<p>动画数据源。</p>
+		*<p>
+		*类型如下：<br/>
+		*1. LayaAir IDE动画文件路径：使用此类型需要预加载所需的图集资源，否则会创建失败，如果不想预加载或者需要创建完毕的回调，请使用loadAnimation(...)方法；<br/>
+		*2. 图集路径：使用此类型创建的动画模版不会被缓存到动画模版缓存池中，如果需要缓存或者创建完毕的回调，请使用loadAtlas(...)方法；<br/>
+		*3. 图片路径集合：使用此类型创建的动画模版不会被缓存到动画模版缓存池中，如果需要缓存，请使用loadImages(...)方法。
+		*</p>
+		*@param value 数据源。比如：图集："xx/a1.atlas"；图片集合："a1.png,a2.png,a3.png"；LayaAir IDE动画"xx/a1.ani"。
 		*/
 		__getset(0,__proto,'source',null,function(value){
 			if (value.indexOf(".ani")>-1)this.loadAnimation(value);
 			else if (value.indexOf(".json")>-1 || value.indexOf("als")>-1 || value.indexOf("atlas")>-1)this.loadAtlas(value);
 			else this.loadImages(value.split(","));
+		});
+
+		/**
+		*设置自动播放的动画名称，在LayaAir IDE中可以创建的多个动画组成的动画集合，选择其中一个动画名称进行播放。
+		*/
+		__getset(0,__proto,'autoAnimation',null,function(value){
+			this.play(0,true,value);
 		});
 
 		Animation.createFrames=function(url,name){
@@ -16927,16 +17636,16 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
-	*关键帧动画播放类
-	*
+	*关键帧动画播放类。
 	*/
 	//class laya.display.FrameAnimation extends laya.display.AnimationPlayerBase
 	var FrameAnimation=(function(_super){
 		function FrameAnimation(){
 			this._targetDic=null;
 			this._animationData=null;
+			this._animationNewFrames=null;
 			FrameAnimation.__super.call(this);
-			if(FrameAnimation._sortIndexFun==null){
+			if (FrameAnimation._sortIndexFun==null){
 				FrameAnimation._sortIndexFun=MathUtil.sortByKey("index",false,true);
 			}
 		}
@@ -16952,16 +17661,22 @@ var Laya=window.Laya=(function(window,document){
 		*/
 		__proto._setUp=function(targetDic,animationData){
 			this._labels=null;
+			this._animationNewFrames=null;
 			this._targetDic=targetDic;
 			this._animationData=animationData;
 			this.interval=1000 / animationData.frameRate;
 			if (animationData.parsed){
 				this._count=animationData.count;
-				}else{
+				this._labels=animationData.labels;
+				this._animationNewFrames=animationData.animationNewFrames;
+				}else {
+				this._animationNewFrames=[];
 				this._calculateDatas();
 			}
 			animationData.parsed=true;
+			animationData.labels=this._labels;
 			animationData.count=this._count;
+			animationData.animationNewFrames=this._animationNewFrames;
 		}
 
 		/**@inheritDoc */
@@ -16973,11 +17688,11 @@ var Laya=window.Laya=(function(window,document){
 
 		/**@inheritDoc */
 		__proto._displayToIndex=function(value){
-			if(!this._animationData)return;
-			if(value<0)value=0;
-			if(value>this._count)value=this._count;
+			if (!this._animationData)return;
+			if (value < 0)value=0;
+			if (value > this._count)value=this._count;
 			var nodes=this._animationData.nodes,i=0,len=nodes.length;
-			for(i=0;i<len;i++){
+			for (i=0;i < len;i++){
 				this._displayNodeToFrame(nodes[i],value);
 			}
 		}
@@ -16991,19 +17706,19 @@ var Laya=window.Laya=(function(window,document){
 		*
 		*/
 		__proto._displayNodeToFrame=function(node,frame,targetDic){
-			if(!targetDic)targetDic=this._targetDic;
+			if (!targetDic)targetDic=this._targetDic;
 			var target=targetDic[node.target];
-			if(!target){
+			if (!target){
 				return;
 			};
 			var frames=node.frames,key,propFrames,value;
 			var keys=node.keys,i=0,len=keys.length;
-			for(i=0;i<len;i++){
+			for (i=0;i < len;i++){
 				key=keys[i];
 				propFrames=frames[key];
-				if(propFrames.length>frame){
+				if (propFrames.length > frame){
 					value=propFrames[frame];
-					}else{
+					}else {
 					value=propFrames[propFrames.length-1];
 				}
 				target[key]=value;
@@ -17016,10 +17731,10 @@ var Laya=window.Laya=(function(window,document){
 		*
 		*/
 		__proto._calculateDatas=function(){
-			if(!this._animationData)return;
+			if (!this._animationData)return;
 			var nodes=this._animationData.nodes,i=0,len=nodes.length,tNode;
 			this._count=0;
-			for(i=0;i<len;i++){
+			for (i=0;i < len;i++){
 				tNode=nodes[i];
 				this._calculateNodeKeyFrames(tNode);
 			}
@@ -17034,22 +17749,50 @@ var Laya=window.Laya=(function(window,document){
 		*/
 		__proto._calculateNodeKeyFrames=function(node){
 			var keyFrames=node.keyframes,key,tKeyFrames,target=node.target;
-			if(!node.frames){
+			if (!node.frames){
 				node.frames={};
 			}
-			if(!node.keys){
+			if (!node.keys){
 				node.keys=[];
-				}else{
+				}else {
 				node.keys.length=0;
 			}
-			for(key in keyFrames){
+			if (!node.initValues){
+				node.initValues={};
+			}
+			for (key in keyFrames){
 				tKeyFrames=keyFrames[key];
-				if(!node.frames[key]){
+				if (!node.frames[key]){
 					node.frames[key]=[];
+				}
+				if (this._targetDic && this._targetDic[target]){
+					node.initValues[key]=this._targetDic[target][key];
 				}
 				tKeyFrames.sort(FrameAnimation._sortIndexFun);
 				node.keys.push(key);
 				this._calculateNodePropFrames(tKeyFrames,node.frames[key],key,target);
+			}
+		}
+
+		/**
+		*将动画控制对象还原到动画控制之前的状态
+		*/
+		__proto.resetToInitState=function(){
+			if (!this._targetDic)return;
+			if (!this._animationData)return;
+			var nodes=this._animationData.nodes,i=0,len=nodes.length;
+			var tNode;
+			var initValues;
+			for (i=0;i < len;i++){
+				tNode=nodes[i];
+				initValues=tNode.initValues;
+				if (!initValues)continue ;
+				var target=this._targetDic[tNode.target];
+				if (!target)continue ;
+				var key;
+				for (key in initValues){
+					target[key]=initValues[key];
+				}
 			}
 		}
 
@@ -17065,12 +17808,14 @@ var Laya=window.Laya=(function(window,document){
 		__proto._calculateNodePropFrames=function(keyframes,frames,key,target){
 			var i=0,len=keyframes.length-1;
 			frames.length=keyframes[len].index+1;
-			for(i=0;i<len;i++){
+			for (i=0;i < len;i++){
 				this._dealKeyFrame(keyframes[i]);
 				this._calculateFrameValues(keyframes[i],keyframes[i+1],frames);
 			}
-			if(len==0){
+			if (len==0){
 				frames[0]=keyframes[0].value;
+				if (this._animationNewFrames)
+					this._animationNewFrames[keyframes[0].index]=true;
 			}
 			this._dealKeyFrame(keyframes[i]);
 		}
@@ -17080,7 +17825,7 @@ var Laya=window.Laya=(function(window,document){
 		*
 		*/
 		__proto._dealKeyFrame=function(keyFrame){
-			if (keyFrame.label&&keyFrame.label !="")this.addLabel(keyFrame.label,keyFrame.index);
+			if (keyFrame.label && keyFrame.label !="")this.addLabel(keyFrame.label,keyFrame.index);
 		}
 
 		/**
@@ -17097,19 +17842,26 @@ var Laya=window.Laya=(function(window,document){
 			var startValue=startFrame.value;
 			var dValue=endFrame.value-startFrame.value;
 			var dLen=end-start;
-			if(end>this._count)this._count=end;
-			if(startFrame.tween){
+			if (end > this._count)this._count=end;
+			if (startFrame.tween){
 				easeFun=Ease[startFrame.tweenMethod];
-				if(easeFun==null){
+				if (easeFun==null){
 					easeFun=Ease.linearNone;
 				}
-				for(i=start;i<end;i++){
+				for (i=start;i < end;i++){
 					result[i]=easeFun(i-start,startValue,dValue,dLen);
+					if (this._animationNewFrames){
+						this._animationNewFrames[i]=true;
+					}
 				}
-				}else{
-				for(i=start;i<end;i++){
+				}else {
+				for (i=start;i < end;i++){
 					result[i]=startValue;
 				}
+			}
+			if (this._animationNewFrames){
+				this._animationNewFrames[startFrame.index]=true;
+				this._animationNewFrames[endFrame.index]=true;
 			}
 			result[endFrame.index]=endFrame.value;
 		}
@@ -17121,6 +17873,7 @@ var Laya=window.Laya=(function(window,document){
 
 	/**
 	*<p><code>Input</code> 类用于创建显示对象以显示和输入文本。</p>
+	*<p>Input 类封装了原生的文本输入框，由于不同浏览器的差异，会导致此对象的默认文本的位置与用户点击输入时的文本的位置有少许的偏差。</p>
 	*/
 	//class laya.display.Input extends laya.display.Text
 	var Input=(function(_super){
@@ -17156,21 +17909,12 @@ var Laya=window.Laya=(function(window,document){
 			laya.display.Input.inputElement.selectionEnd=endIndex;
 		}
 
-		/**@private */
 		__proto._onUnDisplay=function(e){
 			this.focus=false;
 		}
 
-		/**@private */
 		__proto._onMouseDown=function(e){
 			this.focus=true;
-			Laya.stage.on(/*laya.events.Event.MOUSE_DOWN*/"mousedown",this,this._checkBlur);
-		}
-
-		/**@private */
-		__proto._checkBlur=function(e){
-			if (e.nativeEvent.target !=laya.display.Input.input && e.nativeEvent.target !=laya.display.Input.area && e.target !=this)
-				this.focus=false;
 		}
 
 		/**@inheritDoc*/
@@ -17179,74 +17923,31 @@ var Laya=window.Laya=(function(window,document){
 		}
 
 		/**
-		*在输入期间，如果 Input 实例的位置改变，调用该方法同步输入框的位置。
+		*在输入期间，如果 Input 实例的位置改变，调用_syncInputTransform同步输入框的位置。
 		*/
 		__proto._syncInputTransform=function(){
-			var style=this.nativeInput.style;
-			var stage=Laya.stage;
-			var rec;
-			rec=Utils.getGlobalPosAndScale(this);
-			var m=stage._canvasTransform.clone();
-			var tm=m.clone();
-			tm.rotate(-Math.PI / 180 *Laya.stage.canvasDegree);
-			tm.scale(Laya.stage.clientScaleX,Laya.stage.clientScaleY);
-			var perpendicular=(Laya.stage.canvasDegree % 180 !=0);
-			var sx=perpendicular ? tm.d :tm.a;
-			var sy=perpendicular ? tm.a :tm.d;
-			tm.destroy();
-			var tx=this.padding[3];
-			var ty=this.padding[0];
-			if (Laya.stage.canvasDegree==0){
-				tx+=rec.x;
-				ty+=rec.y;
-				tx *=sx;
-				ty *=sy;
-				tx+=m.tx;
-				ty+=m.ty;
-				}else if (Laya.stage.canvasDegree==90){
-				tx+=rec.y;
-				ty+=rec.x;
-				tx *=sx;
-				ty *=sy;
-				tx=m.tx-tx;
-				ty+=m.ty;
-				}else{
-				tx+=rec.y;
-				ty+=rec.x;
-				tx *=sx;
-				ty *=sy;
-				tx+=m.tx;
-				ty=m.ty-ty;
-			};
-			var quarter=0.785;
-			var r=Math.atan2(rec.height,rec.width)-quarter;
-			var sin=Math.sin(r),cos=Math.cos(r);
-			var tsx=cos *rec.width+sin *rec.height;
-			var tsy=cos *rec.height-sin *rec.width;
-			sx *=(perpendicular ? tsy :tsx);
-			sy *=(perpendicular ? tsx :tsy);
-			m.tx=0;
-			m.ty=0;
-			r *=180 / 3.1415;
-			Input.inputContainer.style.transform="scale("+sx+","+sy+") rotate("+(Laya.stage.canvasDegree+r)+"deg)";
-			Input.inputContainer.style.webkitTransform="scale("+sx+","+sy+") rotate("+(Laya.stage.canvasDegree+r)+"deg)";
-			Input.inputContainer.setPos(tx,ty);
-			m.destroy();
+			var inputElement=this.nativeInput;
+			var transform=Utils.getTransformRelativeToWindow(this,this.padding[3],this.padding[0]);
 			var inputWid=this._width-this.padding[1]-this.padding[3];
 			var inputHei=this._height-this.padding[0]-this.padding[2];
-			this.nativeInput.setSize(inputWid,inputHei);
 			if (Render.isConchApp){
-				this.nativeInput.setPos(tx,ty);
-				this.nativeInput.setScale(sx,sy);
+				inputElement.setScale(transform.scaleX,transform.scaleY);
+				inputElement.setSize(inputWid,inputHei);
+				inputElement.setPos(transform.x,transform.y);
+				}else {
+				Input.inputContainer.style.transform=Input.inputContainer.style.webkitTransform="scale("+transform.scaleX+","+transform.scaleY+") rotate("+(Laya.stage.canvasDegree)+"deg)";
+				inputElement.style.width=inputWid+'px';
+				inputElement.style.height=inputHei+'px';
+				Input.inputContainer.style.left=transform.x+'px';
+				Input.inputContainer.style.top=transform.y+'px';
 			}
 		}
 
-		/**选中所有文本。*/
+		/**选中当前实例的所有文本。*/
 		__proto.select=function(){
 			this.nativeInput.select();
 		}
 
-		/**@private 设置输入法（textarea或input）*/
 		__proto._setInputMethod=function(){
 			Input.input.parentElement && (Input.inputContainer.removeChild(Input.input));
 			Input.area.parentElement && (Input.inputContainer.removeChild(Input.area));
@@ -17254,7 +17955,6 @@ var Laya=window.Laya=(function(window,document){
 			Input.inputContainer.appendChild(Input.inputElement);
 		}
 
-		/**@private */
 		__proto._focusIn=function(){
 			laya.display.Input.isInputting=true;
 			var input=this.nativeInput;
@@ -17263,6 +17963,9 @@ var Laya=window.Laya=(function(window,document){
 			cssStyle.whiteSpace=(this.wordWrap ? "pre-wrap" :"nowrap");
 			this._setPromptColor();
 			input.readOnly=!this._editable;
+			if (Render.isConchApp){
+				input.setForbidEdit(!this._editable);
+			}
 			input.maxLength=this._maxChars;
 			var padding=this.padding;
 			input.type=this._type;
@@ -17297,6 +18000,7 @@ var Laya=window.Laya=(function(window,document){
 			Input.promptStyleDOM=Browser.getElementById("promptStyle");
 			if (!Input.promptStyleDOM){
 				Input.promptStyleDOM=Browser.createElement("style");
+				Input.promptStyleDOM.setAttribute("id","promptStyle");
 				Browser.document.head.appendChild(Input.promptStyleDOM);
 			}
 			Input.promptStyleDOM.innerText="input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {"+"color:"+this._promptColor+"}"+"input:-moz-placeholder, textarea:-moz-placeholder {"+"color:"+this._promptColor+"}"+"input::-moz-placeholder, textarea::-moz-placeholder {"+"color:"+this._promptColor+"}"+"input:-ms-input-placeholder, textarea:-ms-input-placeholder {"+"color:"+this._promptColor+"}";
@@ -17320,7 +18024,6 @@ var Laya=window.Laya=(function(window,document){
 			this.event(/*laya.events.Event.BLUR*/"blur");
 			if (Render.isConchApp)this.nativeInput.blur();
 			Browser.onPC && Laya.timer.clear(this,this._syncInputTransform);
-			Laya.stage.off(/*laya.events.Event.MOUSE_DOWN*/"mousedown",this,this._checkBlur);
 		}
 
 		/**@private */
@@ -17366,8 +18069,8 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*字符数量限制，默认为10000。
-		*设置字符数量限制时，小于等于0的值将会限制字符数量为10000。
+		*<p>字符数量限制，默认为10000。</p>
+		*<p>设置字符数量限制时，小于等于0的值将会限制字符数量为10000。</p>
 		*/
 		__getset(0,__proto,'maxChars',function(){
 			return this._maxChars;
@@ -17422,12 +18125,12 @@ var Laya=window.Laya=(function(window,document){
 				_super.prototype._$set_text.call(this,(this._text==this._prompt)?value:this._text);
 			else
 			_super.prototype._$set_text.call(this,value);
-			this._prompt=value;
+			this._prompt=Text.langPacks && Text.langPacks[value] ? Text.langPacks[value] :value;
 		});
 
 		// 因此 调用focus接口是无法都在移动平台立刻弹出键盘的
 		/**
-		*表示焦点是否在显示对象上。
+		*表示焦点是否在此实例上。
 		*/
 		__getset(0,__proto,'focus',function(){
 			return this._focus;
@@ -17435,9 +18138,12 @@ var Laya=window.Laya=(function(window,document){
 			var input=this.nativeInput;
 			if (this._focus!==value){
 				if (value){
-					input.target && (input.target.focus=false);
+					if (input.target){
+						input.target._focusOut();
+						}else {
+						this._setInputMethod();
+					}
 					input.target=this;
-					this._setInputMethod();
 					this._focusIn();
 					}else {
 					input.target=null;
@@ -17474,6 +18180,9 @@ var Laya=window.Laya=(function(window,document){
 			return this._editable;
 			},function(value){
 			this._editable=value;
+			if (Render.isConchApp){
+				Input.input.setForbidEdit(!value);
+			}
 		});
 
 		/**
@@ -17487,8 +18196,22 @@ var Laya=window.Laya=(function(window,document){
 		});
 
 		/**
-		*输入框类型为Input静态常量之一。
-		*平台兼容性参见http://www.w3school.com.cn/html5/html_5_form_input_types.asp。
+		*<p>输入框类型为Input静态常量之一。</p>
+		*<ul>
+		*<li>TYPE_TEXT</li>
+		*<li>TYPE_PASSWORD</li>
+		*<li>TYPE_EMAIL</li>
+		*<li>TYPE_URL</li>
+		*<li>TYPE_NUMBER</li>
+		*<li>TYPE_RANGE</li>
+		*<li>TYPE_DATE</li>
+		*<li>TYPE_MONTH</li>
+		*<li>TYPE_WEEK</li>
+		*<li>TYPE_TIME</li>
+		*<li>TYPE_DATE_TIME</li>
+		*<li>TYPE_DATE_TIME_LOCAL</li>
+		*</ul>
+		*<p>平台兼容性参见http://www.w3school.com.cn/html5/html_5_form_input_types.asp。</p>
 		*/
 		__getset(0,__proto,'type',function(){
 			return this._type;
@@ -17500,7 +18223,11 @@ var Laya=window.Laya=(function(window,document){
 			this._type=value;
 		});
 
-		//[Deprecated]
+		/**
+		*<p>原生输入框 X 轴调整值，用来调整输入框坐标。</p>
+		*<p>由于即使设置了该值，在各平台和浏览器之间也不一定一致，inputElementXAdjuster已弃用。</p>
+		*@deprecated
+		*/
 		__getset(0,__proto,'inputElementXAdjuster',function(){
 			console.warn("deprecated: 由于即使设置了该值，在各平台和浏览器之间也不一定一致，inputElementXAdjuster已弃用。");
 			return 0;
@@ -17552,12 +18279,11 @@ var Laya=window.Laya=(function(window,document){
 			input.addEventListener('mousemove',Input._stopEvent);
 			input.addEventListener('mousedown',Input._stopEvent);
 			input.addEventListener('touchmove',Input._stopEvent);
+			input.setFontFace=function (fontFace){input.style.fontFamily=fontFace;};
 			if(!Render.isConchApp){
 				input.setColor=function (color){input.style.color=color;};
 				input.setFontSize=function (fontSize){input.style.fontSize=fontSize+'px';};
-				input.setSize=function (w,h){input.style.width=w+'px';input.style.height=h+'px';};
 			}
-			input.setFontFace=function (fontFace){input.style.fontFamily=fontFace;};
 		}
 
 		Input._processInputting=function(e){
@@ -17602,6 +18328,7 @@ var Laya=window.Laya=(function(window,document){
 		Input.promptStyleDOM=null
 		Input.inputHeight=45;
 		Input.isInputting=false;
+		Input.stageMatrix=null
 		__static(Input,
 		['IOS_IFRAME',function(){return this.IOS_IFRAME=(Browser.onIOS && Browser.window.top !=Browser.window.self);}
 		]);
@@ -17720,9 +18447,214 @@ var Laya=window.Laya=(function(window,document){
 
 
 	/**
+	*<p> 动效模板。用于为指定目标对象添加动画效果。每个动效有唯一的目标对象，而同一个对象可以添加多个动效。 当一个动效开始播放时，其他动效会自动停止播放。</p>
+	*<p> 可以通过LayaAir IDE创建。 </p>
+	*/
+	//class laya.display.EffectAnimation extends laya.display.FrameAnimation
+	var EffectAnimation=(function(_super){
+		function EffectAnimation(){
+			this._target=null;
+			this._playEvents=null;
+			this._initData={};
+			this._aniKeys=null;
+			this._effectClass=null;
+			EffectAnimation.__super.call(this);
+		}
+
+		__class(EffectAnimation,'laya.display.EffectAnimation',_super);
+		var __proto=EffectAnimation.prototype;
+		/**@private */
+		__proto._onOtherBegin=function(effect){
+			if (effect==this)
+				return;
+			this.stop();
+		}
+
+		/**@private */
+		__proto.addEvent=function(){
+			if (!this._target || !this._playEvents)
+				return;
+			this._setControlNode(this._target);
+			this._target.on(this._playEvents,this,this._onPlayAction);
+		}
+
+		/**@private */
+		__proto._onPlayAction=function(){
+			if (!this._target)
+				return;
+			this._target.event("effectanimationbegin",[this]);
+			this._recordInitData();
+			this.play(0,false);
+		}
+
+		/**@private */
+		__proto._recordInitData=function(){
+			if (!this._aniKeys)
+				return;
+			var i=0,len=0;
+			len=this._aniKeys.length;
+			var key;
+			for (i=0;i < len;i++){
+				key=this._aniKeys[i];
+				this._initData[key]=this._target[key];
+			}
+		}
+
+		/**@private */
+		__proto._displayToIndex=function(value){
+			if (!this._animationData)
+				return;
+			if (value < 0)
+				value=0;
+			if (value > this._count)
+				value=this._count;
+			var nodes=this._animationData.nodes,i=0,len=nodes.length;
+			len=len > 1 ? 1 :len;
+			for (i=0;i < len;i++){
+				this._displayNodeToFrame(nodes[i],value);
+			}
+		}
+
+		/**@private */
+		__proto._displayNodeToFrame=function(node,frame,targetDic){
+			if (!this._target)
+				return;
+			var target;
+			target=this._target;
+			var frames=node.frames,key,propFrames,value;
+			var keys=node.keys,i=0,len=keys.length;
+			var secondFrames;
+			secondFrames=node.secondFrames;
+			var tSecondFrame=0;
+			var easeFun;
+			var tKeyFrames;
+			var startFrame;
+			var endFrame;
+			for (i=0;i < len;i++){
+				key=keys[i];
+				propFrames=frames[key];
+				tSecondFrame=secondFrames[key];
+				if (tSecondFrame==-1){
+					value=this._initData[key];
+					}else {
+					if (frame < tSecondFrame){
+						tKeyFrames=node.keyframes[key];
+						startFrame=tKeyFrames[0];
+						if (startFrame.tween){
+							easeFun=Ease[startFrame.tweenMethod];
+							if (easeFun==null){
+								easeFun=Ease.linearNone;
+							}
+							endFrame=tKeyFrames[1];
+							value=easeFun(frame,this._initData[key],endFrame.value-this._initData[key],endFrame.index);
+							}else {
+							value=this._initData[key];
+						}
+						}else {
+						if (propFrames.length > frame){
+							value=propFrames[frame];
+							}else {
+							value=propFrames[propFrames.length-1];
+						}
+					}
+				}
+				target[key]=value;
+			}
+		}
+
+		/**@private */
+		__proto._calculateNodeKeyFrames=function(node){
+			_super.prototype._calculateNodeKeyFrames.call(this,node);
+			var keyFrames=node.keyframes,key,tKeyFrames,target=node.target;
+			var secondFrames;
+			secondFrames={};
+			node.secondFrames=secondFrames;
+			for (key in keyFrames){
+				tKeyFrames=keyFrames[key];
+				if (tKeyFrames.length <=1){
+					secondFrames[key]=-1;
+					}else {
+					secondFrames[key]=tKeyFrames[1].index;
+				}
+			}
+		}
+
+		/**
+		*本实例的目标对象。通过本实例控制目标对象的属性变化。
+		*@param v 指定的目标对象。
+		*/
+		__getset(0,__proto,'target',function(){
+			return this._target;
+			},function(v){
+			if (this._target){
+				this._target.off("effectanimationbegin",this,this._onOtherBegin);
+			}
+			this._target=v;
+			if (this._target){
+				this._target.on("effectanimationbegin",this,this._onOtherBegin);
+			}
+			this.addEvent();
+		});
+
+		/**
+		*设置开始播放的事件。本实例会侦听目标对象的指定事件，触发后播放相应动画效果。
+		*@param event
+		*/
+		__getset(0,__proto,'playEvent',null,function(event){
+			this._playEvents=event;
+			if (!event)
+				return;
+			this.addEvent();
+		});
+
+		/**
+		*设置动画数据。
+		*@param uiData
+		*/
+		__getset(0,__proto,'effectData',null,function(uiData){
+			if (uiData){
+				var aniData;
+				aniData=uiData["animations"];
+				if (aniData && aniData[0]){
+					this._setUp({},aniData[0]);
+					if (aniData[0].nodes && aniData[0].nodes[0]){
+						this._aniKeys=aniData[0].nodes[0].keys;
+					}
+				}
+			}
+		});
+
+		/**
+		*设置提供数据的类。
+		*@param classStr 类路径
+		*/
+		__getset(0,__proto,'effectClass',null,function(classStr){
+			this._effectClass=ClassUtils.getClass(classStr);
+			if (this._effectClass){
+				var uiData;
+				uiData=this._effectClass["uiView"];
+				if (uiData){
+					var aniData;
+					aniData=uiData["animations"];
+					if (aniData && aniData[0]){
+						this._setUp({},aniData[0]);
+						if (aniData[0].nodes && aniData[0].nodes[0]){
+							this._aniKeys=aniData[0].nodes[0].keys;
+						}
+					}
+				}
+			}
+		});
+
+		EffectAnimation.EffectAnimationBegin="effectanimationbegin";
+		return EffectAnimation;
+	})(FrameAnimation)
+
+
+	/**
 	*@private
 	*/
-	//class laya.display.GraphicAnimation extends laya.display.FrameAnimation
+	//class laya.utils.GraphicAnimation extends laya.display.FrameAnimation
 	var GraphicAnimation=(function(_super){
 		var GraphicNode;
 		function GraphicAnimation(){
@@ -17737,7 +18669,7 @@ var Laya=window.Laya=(function(window,document){
 			GraphicAnimation.__super.call(this);
 		}
 
-		__class(GraphicAnimation,'laya.display.GraphicAnimation',_super);
+		__class(GraphicAnimation,'laya.utils.GraphicAnimation',_super);
 		var __proto=GraphicAnimation.prototype;
 		/**
 		*@private
@@ -17772,8 +18704,14 @@ var Laya=window.Laya=(function(window,document){
 		__proto._createGraphicData=function(){
 			var gList=[];
 			var i=0,len=this.count;
+			var animationDataNew=this._animationNewFrames;
+			if (!animationDataNew)animationDataNew=[];
+			var preGraphic;
 			for (i=0;i < len;i++){
-				gList.push(this._createFrameGraphic(i));
+				if (animationDataNew[i] || !preGraphic){
+					preGraphic=this._createFrameGraphic(i);
+				}
+				gList.push(preGraphic);
 			}
 			this._gList=gList;
 		}
@@ -17785,7 +18723,7 @@ var Laya=window.Laya=(function(window,document){
 			var g=new Graphics();
 			if (!GraphicAnimation._rootMatrix)
 				GraphicAnimation._rootMatrix=new Matrix();
-			this._updateNodeGraphic2(this._rootNode,frame,g);
+			this._updateNodeGraphic(this._rootNode,frame,GraphicAnimation._rootMatrix,g);
 			return g;
 		}
 
@@ -17799,14 +18737,17 @@ var Laya=window.Laya=(function(window,document){
 			tResultTransform=tNodeG.resultTransform;
 			Matrix.mul(tNodeG.transform,parentTransfrom,tResultTransform);
 			var tTex;
+			var tGraphicAlpha=tNodeG.alpha *alpha;
+			if (tGraphicAlpha < 0.01)return;
 			if (tNodeG.skin){
 				tTex=this._getTextureByUrl(tNodeG.skin);
 				if (tTex){
 					if (tResultTransform._checkTransform()){
-						g.drawTexture(tTex,0,0,tNodeG.width,tNodeG.height,tResultTransform,tNodeG.alpha *alpha);
+						g.drawTexture(tTex,0,0,tNodeG.width,tNodeG.height,tResultTransform,tGraphicAlpha);
 						tNodeG.resultTransform=null;
-						}else{
-						g.drawTexture(tTex,tResultTransform.tx,tResultTransform.ty,tNodeG.width,tNodeG.height,null,tNodeG.alpha *alpha);
+					}
+					else {
+						g.drawTexture(tTex,tResultTransform.tx,tResultTransform.ty,tNodeG.width,tNodeG.height,null,tGraphicAlpha);
 					}
 				}
 			};
@@ -17817,20 +18758,24 @@ var Laya=window.Laya=(function(window,document){
 			var i=0,len=0;
 			len=childs.length;
 			for (i=0;i < len;i++){
-				this._updateNodeGraphic(childs[i],frame,tResultTransform,g,tNodeG.alpha *alpha);
+				this._updateNodeGraphic(childs[i],frame,tResultTransform,g,tGraphicAlpha);
 			}
 		}
 
 		__proto._updateNoChilds=function(tNodeG,g){
-			var tTex;
-			if (!tNodeG.skin || !(tTex=this._getTextureByUrl(tNodeG.skin)))return;
+			if (!tNodeG.skin)
+				return;
+			var tTex=this._getTextureByUrl(tNodeG.skin);
+			if (!tTex)
+				return;
 			var tTransform=tNodeG.transform;
 			tTransform._checkTransform();
 			var onlyTranslate=false;
 			onlyTranslate=!tTransform.bTransform;
 			if (!onlyTranslate){
 				g.drawTexture(tTex,0,0,tNodeG.width,tNodeG.height,tTransform.clone(),tNodeG.alpha);
-				}else{
+			}
+			else {
 				g.drawTexture(tTex,tTransform.tx,tTransform.ty,tNodeG.width,tNodeG.height,null,tNodeG.alpha);
 			}
 		}
@@ -17960,6 +18905,8 @@ var Laya=window.Laya=(function(window,document){
 			height=params[4];
 			var tex;
 			rst.skin=url;
+			rst.width=width;
+			rst.height=height;
 			if (url){
 				tex=this._getTextureByUrl(url);
 				if (tex){
@@ -17969,11 +18916,9 @@ var Laya=window.Laya=(function(window,document){
 						height=tex.height;
 				}
 				else {
-					console.log("lost skin:",url);
+					console.warn("lost skin:",url,",you may load pics first");
 				}
 			}
-			rst.width=width;
-			rst.height=height;
 			rst.alpha=params[10];
 			var m;
 			m=rst.transform;
@@ -18020,7 +18965,7 @@ var Laya=window.Laya=(function(window,document){
 		/**
 		*@private
 		*/
-		__proto.setAniData=function(uiView){
+		__proto.setAniData=function(uiView,aniName){
 			if (uiView.animations){
 				this._nodeDefaultProps={};
 				this._nodeGDic={};
@@ -18035,18 +18980,24 @@ var Laya=window.Laya=(function(window,document){
 				var tAniO;
 				for (i=0;i < len;i++){
 					tAniO=animations[i];
+					this._labels=null;
+					if (aniName && aniName !=tAniO.name){
+						continue ;
+					}
 					if (!tAniO)
 						continue ;
 					try {
 						this._calGraphicData(tAniO);
 					}
 					catch (e){
-						console.log("parse animation fail:"+tAniO.name+",empty animation created");
+						console.warn("parse animation fail:"+tAniO.name+",empty animation created");
 						this._gList=[];
 					};
 					var frameO={};
 					frameO.interval=1000 / tAniO["frameRate"];
 					frameO.frames=this._gList;
+					frameO.labels=this._labels;
+					frameO.name=tAniO.name;
 					anilist.push(frameO);
 					aniDic[tAniO.name]=frameO;
 				}
@@ -18054,6 +19005,60 @@ var Laya=window.Laya=(function(window,document){
 				this.animationDic=aniDic;
 			}
 			GraphicAnimation._temParam.length=0;
+		}
+
+		__proto.parseByData=function(aniData){
+			var rootNode,aniO;
+			rootNode=aniData.nodeRoot;
+			aniO=aniData.aniO;
+			delete aniData.nodeRoot;
+			delete aniData.aniO;
+			this._nodeDefaultProps={};
+			this._nodeGDic={};
+			if (this._nodeList)
+				this._nodeList.length=0;
+			this._rootNode=rootNode;
+			this._parseNodeList(rootNode);
+			this._labels=null;
+			try {
+				this._calGraphicData(aniO);
+			}
+			catch (e){
+				console.warn("parse animation fail:"+aniO.name+",empty animation created");
+				this._gList=[];
+			};
+			var frameO=aniData;
+			frameO.interval=1000 / aniO["frameRate"];
+			frameO.frames=this._gList;
+			frameO.labels=this._labels;
+			frameO.name=aniO.name;
+			return frameO;
+		}
+
+		/**
+		*@private
+		*/
+		__proto.setUpAniData=function(uiView){
+			if (uiView.animations){
+				var aniDic={};
+				var anilist=[];
+				var animations=uiView.animations;
+				var i=0,len=animations.length;
+				var tAniO;
+				for (i=0;i < len;i++){
+					tAniO=animations[i];
+					if (!tAniO)
+						continue ;
+					var frameO={};
+					frameO.name=tAniO.name;
+					frameO.aniO=tAniO;
+					frameO.nodeRoot=uiView;
+					anilist.push(frameO);
+					aniDic[tAniO.name]=frameO;
+				}
+				this.animationList=anilist;
+				this.animationDic=aniDic;
+			}
 		}
 
 		/**
@@ -18066,10 +19071,19 @@ var Laya=window.Laya=(function(window,document){
 			this._nodeGDic=null;
 		}
 
+		GraphicAnimation.parseAnimationByData=function(animationObject){
+			if (!GraphicAnimation._I)
+				GraphicAnimation._I=new GraphicAnimation();
+			var rst;
+			rst=GraphicAnimation._I.parseByData(animationObject);
+			GraphicAnimation._I._clear();
+			return rst;
+		}
+
 		GraphicAnimation.parseAnimationData=function(aniData){
 			if (!GraphicAnimation._I)
 				GraphicAnimation._I=new GraphicAnimation();
-			GraphicAnimation._I.setAniData(aniData);
+			GraphicAnimation._I.setUpAniData(aniData);
 			var rst;
 			rst={};
 			rst.animationList=GraphicAnimation._I.animationList;
@@ -18104,7 +19118,7 @@ var Laya=window.Laya=(function(window,document){
 	})(FrameAnimation)
 
 
-	Laya.__init([LoaderManager,EventDispatcher,GraphicAnimation,Render,Browser,Timer,LocalStorage,TimeLine]);
+	Laya.__init([EventDispatcher,LoaderManager,GraphicAnimation,Render,Browser,Timer,LocalStorage,TimeLine]);
 })(window,document,Laya);
 
 (function(window,document,Laya){

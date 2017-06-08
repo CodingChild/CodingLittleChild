@@ -5,10 +5,10 @@
 	var Box=laya.ui.Box,Browser=laya.utils.Browser,Button=laya.ui.Button,Byte=laya.utils.Byte,CSSStyle=laya.display.css.CSSStyle;
 	var Component=laya.ui.Component,Config=Laya.Config,Event=laya.events.Event,EventDispatcher=laya.events.EventDispatcher;
 	var Filter=laya.filters.Filter,GrahamScan=laya.maths.GrahamScan,Graphics=laya.display.Graphics,HTMLCanvas=laya.resource.HTMLCanvas;
-	var Handler=laya.utils.Handler,Image=laya.ui.Image,Input=laya.display.Input,Label=laya.ui.Label,List=laya.ui.List;
-	var Loader=laya.net.Loader,LoaderManager=laya.net.LoaderManager,LocalStorage=laya.net.LocalStorage,MathUtil=laya.maths.MathUtil;
-	var Matrix=laya.maths.Matrix,Node=laya.display.Node,Point=laya.maths.Point,Pool=laya.utils.Pool,Rectangle=laya.maths.Rectangle;
-	var Render=laya.renders.Render,RenderContext=laya.renders.RenderContext,RenderSprite=laya.renders.RenderSprite;
+	var Handler=laya.utils.Handler,HitArea=laya.utils.HitArea,Image=laya.ui.Image,Input=laya.display.Input,Label=laya.ui.Label;
+	var List=laya.ui.List,Loader=laya.net.Loader,LoaderManager=laya.net.LoaderManager,LocalStorage=laya.net.LocalStorage;
+	var MathUtil=laya.maths.MathUtil,Matrix=laya.maths.Matrix,Node=laya.display.Node,Point=laya.maths.Point,Pool=laya.utils.Pool;
+	var Rectangle=laya.maths.Rectangle,Render=laya.renders.Render,RenderContext=laya.renders.RenderContext,RenderSprite=laya.renders.RenderSprite;
 	var Resource=laya.resource.Resource,ResourceManager=laya.resource.ResourceManager,RunDriver=laya.utils.RunDriver;
 	var Sprite=laya.display.Sprite,Stage=laya.display.Stage,Stat=laya.utils.Stat,Style=laya.display.css.Style;
 	var Text=laya.display.Text,TextInput=laya.ui.TextInput,Texture=laya.resource.Texture,Timer=laya.utils.Timer;
@@ -48,11 +48,23 @@
 
 		__class(DebugPanel,'laya.debug.DebugPanel');
 		var __proto=DebugPanel.prototype;
+		__proto.removeNoDisplayKeys=function(arr){
+			var i=0;
+			for (i=arr.length-1;i >=0;i--){
+				if (DebugPanel.noDisplayKeys[arr[i]]){
+					arr.splice(i,1);
+				}
+			}
+		}
+
 		__proto.updateShowKeys=function(){
 			DebugPanel.tObjKeys.length=0;
 			if (!this.tShowObj)
 				return;
 			DebugPanel.tObjKeys=ClassTool.getObjectDisplayAbleKeys(this.tShowObj,DebugPanel.tObjKeys);
+			if (this.tShowObj==Laya.stage){
+				this.removeNoDisplayKeys(DebugPanel.tObjKeys);
+			}
 			DebugPanel.tObjKeys.sort(MathUtil.sortSmallFirst);
 		}
 
@@ -327,7 +339,7 @@
 		DebugPanel.LabelSign="text";
 		DebugPanel.tObjKeys=[];
 		__static(DebugPanel,
-		['displayTypes',function(){return this.displayTypes={"boolean":true,"number":true,"string":true};},'displayKeys',function(){return this.displayKeys=[["x","number"],["y","number"],["width","number"],["width","number"],["width","number"],["width","number"],["width","number"],["width","number"],["width","number"],["width","number"],["width","number"],];}
+		['displayTypes',function(){return this.displayTypes={"boolean":true,"number":true,"string":true};},'displayKeys',function(){return this.displayKeys=[["x","number"],["y","number"],["width","number"],["width","number"],["width","number"],["width","number"],["width","number"],["width","number"],["width","number"],["width","number"],["width","number"],];},'noDisplayKeys',function(){return this.noDisplayKeys={"desginWidth":true,"desginHeight":true };}
 		]);
 		return DebugPanel;
 	})()
@@ -1113,8 +1125,12 @@
 			}
 			if (tTexture){
 				this.mSprite.graphics.clear();
+				this.mSprite.graphics.save();
+				this.mSprite.graphics.alpha(0.9);
+				this.mSprite.graphics.drawRect(0,0,1024,1024,"#efefefe");
+				this.mSprite.graphics.restore();
 				this.mSprite.graphics.drawTexture(tTexture,0,0,1024,1024);
-				this.mSprite.graphics.fillText((this.mIndex+1).toString()+"/"+tCount.toString(),50,50,"40px Arial","#ff0000","left");
+				this.mSprite.graphics.fillText((this.mIndex+1).toString()+"/"+tCount.toString(),25,100,"40px Arial","#ff0000","left");
 			}
 		}
 
@@ -1966,6 +1982,17 @@
 			return sp;
 		}
 
+		CommonTools.createBtn=function(txt,width,height){
+			(width===void 0)&& (width=100);
+			(height===void 0)&& (height=40);
+			var sp;
+			sp=new Sprite();
+			sp.size(width,height);
+			sp.graphics.drawRect(0,0,sp.width,sp.height,"#ff0000");
+			sp.graphics.fillText(txt,sp.width *0.5,sp.height *0.5,null,"#ffff00","center");
+			return sp;
+		}
+
 		CommonTools.count=0;
 		return CommonTools;
 	})()
@@ -2141,6 +2168,16 @@
 			if (DebugTxt._txt){
 				DebugTxt._txt.text=str+"\n"+DebugTxt._txt.text;
 			}
+		}
+
+		DebugTxt.getTimeStr=function(){
+			var dateO=/*__JS__ */new Date();
+			return dateO.toTimeString();
+		}
+
+		DebugTxt.traceTime=function(msg){
+			DebugTxt.dTrace(DebugTxt.getTimeStr());
+			DebugTxt.dTrace(msg);
 		}
 
 		DebugTxt.show=function(__arg){
@@ -4481,29 +4518,13 @@
 			IDTools.idObj(sp);
 			var isInAnlyseChain=false;
 			isInAnlyseChain=MouseEventAnalyser.nodeO[IDTools.getObjID(sp)];
-			var transform=sp.transform || MouseEventAnalyser._matrix;
-			var pivotX=sp.pivotX;
-			var pivotY=sp.pivotY;
-			if (pivotX===0 && pivotY===0){
-				transform.setTranslate(sp.x,sp.y);
-			}
-			else{
-				if (transform===MouseEventAnalyser._matrix){
-					transform.setTranslate(sp.x-pivotX,sp.y-pivotY);
-				}
-				else{
-					var cos=transform.cos;
-					var sin=transform.sin;
-					transform.setTranslate(sp.x-(pivotX *cos-pivotY *sin)*sp.scaleX,sp.y-(pivotX *sin+pivotY *cos)*sp.scaleY);
-				}
-			}
-			transform.invertTransformPoint(MouseEventAnalyser._point.setTo(mouseX,mouseY));
-			transform.setTranslate(0,0);
+			MouseEventAnalyser._point.setTo(mouseX,mouseY);
+			sp.fromParentPoint(MouseEventAnalyser._point);
 			mouseX=MouseEventAnalyser._point.x;
 			mouseY=MouseEventAnalyser._point.y;
 			var scrollRect=sp.scrollRect;
 			if (scrollRect){
-				MouseEventAnalyser._rect.setTo(0,0,scrollRect.width,scrollRect.height);
+				MouseEventAnalyser._rect.setTo(scrollRect.x,scrollRect.y,scrollRect.width,scrollRect.height);
 				var isHit=MouseEventAnalyser._rect.contains(mouseX,mouseY);
 				if (!isHit){
 					if (isInAnlyseChain){
@@ -4546,7 +4567,7 @@
 					coverByOthers=false;
 				}
 				if (child.mouseEnabled && child.visible){
-					flag=MouseEventAnalyser.check(child,mouseX+(scrollRect ? scrollRect.x :0),mouseY+(scrollRect ? scrollRect.y :0),callBack);
+					flag=MouseEventAnalyser.check(child,mouseX ,mouseY,callBack);
 					if (flag){
 						MouseEventAnalyser.hitO[IDTools.getObjID(sp)]=true;
 						MouseEventAnalyser.infoO[IDTools.getObjID(sp)]="子对象被击中";
@@ -4606,6 +4627,9 @@
 
 		MouseEventAnalyser.hitTest=function(sp,mouseX,mouseY){
 			var isHit=false;
+			if ((sp.hitArea instanceof laya.utils.HitArea )){
+				return sp.hitArea.isHit(mouseX,mouseY);
+			}
 			if (sp.width > 0 && sp.height > 0 || sp.mouseThrough || sp.hitArea){
 				var hitRect=MouseEventAnalyser._rect;
 				if (!sp.mouseThrough){
@@ -4743,6 +4767,9 @@
 			var rst={};
 			var key;
 			for(key in obj){
+				if(obj[key]===null||obj[key]===undefined){
+					rst[key]=obj[key];
+				}else
 				if(((obj[key])instanceof Array)){
 					rst[key]=ObjectTools.copyArr(obj[key]);
 				}
@@ -6291,20 +6318,55 @@
 		}
 
 		TimeTool.runAllCallLater=function(){
+			if(TimeTool._deep>0)debugger;
+			TimeTool._deep++;
 			var timer;
 			timer=Laya.timer;
 			var laters=timer["_laters"];
 			for (var i=0,n=laters.length-1;i <=n;i++){
 				var handler=laters[i];
-				handler.method!==null && handler.run(false);
-				timer["_recoverHandler"](handler);
+				if(handler){
+					handler.method!==null && handler.run(false);
+					timer["_recoverHandler"](handler);
+					}else{
+					debugger;
+				}
 				i===n && (n=laters.length-1);
 			}
 			laters.length=0;
+			TimeTool._deep--;
 		}
 
 		TimeTool.timeDic={};
+		TimeTool._deep=0;
 		return TimeTool;
+	})()
+
+
+	/**
+	*...
+	*@author ww
+	*/
+	//class laya.debug.tools.TouchDebugTools
+	var TouchDebugTools=(function(){
+		function TouchDebugTools(){}
+		__class(TouchDebugTools,'laya.debug.tools.TouchDebugTools');
+		TouchDebugTools.getTouchIDs=function(events){
+			var rst;
+			rst=[];
+			var i=0,len=0;
+			len=events.length;
+			for (i=0;i < len;i++){
+				rst.push(events[i].identifier||0);
+			}
+			return rst;
+		}
+
+		TouchDebugTools.traceTouchIDs=function(msg,events){
+			DebugTxt.dTrace(msg+":"+TouchDebugTools.getTouchIDs(events).join(","));
+		}
+
+		return TouchDebugTools;
 	})()
 
 
@@ -6492,9 +6554,9 @@
 	*@author ww
 	*/
 	//class laya.debug.tools.UVTools
-	var UVTools$1=(function(){
+	var UVTools1=(function(){
 		function UVTools(){}
-		__class(UVTools,'laya.debug.tools.UVTools',null,'UVTools$1');
+		__class(UVTools,'laya.debug.tools.UVTools',null,'UVTools1');
 		UVTools.getUVByRec=function(x,y,width,height){
 			return [x,y,x+width,y,x+width,y+height,x,y+height];
 		}
@@ -11619,25 +11681,6 @@
 	*...
 	*@author ww
 	*/
-	//class laya.debug.view.nodeInfo.nodetree.FindNodeSmall extends laya.debug.ui.debugui.FindNodeSmallUI
-	var FindNodeSmall=(function(_super){
-		function FindNodeSmall(){
-			FindNodeSmall.__super.call(this);
-			Base64AtlasManager.replaceRes(FindNodeSmallUI.uiView);
-			this.createView(FindNodeSmallUI.uiView);
-		}
-
-		__class(FindNodeSmall,'laya.debug.view.nodeInfo.nodetree.FindNodeSmall',_super);
-		var __proto=FindNodeSmall.prototype;
-		__proto.createChildren=function(){}
-		return FindNodeSmall;
-	})(FindNodeSmallUI)
-
-
-	/**
-	*...
-	*@author ww
-	*/
 	//class laya.debug.view.nodeInfo.nodetree.FindNode extends laya.debug.ui.debugui.FindNodeUI
 	var FindNode=(function(_super){
 		function FindNode(){
@@ -11654,6 +11697,25 @@
 
 		return FindNode;
 	})(FindNodeUI)
+
+
+	/**
+	*...
+	*@author ww
+	*/
+	//class laya.debug.view.nodeInfo.nodetree.FindNodeSmall extends laya.debug.ui.debugui.FindNodeSmallUI
+	var FindNodeSmall=(function(_super){
+		function FindNodeSmall(){
+			FindNodeSmall.__super.call(this);
+			Base64AtlasManager.replaceRes(FindNodeSmallUI.uiView);
+			this.createView(FindNodeSmallUI.uiView);
+		}
+
+		__class(FindNodeSmall,'laya.debug.view.nodeInfo.nodetree.FindNodeSmall',_super);
+		var __proto=FindNodeSmall.prototype;
+		__proto.createChildren=function(){}
+		return FindNodeSmall;
+	})(FindNodeSmallUI)
 
 
 	/**
@@ -11758,26 +11820,6 @@
 		__proto.createChildren=function(){}
 		return NodeTool;
 	})(NodeToolUI)
-
-
-	/**
-	*...
-	*@author ww
-	*/
-	//class laya.debug.view.nodeInfo.nodetree.NodeTreeSetting extends laya.debug.ui.debugui.NodeTreeSettingUI
-	var NodeTreeSetting=(function(_super){
-		function NodeTreeSetting(){
-			NodeTreeSetting.__super.call(this);
-			Base64AtlasManager.replaceRes(NodeTreeSettingUI.uiView);
-			this.createView(NodeTreeSettingUI.uiView);
-		}
-
-		__class(NodeTreeSetting,'laya.debug.view.nodeInfo.nodetree.NodeTreeSetting',_super);
-		var __proto=NodeTreeSetting.prototype;
-		//inits();
-		__proto.createChildren=function(){}
-		return NodeTreeSetting;
-	})(NodeTreeSettingUI)
 
 
 	/**
@@ -12021,6 +12063,26 @@
 		]);
 		return NodeTree;
 	})(NodeTreeUI)
+
+
+	/**
+	*...
+	*@author ww
+	*/
+	//class laya.debug.view.nodeInfo.nodetree.NodeTreeSetting extends laya.debug.ui.debugui.NodeTreeSettingUI
+	var NodeTreeSetting=(function(_super){
+		function NodeTreeSetting(){
+			NodeTreeSetting.__super.call(this);
+			Base64AtlasManager.replaceRes(NodeTreeSettingUI.uiView);
+			this.createView(NodeTreeSettingUI.uiView);
+		}
+
+		__class(NodeTreeSetting,'laya.debug.view.nodeInfo.nodetree.NodeTreeSetting',_super);
+		var __proto=NodeTreeSetting.prototype;
+		//inits();
+		__proto.createChildren=function(){}
+		return NodeTreeSetting;
+	})(NodeTreeSettingUI)
 
 
 	/**

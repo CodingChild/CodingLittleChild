@@ -273,7 +273,7 @@ var Marmot;
         return Block;
     }(Marmot.SyntaxElement));
     Block.blockSetting = {
-        blockScale: 3,
+        blockScale: 4,
         blockStrokeStyleNormal: "#000000",
         blockStrokeStyleHighlight: "#fcff00",
         blockLineWidthHighlight: 8,

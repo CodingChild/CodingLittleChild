@@ -15,8 +15,6 @@ module Marmot {
             if (BlockCategoryItem.WIDTH != undefined && BlockCategoryItem.HEIGHT != undefined)
                 this.size(BlockCategoryItem.WIDTH, BlockCategoryItem.HEIGHT);
         }
-
-
     }
 
     export interface BlockCategorySetting extends CommonListSetting {
