@@ -6,21 +6,23 @@ module Marmot {
     import Sprite = Marmot.Sprite;
     import Stage = Marmot.StagePanel;
     import Tween = Laya.Tween;
-    import Box = Laya.Box;
+    import HBox = Laya.HBox;
+    import VBox = Laya.VBox;
 
     export abstract class IDE extends View {
         public static WIDTH: number;
         public static HEIGHT: number;
+        public static ICONSIZE: number;
 
         public globalVariables;
         public scriptArea: ScriptArea;
-        public currentSprite: Sprite;
         public sprites: Array<Sprite>;
-        public blocksCategory: BlockCategory;
-        public materialCategory: MaterialCategory;
-        public blocksArea: BlockArea;
+        public blockMenu: VBox;
+        
+        public controlBarForMaterial: HBox;
         public stageArea: Stage;
-        public controlBar: Box;
+        public controlBar: HBox;
+        public controlBarForStage: VBox;
         public isFullScreen: boolean;
         public isCoordinateSystemVisible: boolean;
         public isStageVisible: boolean;
@@ -34,10 +36,9 @@ module Marmot {
 
         constructor(name: string, width: number, height: number) {
             super();
-            this.stage.width;
-            this.stage.height;
             IDE.WIDTH = width;
             IDE.HEIGHT = height;
+            IDE.ICONSIZE = Math.round(width / 1344 * 50);
 
             this.top = 0;
             this.left = 0;
@@ -49,12 +50,7 @@ module Marmot {
             this.isStageVisible = false;
             this.isPlayed = false;
             this.isFullScreen = false;
-
-            this.currentSprite = new Marmot.Sprite();
-            this.currentSprite.addCostume("materials/sp_marmot.png");
-
             this.sprites = [];
-            this.sprites.push(this.currentSprite);
 
             this.buildIDE();
             this.fixIDELayout();
@@ -135,7 +131,7 @@ module Marmot {
                 this.stageArea.toggleFullScreen();
                 this.stageArea.pos(this.width / 2 - this.stageArea.width / 2, this.height / 2 - this.stageArea.height / 2);
                 this.isFullScreen = true;
-                
+
                 this.isStageVisible = true;
                 this.toggleShowStage.skin = "materials/btn_hidestage.png";
             }
@@ -170,20 +166,17 @@ module Marmot {
         }
 
         protected abstract buildIDE(): void;
-        protected abstract createMaterialArea(): void;
-        protected abstract createMaterialCategory(): void;
-        protected abstract createBlocksArea(): void
-        protected abstract createBlocksCategory(): void;
-        protected abstract createStageArea(): void;
         protected abstract createControlBar(): void;
+        protected abstract createControlBarForMaterial(): void;
+        protected abstract createStageArea(): void;
+        protected abstract createControlBarForStage(): void;
+        protected abstract createBlockMenu(): void;
+        protected abstract createSpriteArea(): void;
+        protected abstract createBackgroundArea(): void;
+        protected abstract createMusicArea(): void;
         protected abstract createScriptArea(): void;
+
         protected abstract fixIDELayout(): void;
-        protected abstract fixBlocksCategoryLayout(): void;
-        protected abstract fixBlocksAreaLayout(): void;
-        protected abstract fixMaterialCategoryLayout(): void;
-        protected abstract fixMaterialAreaLayout(): void;
-        protected abstract fixControlBarLayout(): void;
-        protected abstract fixStageAreaLayout(): void;
 
         public static getIDE(): IDE {
             return Laya.stage.getChildByName("ide") as IDE;

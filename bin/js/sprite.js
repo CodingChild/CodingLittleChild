@@ -13,7 +13,6 @@ var Marmot;
         function Sprite() {
             var _this = _super.call(this) || this;
             _this.name = 'Sprite';
-            _this.scriptArea = new Marmot.ScriptArea(_this);
             _this.costumes = [];
             _this.costume = null;
             _this.sounds = [];

@@ -11,10 +11,9 @@ var Marmot;
         __extends(IDE, _super);
         function IDE(name, width, height) {
             var _this = _super.call(this) || this;
-            _this.stage.width;
-            _this.stage.height;
             IDE.WIDTH = width;
             IDE.HEIGHT = height;
+            IDE.ICONSIZE = Math.round(width / 1344 * 50);
             _this.top = 0;
             _this.left = 0;
             _this.right = 0;

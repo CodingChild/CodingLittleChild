@@ -6,40 +6,177 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Marmot;
 (function (Marmot) {
     var Button = Laya.Button;
-    var Box = Laya.Box;
+    var HBox = Laya.HBox;
+    var VBox = Laya.VBox;
     var PhoneIDE = (function (_super) {
         __extends(PhoneIDE, _super);
         function PhoneIDE(name, width, height) {
             return _super.call(this, name, width, height) || this;
         }
         PhoneIDE.prototype.buildIDE = function () {
-            this.createScriptArea();
-            this.createStageArea();
             this.createControlBar();
-            this.createBlocksArea();
-            this.createBlocksCategory();
+            this.createStageArea();
+            this.createControlBarForStage();
+            this.createBlockMenu();
+            //this.createBlocksArea();
+            //this.createBlocksCategory();
             this.createMaterialArea();
-            this.createMaterialCategory();
+            this.createScriptArea();
+            //this.createMaterialCategory();
+        };
+        PhoneIDE.prototype.createBlockMenu = function () {
+            var vbox = new VBox();
+            vbox.size(Math.round(this.width * 0.3), (Math.round(this.height * 0.4) - 2 * Marmot.IDE.ICONSIZE));
+            vbox.pos(0, Math.round(Marmot.IDE.ICONSIZE * 11 / 5));
+            this.addChild(vbox);
+            this.blockMenu = vbox;
+            var blockCategoryContent = [
+                {
+                    url: "materials/btn_control.png",
+                    blockCategory: "control"
+                },
+                {
+                    url: "materials/btn_event.png",
+                    blockCategory: "event"
+                },
+                {
+                    url: "materials/btn_pen.png",
+                    blockCategory: "pen"
+                },
+                {
+                    url: "materials/btn_math.png",
+                    blockCategory: "math"
+                },
+                {
+                    url: "materials/btn_music.png",
+                    blockCategory: "music"
+                },
+                {
+                    url: "materials/btn_motion.png",
+                    blockCategory: "motion"
+                },
+                {
+                    url: "materials/btn_look.png",
+                    blockCategory: "look"
+                },
+                {
+                    url: "materials/btn_sense.png",
+                    blockCategory: "sense"
+                },
+                {
+                    url: "materials/btn_variable.png",
+                    blockCategory: "variable"
+                }
+            ];
+            var blockCategorySetting = {
+                width: vbox.width > 5 * Marmot.IDE.ICONSIZE ? 5 * Marmot.IDE.ICONSIZE : vbox.width,
+                height: Marmot.IDE.ICONSIZE,
+                vScrollBarSkin: "",
+                hScrollBarSkin: "",
+                spaceX: 0,
+                spaceY: 0,
+                repeatX: 5,
+                repeatY: 1
+            };
+            var blockCategoryItemSetting = {
+                width: Marmot.IDE.ICONSIZE,
+                height: Marmot.IDE.ICONSIZE,
+                backgroundNormal: "#66FF66",
+                backgroundHighlight: "#ffffff",
+                imageX: 0,
+                imageY: 0,
+                imageWidth: Marmot.IDE.ICONSIZE,
+                imageHeight: Marmot.IDE.ICONSIZE
+            };
+            var blocksCategory = new Marmot.BlockCategory(blockCategorySetting, blockCategoryItemSetting, blockCategoryContent);
+            blocksCategory.pos(0, 0);
+            blocksCategory.name = "blocksCategory";
+            vbox.addChild(blocksCategory);
+            var ratio = this.width / 1366 / 2;
+            var blockAreaItemSetting = {
+                width: Math.round(ratio * 30) * 2 + Math.round(ratio * 173),
+                height: Math.round(ratio * 30) * 2 + Math.round(ratio * 154),
+                backgroundNormal: null,
+                backgroundHighlight: "#f0e6d6",
+                imageX: Math.round(ratio * 30),
+                imageY: Math.round(ratio * 30),
+                imageWidth: Math.round(ratio * 173),
+                imageHeight: Math.round(ratio * 154)
+            };
+            var blockAreaSetting = {
+                width: blockCategorySetting.width,
+                height: vbox.height - Marmot.IDE.ICONSIZE,
+                vScrollBarSkin: null,
+                hScrollBarSkin: null,
+                spaceX: Math.round(ratio * 30) * 2 + Math.round(ratio * 173),
+                spaceY: 0,
+                repeatX: 2,
+                repeatY: 1,
+                spaceOfTab_index: 20,
+                fillStyle: "#ffffff",
+                tabstateNum: 2,
+                tabSkin: "materials/tab_index.png",
+                tabY: blockAreaItemSetting.height
+            };
+            var blockFactory = new Marmot.BlockFactory();
+            var blockArea = new Marmot.BlockArea(blockAreaSetting, blockAreaItemSetting, blockFactory);
+            blockArea.pos(0, Marmot.IDE.ICONSIZE);
+            blockArea.name = "blockArea";
+            vbox.addChild(blockArea);
         };
         PhoneIDE.prototype.createScriptArea = function () {
-            this.scriptArea = this.currentSprite.scriptArea;
+            this.scriptArea = new Marmot.ScriptArea();
+            this.scriptArea.bottom = 0;
+            this.scriptArea.left = 0;
+            this.scriptArea.size(this.width, this.height * 0.6 - Math.round(Marmot.IDE.ICONSIZE * 2 / 5));
+            this.scriptArea.drawBackground();
             this.addChild(this.scriptArea);
         };
         PhoneIDE.prototype.createControlBar = function () {
-            var btn_home = new Button("materials/btn_home.png");
-            btn_home.left = 0;
-            btn_home.top = 20;
-            btn_home.stateNum = 1;
-            btn_home.width = 100;
-            btn_home.height = 100;
-            this.addChild(btn_home);
-            var box = new Box();
-            box.right = 400;
-            box.top = 20;
+            var box = new HBox();
             this.addChild(box);
             this.controlBar = box;
             box.name = "controlBar";
-            var btn_fullscreen = new Button("materials/btn_fullscreen.png");
+            box.pos(Math.round(Marmot.IDE.ICONSIZE / 5), Math.round(Marmot.IDE.ICONSIZE / 5));
+            box.space = Math.round(Marmot.IDE.ICONSIZE / 2);
+            var btn_home = new Button("materials/btn_home.png");
+            btn_home.stateNum = 1;
+            btn_home.width = Marmot.IDE.ICONSIZE;
+            btn_home.height = Marmot.IDE.ICONSIZE;
+            btn_home.name = "btn_home";
+            box.addChild(btn_home);
+            var btn_upload = new Button("materials/btn_upload.png");
+            btn_upload.stateNum = 1;
+            btn_upload.width = Marmot.IDE.ICONSIZE;
+            btn_upload.height = Marmot.IDE.ICONSIZE;
+            btn_upload.name = "btn_home";
+            box.addChild(btn_upload);
+            var btn_block = new Button("materials/btn_block.png");
+            btn_block.stateNum = 1;
+            btn_block.width = Marmot.IDE.ICONSIZE;
+            btn_block.height = Marmot.IDE.ICONSIZE;
+            btn_block.name = "btn_block";
+            box.addChild(btn_block);
+            var btn_sprite = new Button("materials/btn_sprite.png");
+            btn_sprite.stateNum = 1;
+            btn_sprite.width = Marmot.IDE.ICONSIZE;
+            btn_sprite.height = Marmot.IDE.ICONSIZE;
+            btn_sprite.name = "btn_sprite";
+            box.addChild(btn_sprite);
+            var btn_stage = new Button("materials/btn_stage.png");
+            btn_stage.stateNum = 1;
+            btn_stage.width = Marmot.IDE.ICONSIZE;
+            btn_stage.height = Marmot.IDE.ICONSIZE;
+            btn_stage.name = "btn_stage";
+            box.addChild(btn_stage);
+            var btn_music = new Button("materials/btn_music.png");
+            btn_music.stateNum = 1;
+            btn_music.width = Marmot.IDE.ICONSIZE;
+            btn_music.height = Marmot.IDE.ICONSIZE;
+            btn_music.name = "btn_home";
+            box.addChild(btn_music);
+            /*
+            let btn_fullscreen: Button = new Button("materials/btn_fullscreen.png");
             btn_fullscreen.pos(0, 0);
             btn_fullscreen.stateNum = 1;
             btn_fullscreen.width = 100;
@@ -47,7 +184,8 @@ var Marmot;
             btn_fullscreen.clickHandler = Handler.create(this, this.toggleFullScreen, [btn_fullscreen], false);
             btn_fullscreen.name = "btn_fullscreen";
             box.addChild(btn_fullscreen);
-            var btn_coordinate = new Button("materials/btn_coordinate.png");
+
+            let btn_coordinate: Button = new Button("materials/btn_coordinate.png");
             btn_coordinate.pos(150, 0);
             btn_coordinate.stateNum = 1;
             btn_coordinate.width = 100;
@@ -55,7 +193,8 @@ var Marmot;
             btn_coordinate.clickHandler = Handler.create(this, this.toggleCoordinateSystem, [btn_coordinate], false);
             btn_coordinate.name = "btn_coordinate";
             box.addChild(btn_coordinate);
-            var btn_play = new Button("materials/btn_play.png");
+
+            let btn_play: Button = new Button("materials/btn_play.png");
             btn_play.pos(300, 0);
             btn_play.stateNum = 1;
             btn_play.width = 100;
@@ -63,6 +202,7 @@ var Marmot;
             btn_play.clickHandler = Handler.create(this, this.pressStart, [btn_play], false);
             btn_play.name = "btn_play";
             box.addChild(btn_play);
+            */
         };
         PhoneIDE.prototype.createMaterialArea = function () {
             var spriteMaterialListSetting;
@@ -276,27 +416,28 @@ var Marmot;
             this.materialCategory.pos(0, 200);
         };
         PhoneIDE.prototype.createBlocksArea = function () {
+            var ratio = this.width / 1366 / 2;
             var blockAreaItemSetting = {
-                width: 30 * 2 + 173,
-                height: 30 * 2 + 154,
+                width: Math.round(ratio * 30) * 2 + Math.round(ratio * 173),
+                height: Math.round(ratio * 30) * 2 + Math.round(ratio * 154),
                 backgroundNormal: null,
                 backgroundHighlight: "#f0e6d6",
-                imageX: 30,
-                imageY: 30,
-                imageWidth: 173,
-                imageHeight: 154
+                imageX: Math.round(ratio * 30),
+                imageY: Math.round(ratio * 30),
+                imageWidth: Math.round(ratio * 173),
+                imageHeight: Math.round(ratio * 154)
             };
             var blockAreaSetting = {
-                width: this.width,
-                height: 300,
+                width: this.width * 0.4,
+                height: this.stageArea.height - Math.round(Marmot.IDE.ICONSIZE * 11 / 5),
                 vScrollBarSkin: null,
                 hScrollBarSkin: null,
-                spaceX: 50,
+                spaceX: Math.round(ratio * 30) * 2 + Math.round(ratio * 173),
                 spaceY: 0,
-                repeatX: 5,
+                repeatX: 2,
                 repeatY: 1,
                 spaceOfTab_index: 20,
-                fillStyle: "#f0e6d6",
+                fillStyle: "#ffffff",
                 tabstateNum: 2,
                 tabSkin: "materials/tab_index.png",
                 tabY: blockAreaItemSetting.height
@@ -305,9 +446,7 @@ var Marmot;
             var blockArea = new Marmot.BlockArea(blockAreaSetting, blockAreaItemSetting, blockFactory);
             this.blocksArea = blockArea;
             this.addChild(blockArea);
-            blockArea.bottom = 100;
-            blockArea.left = 0;
-            blockArea.right = 0;
+            blockArea.pos(0, Math.round(Marmot.IDE.ICONSIZE * 12 / 5));
         };
         PhoneIDE.prototype.createBlocksCategory = function () {
             var blockCategoryContent = [
@@ -349,49 +488,72 @@ var Marmot;
                 }
             ];
             var blockCategorySetting = {
-                width: this.width,
+                width: Math.round(this.width * 0.2),
                 height: 100,
                 vScrollBarSkin: "",
-                hScrollBarSkin: null,
-                spaceX: (this.width - 900) / 8,
+                hScrollBarSkin: "",
+                spaceX: 0,
                 spaceY: 0,
-                repeatX: 9,
+                repeatX: 8,
                 repeatY: 1
             };
             var blockCategoryItemSetting = {
-                width: 100,
-                height: 100,
-                backgroundNormal: null,
-                backgroundHighlight: "#f0e6d6",
+                width: Marmot.IDE.ICONSIZE,
+                height: Marmot.IDE.ICONSIZE,
+                backgroundNormal: "#66FF66",
+                backgroundHighlight: "#ffffff",
                 imageX: 0,
                 imageY: 0,
-                imageWidth: 100,
-                imageHeight: 100
+                imageWidth: Marmot.IDE.ICONSIZE,
+                imageHeight: Marmot.IDE.ICONSIZE
             };
             this.blocksCategory = new Marmot.BlockCategory(blockCategorySetting, blockCategoryItemSetting, blockCategoryContent);
             this.addChild(this.blocksCategory);
-            this.blocksCategory.left = 0;
-            this.blocksCategory.bottom = 0;
+            this.blocksCategory.pos(0, Math.round(Marmot.IDE.ICONSIZE * 7 / 5));
+        };
+        PhoneIDE.prototype.createControlBarForStage = function () {
+            var box = new VBox();
+            this.addChild(box);
+            this.controlBarForStage = box;
+            box.name = "controlBarForStage";
+            box.right = Math.round(this.width * 0.4 + Marmot.IDE.ICONSIZE * 2 / 5);
+            box.top = Math.round(Marmot.IDE.ICONSIZE / 5);
+            box.space = Math.round(Marmot.IDE.ICONSIZE / 2);
+            var btn_fullscreen = new Button("materials/btn_fullscreen.png");
+            btn_fullscreen.stateNum = 1;
+            btn_fullscreen.width = Marmot.IDE.ICONSIZE;
+            btn_fullscreen.height = Marmot.IDE.ICONSIZE;
+            btn_fullscreen.clickHandler = Handler.create(this, this.toggleFullScreen, [btn_fullscreen], false);
+            btn_fullscreen.name = "btn_fullscreen";
+            box.addChild(btn_fullscreen);
+            var btn_coordinate = new Button("materials/btn_coordinate.png");
+            btn_coordinate.stateNum = 1;
+            btn_coordinate.width = Marmot.IDE.ICONSIZE;
+            btn_coordinate.height = Marmot.IDE.ICONSIZE;
+            btn_coordinate.clickHandler = Handler.create(this, this.toggleCoordinateSystem, [btn_coordinate], false);
+            btn_coordinate.name = "btn_coordinate";
+            box.addChild(btn_coordinate);
+            var btn_play = new Button("materials/btn_play.png");
+            btn_play.stateNum = 1;
+            btn_play.width = Marmot.IDE.ICONSIZE;
+            btn_play.height = Marmot.IDE.ICONSIZE;
+            btn_play.clickHandler = Handler.create(this, this.pressStart, [btn_play], false);
+            btn_play.name = "btn_play";
+            box.addChild(btn_play);
         };
         PhoneIDE.prototype.createStageArea = function () {
             var setting = {
-                normalWidth: 600,
-                normalHeight: 400,
+                normalWidth: Math.round(this.width * 0.4),
+                normalHeight: Math.round(this.height * 0.4),
                 fullScreenScale: 2
             };
             var stageArea = new Marmot.StagePanel(setting);
-            stageArea.pos(this.width, 120);
+            stageArea.right = Math.round(Marmot.IDE.ICONSIZE / 5);
+            stageArea.top = Math.round(Marmot.IDE.ICONSIZE / 5);
             this.stageArea = stageArea;
             this.addChild(stageArea);
             stageArea.addChild(this.currentSprite);
-            this.currentSprite.pos(stageArea.width / 2, stageArea.height / 2);
-            this.toggleShowStage = new Button("materials/btn_showstage.png");
-            this.toggleShowStage.right = 0;
-            this.toggleShowStage.top = 120;
-            this.toggleShowStage.size(50, 383);
-            this.toggleShowStage.stateNum = 1;
-            this.toggleShowStage.clickHandler = new Handler(this, this.toggleStageVisible);
-            this.addChild(this.toggleShowStage);
+            this.currentSprite.pos(Math.round(stageArea.width / 2), Math.round(stageArea.height / 2));
         };
         PhoneIDE.prototype.fixIDELayout = function () {
             this.fixMaterialAreaLayout();

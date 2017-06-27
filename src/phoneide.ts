@@ -3,7 +3,8 @@ module Marmot {
     import Tab = Laya.Tab;
     import Event = Laya.Event;
     import List = Laya.List;
-    import Box = Laya.Box;
+    import HBox = Laya.HBox;
+    import VBox = Laya.VBox;
     import Texture = Laya.Texture;
 
     export class PhoneIDE extends IDE {
@@ -13,38 +14,187 @@ module Marmot {
         }
 
         protected buildIDE(): void {
-            this.createScriptArea();
-            this.createStageArea();
+
             this.createControlBar();
-            this.createBlocksArea();
-            this.createBlocksCategory();
+            this.createStageArea();
+            this.createControlBarForStage();
+            this.createBlockMenu();
+            //this.createBlocksArea();
+            //this.createBlocksCategory();
             this.createMaterialArea();
-            this.createMaterialCategory();
+            this.createScriptArea();
+            //this.createMaterialCategory();
+        }
+
+        protected createBlockMenu():void{
+            let vbox = new VBox();
+            vbox.size(Math.round(this.width * 0.3), 
+                      (Math.round(this.height * 0.4) - 2 * IDE.ICONSIZE));
+            vbox.pos(0, Math.round(IDE.ICONSIZE * 11 / 5));
+            this.addChild(vbox);
+            this.blockMenu = vbox;
+
+            let blockCategoryContent: BlockCategoryContent[] = [
+                {
+                    url: "materials/btn_control.png",
+                    blockCategory: "control"
+                },
+                {
+                    url: "materials/btn_event.png",
+                    blockCategory: "event"
+                },
+                {
+                    url: "materials/btn_pen.png",
+                    blockCategory: "pen"
+                },
+                {
+                    url: "materials/btn_math.png",
+                    blockCategory: "math"
+                },
+                {
+                    url: "materials/btn_music.png",
+                    blockCategory: "music"
+                },
+                {
+                    url: "materials/btn_motion.png",
+                    blockCategory: "motion"
+                },
+                {
+                    url: "materials/btn_look.png",
+                    blockCategory: "look"
+                },
+                {
+                    url: "materials/btn_sense.png",
+                    blockCategory: "sense"
+                },
+                {
+                    url: "materials/btn_variable.png",
+                    blockCategory: "variable"
+                }
+            ];
+            
+            let blockCategorySetting: BlockCategorySetting = {
+                width: vbox.width > 5 * IDE.ICONSIZE?5 * IDE.ICONSIZE:vbox.width,
+                height: IDE.ICONSIZE,
+                vScrollBarSkin: "",
+                hScrollBarSkin: "",
+                spaceX: 0,
+                spaceY: 0,
+                repeatX: 5,
+                repeatY: 1
+            }
+            let blockCategoryItemSetting: BlockCategoryItemSetting = {
+                width: IDE.ICONSIZE,
+                height: IDE.ICONSIZE,
+                backgroundNormal: "#66FF66",
+                backgroundHighlight: "#ffffff",
+                imageX: 0,
+                imageY: 0,
+                imageWidth: IDE.ICONSIZE,
+                imageHeight: IDE.ICONSIZE
+            }
+            let blocksCategory = new BlockCategory(blockCategorySetting, blockCategoryItemSetting, blockCategoryContent);
+            blocksCategory.pos(0 , 0);
+            blocksCategory.name = "blocksCategory";
+            vbox.addChild(blocksCategory);
+
+
+            let ratio = this.width / 1366 / 2;
+            let blockAreaItemSetting: BlockAreaItemSetting = {
+                width: Math.round(ratio * 30) * 2 + Math.round(ratio * 173),
+                height: Math.round(ratio * 30) * 2 + Math.round(ratio * 154),
+                backgroundNormal: null,
+                backgroundHighlight: "#f0e6d6",
+                imageX: Math.round(ratio * 30),
+                imageY: Math.round(ratio * 30),
+                imageWidth: Math.round(ratio * 173),
+                imageHeight: Math.round(ratio * 154)
+            }
+            let blockAreaSetting: BlockAreaSetting = {
+                width: blockCategorySetting.width,
+                height: vbox.height - IDE.ICONSIZE,
+                vScrollBarSkin: null,
+                hScrollBarSkin: null,
+                spaceX: Math.round(ratio * 30) * 2 + Math.round(ratio * 173),
+                spaceY: 0,
+                repeatX: 2,
+                repeatY: 1,
+                spaceOfTab_index:20,
+                fillStyle:"#ffffff",
+                tabstateNum: 2,
+                tabSkin: "materials/tab_index.png",
+                tabY: blockAreaItemSetting.height
+            }
+            let blockFactory = new BlockFactory();
+            let blockArea = new BlockArea(blockAreaSetting, blockAreaItemSetting, blockFactory);
+            blockArea.pos(0, IDE.ICONSIZE);
+            blockArea.name = "blockArea";
+            vbox.addChild(blockArea);
         }
 
         protected createScriptArea(): void {
-            this.scriptArea = this.currentSprite.scriptArea;
+            this.scriptArea = new ScriptArea();
+            this.scriptArea.bottom = 0;
+            this.scriptArea.left = 0;
+            this.scriptArea.size(this.width, this.height * 0.6 - Math.round(IDE.ICONSIZE * 2 / 5));
+            this.scriptArea.drawBackground();
             this.addChild(this.scriptArea);
             
         }
         protected createControlBar(): void {
-            let btn_home: Button = new Button("materials/btn_home.png");
-            btn_home.left = 0;
-            btn_home.top = 20;
-            btn_home.stateNum = 1;
-            btn_home.width = 100;
-            btn_home.height = 100;
-            this.addChild(btn_home);
-
-            let box: Box = new Box();
-
-            box.right = 400;
-            box.top = 20;
-
+            let box: HBox = new HBox();
             this.addChild(box);
             this.controlBar = box;
             box.name = "controlBar";
+            box.pos(Math.round(IDE.ICONSIZE / 5), Math.round(IDE.ICONSIZE / 5));
+            box.space = Math.round(IDE.ICONSIZE / 2);
 
+            let btn_home: Button = new Button("materials/btn_home.png");
+            btn_home.stateNum = 1;
+            btn_home.width = IDE.ICONSIZE;
+            btn_home.height = IDE.ICONSIZE;
+            btn_home.name = "btn_home";
+            box.addChild(btn_home);
+
+            let btn_upload: Button = new Button("materials/btn_upload.png");
+            btn_upload.stateNum = 1;
+            btn_upload.width = IDE.ICONSIZE;
+            btn_upload.height = IDE.ICONSIZE;
+            btn_upload.name = "btn_home";
+            box.addChild(btn_upload);
+
+            let btn_block: Button = new Button("materials/btn_block.png");
+            btn_block.stateNum = 1;
+            btn_block.width = IDE.ICONSIZE;
+            btn_block.height = IDE.ICONSIZE;
+            btn_block.name = "btn_block";
+            box.addChild(btn_block);
+
+            let btn_sprite: Button = new Button("materials/btn_sprite.png");
+            btn_sprite.stateNum = 1;
+            btn_sprite.width = IDE.ICONSIZE;
+            btn_sprite.height = IDE.ICONSIZE;
+            btn_sprite.name = "btn_sprite";
+            box.addChild(btn_sprite);
+
+
+            let btn_stage: Button = new Button("materials/btn_stage.png");
+            btn_stage.stateNum = 1;
+            btn_stage.width = IDE.ICONSIZE;
+            btn_stage.height = IDE.ICONSIZE;
+            btn_stage.name = "btn_stage";
+            box.addChild(btn_stage);
+
+            let btn_music: Button = new Button("materials/btn_music.png");
+            btn_music.stateNum = 1;
+            btn_music.width = IDE.ICONSIZE;
+            btn_music.height = IDE.ICONSIZE;
+            btn_music.name = "btn_home";
+            box.addChild(btn_music);
+
+
+
+            /*
             let btn_fullscreen: Button = new Button("materials/btn_fullscreen.png");
             btn_fullscreen.pos(0, 0);
             btn_fullscreen.stateNum = 1;
@@ -71,6 +221,7 @@ module Marmot {
             btn_play.clickHandler = Handler.create(this, this.pressStart, [btn_play], false);
             btn_play.name = "btn_play";
             box.addChild(btn_play);
+            */
         }
         protected createMaterialArea(): void {
 
@@ -306,28 +457,31 @@ module Marmot {
             this.addChild(this.materialCategory);
             this.materialCategory.pos(0, 200);
         }
+
         protected createBlocksArea(): void {
+            let ratio = this.width / 1366 / 2;
+
             let blockAreaItemSetting: BlockAreaItemSetting = {
-                width: 30 * 2 + 173,
-                height: 30 * 2 + 154,
+                width: Math.round(ratio * 30) * 2 + Math.round(ratio * 173),
+                height: Math.round(ratio * 30) * 2 + Math.round(ratio * 154),
                 backgroundNormal: null,
                 backgroundHighlight: "#f0e6d6",
-                imageX: 30,
-                imageY: 30,
-                imageWidth: 173,
-                imageHeight: 154
+                imageX: Math.round(ratio * 30),
+                imageY: Math.round(ratio * 30),
+                imageWidth: Math.round(ratio * 173),
+                imageHeight: Math.round(ratio * 154)
             }
             let blockAreaSetting: BlockAreaSetting = {
-                width: this.width,
-                height: 300,
+                width: this.width * 0.4,
+                height: this.stageArea.height - Math.round(IDE.ICONSIZE * 11 / 5),
                 vScrollBarSkin: null,
                 hScrollBarSkin: null,
-                spaceX: 50,
+                spaceX: Math.round(ratio * 30) * 2 + Math.round(ratio * 173),
                 spaceY: 0,
-                repeatX: 5,
+                repeatX: 2,
                 repeatY: 1,
                 spaceOfTab_index:20,
-                fillStyle:"#f0e6d6",
+                fillStyle:"#ffffff",
                 tabstateNum: 2,
                 tabSkin: "materials/tab_index.png",
                 tabY: blockAreaItemSetting.height
@@ -337,9 +491,7 @@ module Marmot {
 
             this.blocksArea = blockArea;
             this.addChild(blockArea);
-            blockArea.bottom = 100;
-            blockArea.left = 0;
-            blockArea.right = 0;
+            blockArea.pos(0, Math.round(IDE.ICONSIZE * 12 / 5));
         }
         protected createBlocksCategory(): void {
             let blockCategoryContent: BlockCategoryContent[] = [
@@ -381,57 +533,81 @@ module Marmot {
                 }
             ];
             let blockCategorySetting: BlockCategorySetting = {
-                width: this.width,
+                width: Math.round(this.width * 0.2),
                 height: 100,
                 vScrollBarSkin: "",
-                hScrollBarSkin: null,
-                spaceX: (this.width - 900) / 8,
+                hScrollBarSkin: "",
+                spaceX: 0,
                 spaceY: 0,
-                repeatX: 9,
+                repeatX: 8,
                 repeatY: 1
             }
             let blockCategoryItemSetting: BlockCategoryItemSetting = {
-                width: 100,
-                height: 100,
-                backgroundNormal: null,
-                backgroundHighlight: "#f0e6d6",
+                width: IDE.ICONSIZE,
+                height: IDE.ICONSIZE,
+                backgroundNormal: "#66FF66",
+                backgroundHighlight: "#ffffff",
                 imageX: 0,
                 imageY: 0,
-                imageWidth: 100,
-                imageHeight: 100
+                imageWidth: IDE.ICONSIZE,
+                imageHeight: IDE.ICONSIZE
             }
 
             this.blocksCategory = new BlockCategory(blockCategorySetting, blockCategoryItemSetting, blockCategoryContent);
             this.addChild(this.blocksCategory);
-            this.blocksCategory.left = 0;
-            this.blocksCategory.bottom = 0;
+            this.blocksCategory.pos(0 , Math.round(IDE.ICONSIZE * 7 / 5));
 
         }
 
+        protected createControlBarForStage(): void {
+            let box:VBox = new VBox();
+            this.addChild(box);
+            this.controlBarForStage = box;
+            box.name = "controlBarForStage";
+            box.right = Math.round(this.width * 0.4 + IDE.ICONSIZE * 2 / 5);
+            box.top =  Math.round(IDE.ICONSIZE / 5);
+            box.space = Math.round(IDE.ICONSIZE / 2);
+
+            let btn_fullscreen: Button = new Button("materials/btn_fullscreen.png");
+            btn_fullscreen.stateNum = 1;
+            btn_fullscreen.width = IDE.ICONSIZE;
+            btn_fullscreen.height = IDE.ICONSIZE;
+            btn_fullscreen.clickHandler = Handler.create(this, this.toggleFullScreen, [btn_fullscreen], false);
+            btn_fullscreen.name = "btn_fullscreen";
+            box.addChild(btn_fullscreen);
+
+            let btn_coordinate: Button = new Button("materials/btn_coordinate.png");
+            btn_coordinate.stateNum = 1;
+            btn_coordinate.width = IDE.ICONSIZE;
+            btn_coordinate.height = IDE.ICONSIZE;
+            btn_coordinate.clickHandler = Handler.create(this, this.toggleCoordinateSystem, [btn_coordinate], false);
+            btn_coordinate.name = "btn_coordinate";
+            box.addChild(btn_coordinate);
+
+            let btn_play: Button = new Button("materials/btn_play.png");
+            btn_play.stateNum = 1;
+            btn_play.width = IDE.ICONSIZE;
+            btn_play.height = IDE.ICONSIZE;
+            btn_play.clickHandler = Handler.create(this, this.pressStart, [btn_play], false);
+            btn_play.name = "btn_play";
+            box.addChild(btn_play);
+        }        
+
         protected createStageArea(): void {
             let setting: StagePanelSetting = {
-                normalWidth: 600,
-                normalHeight: 400,
+                normalWidth: Math.round(this.width *  0.4),
+                normalHeight: Math.round(this.height * 0.4),
                 fullScreenScale: 2
             }
 
             let stageArea = new Marmot.StagePanel(setting);
-            stageArea.pos(this.width, 120);
+            stageArea.right = Math.round(IDE.ICONSIZE / 5);
+            stageArea.top = Math.round(IDE.ICONSIZE / 5);
 
             this.stageArea = stageArea;
             this.addChild(stageArea);
             stageArea.addChild(this.currentSprite);
-            this.currentSprite.pos(stageArea.width / 2, stageArea.height / 2);
-
-
-            this.toggleShowStage = new Button("materials/btn_showstage.png");
-            this.toggleShowStage.right = 0;
-            this.toggleShowStage.top = 120;
-            this.toggleShowStage.size(50, 383);
-            this.toggleShowStage.stateNum = 1;
-            this.toggleShowStage.clickHandler = new Handler(this, this.toggleStageVisible);
-            this.addChild(this.toggleShowStage);
-
+            this.currentSprite.pos(Math.round(stageArea.width / 2), Math.round(stageArea.height / 2));
         }
 
         protected fixIDELayout(): void {

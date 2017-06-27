@@ -64,10 +64,6 @@ module Marmot {
             ide.stageArea.costume = ide.stageArea.costumes[index];
             ide.stageArea.wearCostume(index);
 
-            let scriptAreaIndex: number = ide.getChildIndex(ide.scriptArea);
-            ide.removeChildAt(scriptAreaIndex);
-            ide.addChildAt(ide.stageArea.scriptArea, scriptAreaIndex);
-            ide.scriptArea = ide.stageArea.scriptArea;
         }
         protected onPlusBtnClicked(): void {
             this.backgroundLibraryDialog.show();

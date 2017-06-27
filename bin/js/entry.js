@@ -6,11 +6,11 @@ var Marmot;
     var Entry = (function () {
         function Entry() {
             //初始化舞台
-            Laya.init(1920, 1080, WebGL);
+            Laya.init(1920, 1080, WebGL, Laya.Log);
             Laya.stage.alignV = Stage.ALIGN_CENTER;
             Laya.stage.alignH = Stage.ALIGN_MIDDLE;
             Laya.stage.scaleMode = "full";
-            Laya.stage.bgColor = "#fffbf2";
+            Laya.stage.bgColor = "#FFFF99";
             //自动竖屏，让游戏的水平方向始终与浏览器显示屏幕的最长边保持垂直。
             Laya.stage.screenMode = "horizontal";
             //预加载资源，回调

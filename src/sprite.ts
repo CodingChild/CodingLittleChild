@@ -28,8 +28,6 @@ module Marmot {
         constructor() {
             super();
             this.name = 'Sprite';
-            this.scriptArea = new ScriptArea(this);
-       
             this.costumes = [];
             this.costume = null;
             this.sounds = [];

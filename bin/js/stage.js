@@ -12,12 +12,11 @@ var Marmot;
             _this.width = stagePanelSetting.normalWidth;
             _this.height = stagePanelSetting.normalHeight;
             _this.stagePanelSetting = stagePanelSetting;
-            _this.scriptArea = new Marmot.ScriptArea(_this);
             _this.costumes = [];
             _this.costume = null;
             _this.sounds = [];
             _this.threadManager = new Marmot.ThreadManager();
-            _this.graphics.drawRect(0, 0, _this.stagePanelSetting.normalWidth, _this.stagePanelSetting.normalHeight, "#ffffff");
+            _this.graphics.drawRect(0, 0, _this.stagePanelSetting.normalWidth, _this.stagePanelSetting.normalHeight, "#aaaaaa");
             return _this;
         }
         StagePanel.prototype.toggleFullScreen = function () {

@@ -9,42 +9,37 @@ var Marmot;
     var Event = Laya.Event;
     var ScriptArea = (function (_super) {
         __extends(ScriptArea, _super);
-        function ScriptArea(sprite) {
+        function ScriptArea() {
             var _this = _super.call(this) || this;
             _this.blockFactory = new Marmot.BlockFactory();
-            _this.owner = sprite;
             _this.name = "scriptArea";
-            _this.hScrollBarSkin = "";
-            _this.vScrollBarSkin = "";
-            _this.size(Marmot.IDE.WIDTH - 150, Marmot.IDE.HEIGHT - 220);
-            _this.pos(100, 120);
+            _this.hScrollBarSkin = "comp/hscroll.png";
+            _this.vScrollBarSkin = "comp/vscroll.png";
             _this.on(Event.MOUSE_DOWN, _this, _this.onMouseDown);
             return _this;
         }
+        ScriptArea.prototype.drawBackground = function () {
+            this.graphics.drawRect(0, 0, this.width, this.height, "#FFCC33");
+        };
         ScriptArea.prototype.onMouseDown = function (e) {
             var ide = Marmot.IDE.getIDE();
-            ide.blocksArea.visible = false;
-            ide.blocksCategory.selectedIndex = 9;
-            ide.spriteMaterialList.visible = false;
-            ide.materialCategory.selectedIndex = -1;
-            ide.spriteMaterialList.costumeMaterialList.visible = false;
-            ide.spriteMaterialList.spriteLibraryDialog.close();
-            ide.backgroundMaterialList.visible = false;
-            ide.backgroundMaterialList.backgroundLibraryDialog.close();
-            var highlightBlocks = [];
-            ide.scriptArea.content._childs.forEach(function (child) {
+            /*
+            let highlightBlocks:Block[] = [];
+            (ide.scriptArea.content._childs as Block[]).forEach((child) => {
                 if (child.isHighlight == true) {
                     highlightBlocks.push(child);
                 }
-                child.getAllNestedBlockChildren().forEach(function (blockChild) {
+                child.getAllNestedBlockChildren().forEach((blockChild) => {
                     if (blockChild.isHighlight == true) {
                         highlightBlocks.push(blockChild);
                     }
-                });
+                })
             });
-            highlightBlocks.forEach(function (block) {
+
+            highlightBlocks.forEach((block)=>{
                 block.removeHighlight(block);
-            });
+            })
+            */
         };
         return ScriptArea;
     }(Panel));

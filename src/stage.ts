@@ -17,7 +17,6 @@ module Marmot {
     export class StagePanel extends Laya.Panel {
         public threadManager: ThreadManager;
         public variables;
-        public scriptArea;
         public costumes: Array<Costume>;
         public costume: Costume;
         public sounds;
@@ -30,12 +29,11 @@ module Marmot {
             this.width = stagePanelSetting.normalWidth;
             this.height = stagePanelSetting.normalHeight;
             this.stagePanelSetting = stagePanelSetting;
-            this.scriptArea = new ScriptArea(this);
             this.costumes = [];
             this.costume = null;
             this.sounds = [];
             this.threadManager = new ThreadManager();
-            this.graphics.drawRect(0, 0, this.stagePanelSetting.normalWidth, this.stagePanelSetting.normalHeight, "#ffffff");
+            this.graphics.drawRect(0, 0, this.stagePanelSetting.normalWidth, this.stagePanelSetting.normalHeight, "#aaaaaa");
         }
 
         public toggleFullScreen() {

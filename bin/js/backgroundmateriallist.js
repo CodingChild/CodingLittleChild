@@ -45,10 +45,6 @@ var Marmot;
             this.curItem = this.selection;
             ide.stageArea.costume = ide.stageArea.costumes[index];
             ide.stageArea.wearCostume(index);
-            var scriptAreaIndex = ide.getChildIndex(ide.scriptArea);
-            ide.removeChildAt(scriptAreaIndex);
-            ide.addChildAt(ide.stageArea.scriptArea, scriptAreaIndex);
-            ide.scriptArea = ide.stageArea.scriptArea;
         };
         BackgroundMaterialList.prototype.onPlusBtnClicked = function () {
             this.backgroundLibraryDialog.show();

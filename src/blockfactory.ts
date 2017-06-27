@@ -752,7 +752,7 @@ module Marmot {
                         itemSize: 15,
                         x: 10,
                         y: 37,
-                        labels: ", 停止所有, 停止人物, 停止当前块",
+                        labels: ", , , ",
                         width:37,
                         height:10
                     };

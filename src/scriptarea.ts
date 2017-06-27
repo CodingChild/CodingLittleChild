@@ -5,34 +5,24 @@ module Marmot {
     import Handler = Laya.Handler;
 
     export class ScriptArea extends Panel {
-        public owner: Sprite | StagePanel;
         private blockFactory: BlockFactory;
-        constructor(sprite: Sprite | StagePanel) {
+        constructor() {
             super();
             this.blockFactory = new BlockFactory();
-            this.owner = sprite;
             this.name = "scriptArea";
-            this.hScrollBarSkin = "";
-            this.vScrollBarSkin = "";
-            this.size(IDE.WIDTH - 150, IDE.HEIGHT - 220);
-            this.pos(100, 120);
+            this.hScrollBarSkin = "comp/hscroll.png";
+            this.vScrollBarSkin = "comp/vscroll.png";
 
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
         }
 
+        public drawBackground():void{
+            this.graphics.drawRect(0, 0, this.width, this.height, "#FFCC33");
+        }
+
         private onMouseDown(e: Event): void {
             let ide = IDE.getIDE();
-            ide.blocksArea.visible = false;
-            ide.blocksCategory.selectedIndex = 9;
-
-            ide.spriteMaterialList.visible = false;
-            ide.materialCategory.selectedIndex = -1;
-            ide.spriteMaterialList.costumeMaterialList.visible = false;
-            ide.spriteMaterialList.spriteLibraryDialog.close();
-
-            ide.backgroundMaterialList.visible = false;
-            ide.backgroundMaterialList.backgroundLibraryDialog.close();
-
+            /*
             let highlightBlocks:Block[] = [];
             (ide.scriptArea.content._childs as Block[]).forEach((child) => {
                 if (child.isHighlight == true) {
@@ -48,6 +38,7 @@ module Marmot {
             highlightBlocks.forEach((block)=>{
                 block.removeHighlight(block);
             })
+            */
 
         }
     }

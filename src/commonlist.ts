@@ -16,7 +16,7 @@ module Marmot {
         repeatX: number;
         repeatY: number;
     }
-    
+
 
     export abstract class CommonList extends Laya.List {
         public curItem: MaterialListItem;
@@ -32,13 +32,9 @@ module Marmot {
             this.width = commonListSetting.width;
             this.height = commonListSetting.height;
             this.array = [];
-            if(commonListSetting.vScrollBarSkin){
-                this.vScrollBarSkin = commonListSetting.vScrollBarSkin;
-            }
-            if(commonListSetting.hScrollBarSkin){
-                this.hScrollBarSkin = commonListSetting.hScrollBarSkin;
-            }        
-            
+            this.vScrollBarSkin = commonListSetting.vScrollBarSkin;
+            this.hScrollBarSkin = commonListSetting.hScrollBarSkin;
+
             this.itemRender = ListItem;
             this.selectEnable = true;
             this.selectHandler = new Handler(this, this.onSelect);
@@ -48,7 +44,9 @@ module Marmot {
             this.repeatX = commonListSetting.repeatX;
             this.repeatY = commonListSetting.repeatY;
             this.startIndex = 0;
+            
             this.curItem = null;
+            this.drawBackground();
         }
 
         protected updateItem(cell: ListItem, index: number): void {
@@ -58,13 +56,14 @@ module Marmot {
                 this.listItemSetting.imageWidth,
                 this.listItemSetting.imageHeight
             );
-            cell.setBackground(false,
-                this.listItemSetting.backgroundHighlight,
-                this.listItemSetting.backgroundNormal);
+        }
+
+        protected drawBackground():void{
+            this.graphics.drawRect(0, 0, this.width, this.height, this.listItemSetting.backgroundNormal);
         }
 
         protected abstract initializeItems(): void;
-        protected onSelect(index: number): void{
+        protected onSelect(index: number): void {
 
         }
     }

@@ -56,5 +56,5 @@ module Marmot{
     export interface AttachHook {
         attachCoordinate: Point;
         isHook:boolean;
-    }    
+    }   
 }
