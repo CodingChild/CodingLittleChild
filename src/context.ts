@@ -1,4 +1,4 @@
-module Marmot{
+module Thread{
     export class Context{
 
         public receiver: Marmot.Sprite | StagePanel;

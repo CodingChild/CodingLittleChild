@@ -1,3 +1,4 @@
+/*
 module Marmot {
     import ComboBox = Laya.ComboBox;
     import Sprite = Laya.Sprite;
@@ -54,4 +55,4 @@ module Marmot {
         }
 
     }
-}
+}*/

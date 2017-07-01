@@ -1,3 +1,4 @@
+/*
 module Marmot {
     import List = Laya.List;
     import Box = Laya.Box;
@@ -105,3 +106,4 @@ module Marmot {
 
 
 }
+*/

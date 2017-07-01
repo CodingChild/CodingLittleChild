@@ -3,8 +3,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Marmot;
-(function (Marmot) {
+var Sprite;
+(function (Sprite_1) {
     var Event = Laya.Event;
     var Rectangle = Laya.Rectangle;
     var Utils = Laya.Utils;
@@ -40,7 +40,7 @@ var Marmot;
         Sprite.prototype.drawNew = function () {
         };
         Sprite.prototype.addCostume = function (url) {
-            var costume = new Marmot.Costume(url);
+            var costume = new Sprite_1.Costume(url);
             this.costumes.push(costume);
             if (this.costumes.length == 1) {
                 this.wearCostume(0);
@@ -87,12 +87,13 @@ var Marmot;
         Sprite.prototype.getAllHeadBlocksFor = function (filter) {
             if (typeof filter == 'number')
                 filter.toString();
-            return this.scriptArea.content._childs.filter(function (headBlock) {
-                if (headBlock.action == filter) {
-                    return true;
-                }
-                return false;
-            });
+            /*
+        return this.scriptArea.content._childs.filter(function (headBlock) {
+            if (headBlock.action == filter) {
+                return true;
+            }
+            return false;
+        })*/
         };
         Sprite.prototype.getAllHeadBlocksForInteraction = function () {
         };
@@ -101,22 +102,23 @@ var Marmot;
         Sprite.prototype.mouseUpLeft = function () {
         };
         Sprite.prototype.receiveUserInteraction = function (e) {
-            var ide = Marmot.IDE.getIDE();
-            var threadManager = ide.stageArea.threadManager;
-            var headBlocks = this.getAllHeadBlocksFor('whenClicked');
+            /*
+            let ide = IDE.GeneralIDE.getIDE();
+            let threadManager = ide.stageArea.threadManager;
+            let headBlocks: any[] = this.getAllHeadBlocksFor('whenClicked');
             headBlocks.forEach(function (script) {
                 threadManager.startProcess(script);
-            });
+            })
             if (threadManager.threads.length > 0 && threadManager.isRunning == false) {
                 Laya.timer.frameLoop(1, threadManager, threadManager.runThread);
                 threadManager.isRunning = true;
-                var btn_play = ide.controlBar.getChildByName("btn_play");
+                let btn_play = ide.controlBar.getChildByName("btn_play") as Button;
                 ide.pressStart(btn_play);
-            }
+            }*/
         };
         Sprite.prototype.onStartDrag = function (e) {
-            var stageHeight = this.parent.parent.stagePanelSetting.normalHeight;
-            var stageWidth = this.parent.parent.stagePanelSetting.normalWidth;
+            var stageHeight = this.parent.parent.stageAreaSetting.normalHeight;
+            var stageWidth = this.parent.parent.stageAreaSetting.normalWidth;
             Rectangle.TEMP.setTo(Sprite.staticWidth / 4, Sprite.staticHeight / 4, stageWidth - Sprite.staticWidth / 2, stageHeight - Sprite.staticHeight / 2);
             this.startDrag(Rectangle.TEMP, true, 100);
         };
@@ -125,6 +127,6 @@ var Marmot;
     Sprite.stepSize = 15;
     Sprite.staticWidth = 100;
     Sprite.staticHeight = 100;
-    Marmot.Sprite = Sprite;
-})(Marmot || (Marmot = {}));
+    Sprite_1.Sprite = Sprite;
+})(Sprite || (Sprite = {}));
 //# sourceMappingURL=sprite.js.map

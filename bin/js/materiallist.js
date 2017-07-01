@@ -1,53 +1,83 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Marmot;
-(function (Marmot) {
-    var List = Laya.List;
-    var Event = Laya.Event;
-    var Button = Laya.Button;
-    var Handler = Laya.Handler;
-    var MaterialListItem = (function (_super) {
-        __extends(MaterialListItem, _super);
-        function MaterialListItem() {
-            return _super.call(this) || this;
+/*
+module Marmot {
+    import List = Laya.List;
+    import Box = Laya.Box;
+    import Image = Laya.Image;
+    import Event = Laya.Event;
+    import Button = Laya.Button;
+    import Handler = Laya.Handler;
+
+    export interface MaterialListSetting {
+        width: number;
+        height: number;
+        fillStyle: string;
+        vScrollBarSkin: string;
+
+        spaceY: number;
+
+        repeatY: number;
+
+        plusButtonWidth: number;
+        plusButtonHeight: number;
+        plusButtonStateNum: number;
+        plusButtonX: number;
+        plusButtonY: number;
+        plusButtonSkin: string;
+        plusButtonName: string;
+    }
+
+    export interface MaterialListItemSetting extends ListItemSetting {
+
+    }
+
+    export class MaterialListItem extends ListItem {
+
+        constructor() {
+            super();
+
         }
-        return MaterialListItem;
-    }(Marmot.ListItem));
-    Marmot.MaterialListItem = MaterialListItem;
-    var MaterialList = (function (_super) {
-        __extends(MaterialList, _super);
-        function MaterialList(materialListSetting, materialListItemSetting) {
-            var _this = _super.call(this) || this;
-            _this.materialListSetting = materialListSetting;
-            _this.materialListItemSetting = materialListItemSetting;
-            _this.width = materialListSetting.width;
-            _this.height = materialListSetting.height;
-            _this.array = [];
-            _this.vScrollBarSkin = "";
-            _this.itemRender = MaterialListItem;
-            _this.selectEnable = true;
-            _this.selectHandler = new Handler(_this, _this.onSelect);
-            _this.renderHandler = new Handler(_this, _this.updateItem);
-            _this.spaceY = materialListSetting.spaceY;
-            _this.repeatX = 1;
-            _this.repeatY = materialListSetting.repeatY;
-            _this.startIndex = 0;
-            _this.curItem = null;
-            _this.buildContent();
-            return _this;
+
+    }
+
+    export abstract class MaterialList extends List {
+
+        public curItem: MaterialListItem;
+
+
+        protected materialListSetting: MaterialListSetting;
+        protected materialListItemSetting: MaterialListItemSetting;
+
+        constructor(materialListSetting: MaterialListSetting, materialListItemSetting: MaterialListItemSetting) {
+            super();
+            this.materialListSetting = materialListSetting;
+            this.materialListItemSetting = materialListItemSetting;
+            this.width = materialListSetting.width;
+            this.height = materialListSetting.height;
+            this.array = [];
+            this.vScrollBarSkin = "";
+            this.itemRender = MaterialListItem;
+            this.selectEnable = true;
+            this.selectHandler = new Handler(this, this.onSelect);
+            this.renderHandler = new Handler(this, this.updateItem);
+            this.spaceY = materialListSetting.spaceY;
+            this.repeatX = 1;
+            this.repeatY = materialListSetting.repeatY;
+            this.startIndex = 0;
+            this.curItem = null;
+
+            this.buildContent();
         }
-        MaterialList.prototype.buildContent = function () {
+
+        protected buildContent() {
             this.buildBackground();
             this.buildPlusBtn();
-        };
-        MaterialList.prototype.buildBackground = function () {
+        }
+        protected buildBackground() {
             this.graphics.drawRect(0, 0, this.width, this.height, this.materialListSetting.fillStyle);
-        };
-        MaterialList.prototype.buildPlusBtn = function () {
-            var button = new Button();
+        }
+
+        protected buildPlusBtn(): void {
+            let button = new Button();
             button.skin = this.materialListSetting.plusButtonSkin;
             button.size(this.materialListSetting.plusButtonWidth, this.materialListSetting.plusButtonHeight);
             button.pos(this.materialListSetting.plusButtonX, this.materialListSetting.plusButtonY);
@@ -55,13 +85,26 @@ var Marmot;
             button.stateNum = this.materialListSetting.plusButtonStateNum;
             button.name = this.materialListSetting.plusButtonName;
             this.addChild(button);
-        };
-        MaterialList.prototype.updateItem = function (cell, index) {
-            cell.setImg(cell.dataSource, this.materialListItemSetting.imageX, this.materialListItemSetting.imageY, this.materialListItemSetting.imageWidth, this.materialListItemSetting.imageHeight);
-            cell.setBackground(false, this.materialListItemSetting.backgroundHighlight, this.materialListItemSetting.backgroundNormal);
-        };
-        return MaterialList;
-    }(List));
-    Marmot.MaterialList = MaterialList;
-})(Marmot || (Marmot = {}));
+        }
+
+        protected updateItem(cell: MaterialListItem, index: number): void {
+            cell.setImg(cell.dataSource,
+                this.materialListItemSetting.imageX,
+                this.materialListItemSetting.imageY,
+                this.materialListItemSetting.imageWidth,
+                this.materialListItemSetting.imageHeight
+            );
+            cell.setBackground(false,
+                this.materialListItemSetting.backgroundHighlight,
+                this.materialListItemSetting.backgroundNormal);
+        }
+
+        protected abstract initializeMaterialItems(): void;
+        protected abstract onSelect(index: number): void;
+        protected abstract onPlusBtnClicked(): void;
+    }
+
+
+}
+*/ 
 //# sourceMappingURL=materiallist.js.map

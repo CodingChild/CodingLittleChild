@@ -1,4 +1,4 @@
-module Marmot{
+module Sprite{
     import Texture = Laya.Texture;
 
     export class Costume{

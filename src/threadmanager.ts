@@ -1,4 +1,4 @@
-module Marmot{
+module Thread{
     import Button = Laya.Button;
 
     export class ThreadManager{
@@ -11,7 +11,7 @@ module Marmot{
             this.isRunning = false;
         }
 
-        public startProcess(headBlock: HeadCommandBlock){
+        public startProcess(headBlock: HeadBlock){
             let newThread = new Thread(headBlock);
             this.threads.push(newThread);
         }

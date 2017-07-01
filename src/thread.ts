@@ -1,4 +1,4 @@
-module Marmot{
+module Thread{
     import Button = Laya.Button;
     export class Thread{
 

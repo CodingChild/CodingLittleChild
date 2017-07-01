@@ -1,3 +1,43 @@
+module IDE {
+    export class CostumeMaterialList extends GeneralList {
+
+        constructor(generalListSetting: GeneralListSetting, generalListItemSetting: GeneralListItemSetting) {
+            super(generalListSetting, generalListItemSetting);
+            this.name = "costumeMaterialList";
+            this.selectedIndex = 0;
+        }
+        
+        /**
+         * update costume list according to chosen index of sprite
+         */
+        public update() {
+            let ide: GeneralIDE = GeneralIDE.getIDE();
+            this.array = [];
+            let list:SpriteMaterialList = ide.spriteMaterialArea.getChildAt(0) as SpriteMaterialList;
+            let chosenIndex = list.selectedIndex;
+            if(chosenIndex < 0){
+                return null;
+            }
+            ide.sprites[chosenIndex].costumes.forEach((costume) => {
+                this.array.push(costume.url);
+            })
+            this.refresh();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 module Marmot {
     import Event = Laya.Event;
     import Button = Laya.Button;
@@ -48,4 +88,4 @@ module Marmot {
             ide.spriteMaterialList.spriteLibraryDialog.show();
         }
     }
-}
+}*/

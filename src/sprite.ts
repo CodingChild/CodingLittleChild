@@ -1,5 +1,4 @@
-
-module Marmot {
+module Sprite {
     import Handler = Laya.Handler;
     import Texture = Laya.Texture;
     import Event = Laya.Event;
@@ -12,7 +11,6 @@ module Marmot {
         public static staticWidth: number = 100;
         public static staticHeight: number = 100;
         public name: string;
-        public scriptArea: ScriptArea;
         public costumes: Array<Costume>;
         public costume: Costume;
         public sounds: Array<any>;
@@ -119,12 +117,13 @@ module Marmot {
         public getAllHeadBlocksFor(filter) {
             if (typeof filter == 'number')
                 filter.toString();
+                /*
             return this.scriptArea.content._childs.filter(function (headBlock) {
                 if (headBlock.action == filter) {
                     return true;
                 }
                 return false;
-            })
+            })*/
         }
 
         public getAllHeadBlocksForInteraction() {
@@ -140,7 +139,8 @@ module Marmot {
         }
 
         public receiveUserInteraction(e: Event): void {//when the sprite is clicked
-            let ide = IDE.getIDE();
+            /*
+            let ide = IDE.GeneralIDE.getIDE();
             let threadManager = ide.stageArea.threadManager;
             let headBlocks: any[] = this.getAllHeadBlocksFor('whenClicked');
             headBlocks.forEach(function (script) {
@@ -151,12 +151,12 @@ module Marmot {
                 threadManager.isRunning = true;
                 let btn_play = ide.controlBar.getChildByName("btn_play") as Button;
                 ide.pressStart(btn_play);
-            }
+            }*/
         }
 
         public onStartDrag(e: Event): void {
-            let stageHeight = (this.parent.parent as StagePanel).stagePanelSetting.normalHeight;
-            let stageWidth = (this.parent.parent as StagePanel).stagePanelSetting.normalWidth;
+            let stageHeight = (this.parent.parent as IDE.StageArea).stageAreaSetting.normalHeight;
+            let stageWidth = (this.parent.parent as IDE.StageArea).stageAreaSetting.normalWidth;
             Rectangle.TEMP.setTo(Sprite.staticWidth / 4, Sprite.staticHeight / 4, stageWidth - Sprite.staticWidth / 2, stageHeight - Sprite.staticHeight / 2);
             this.startDrag(Rectangle.TEMP, true, 100);
         }

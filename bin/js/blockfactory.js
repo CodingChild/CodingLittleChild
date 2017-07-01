@@ -1,5 +1,5 @@
-var Marmot;
-(function (Marmot) {
+var Block;
+(function (Block) {
     var BlockFactory = (function () {
         function BlockFactory() {
             // Blocks can be divided into 
@@ -16,8 +16,8 @@ var Marmot;
                 name: "vslider",
                 path: "materials/hslider_1.png",
                 x: 0,
-                y: Marmot.Block.blockSetting.blockScale * 50 + 30,
-                width: Marmot.Block.blockSetting.blockScale * 50,
+                y: Block.BasicBlock.blockSetting.blockScale * 50 + 30,
+                width: Block.BasicBlock.blockSetting.blockScale * 50,
                 height: 0,
                 min: 0,
                 max: 100,
@@ -31,309 +31,309 @@ var Marmot;
             this.blockBackground1 = {
                 blockFillStyle: null,
                 pathBackground: [
-                    ["moveTo", 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 46 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 50 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 50 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 57 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 57 * Marmot.Block.blockSetting.blockScale, 17 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 57 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 57 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 50 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 50 * Marmot.Block.blockSetting.blockScale, 46 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 50 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 46 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 4 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 46 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 5 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 7 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 7 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 7 * Marmot.Block.blockSetting.blockScale, 17 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 7 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 5 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["moveTo", 4 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 46 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 50 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 50 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 57 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 57 * Block.BasicBlock.blockSetting.blockScale, 17 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 57 * Block.BasicBlock.blockSetting.blockScale, 33 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 57 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 50 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 50 * Block.BasicBlock.blockSetting.blockScale, 46 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 50 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 46 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 4 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 0 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 46 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 0 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 5 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 7 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 7 * Block.BasicBlock.blockSetting.blockScale, 33 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 7 * Block.BasicBlock.blockSetting.blockScale, 17 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 7 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 5 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 0 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
                     ["closePath"]
                 ],
                 hitAreaBackground: [
-                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    50 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    50 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    57 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    57 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    57 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    50 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale
+                    0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    50 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    50 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    57 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    57 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    57 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    50 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale
                 ]
             };
             this.blockBackground2 = {
                 blockFillStyle: null,
                 pathBackground: [
-                    ["moveTo", 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 46 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 50 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 50 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 57 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 57 * Marmot.Block.blockSetting.blockScale, 17 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 57 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 57 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 50 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 50 * Marmot.Block.blockSetting.blockScale, 46 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 50 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 46 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 4 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 46 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["moveTo", 4 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 46 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 50 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 50 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 57 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 57 * Block.BasicBlock.blockSetting.blockScale, 17 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 57 * Block.BasicBlock.blockSetting.blockScale, 33 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 57 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 50 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 50 * Block.BasicBlock.blockSetting.blockScale, 46 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 50 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 46 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 4 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 0 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 46 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
                     ["closePath"]
                 ],
                 hitAreaBackground: [
-                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    50 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    50 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    57 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    57 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    57 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    50 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale
+                    0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    50 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    50 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    57 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    57 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    57 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    50 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale
                 ]
             };
             this.blockBackgroundForLoop = {
                 blockFillStyle: null,
                 pathBackground: [
-                    ["moveTo", 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 100 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 100 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 107 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 107 * Marmot.Block.blockSetting.blockScale, 17 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 107 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 105 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 100 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 100 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 75 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 75 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 82 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 82 * Marmot.Block.blockSetting.blockScale, 83 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 82 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 80 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 32 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 32 * Marmot.Block.blockSetting.blockScale, 67 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 32 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 30 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 25 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 21 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 7 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 7 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 7 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 5 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["moveTo", 4 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 100 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 100 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 107 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 107 * Block.BasicBlock.blockSetting.blockScale, 17 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 107 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 105 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 100 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 100 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 96 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 75 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 75 * Block.BasicBlock.blockSetting.blockScale, 96 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 75 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 82 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale, 82 * Block.BasicBlock.blockSetting.blockScale, 83 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 82 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale, 80 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 75 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 75 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 25 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 25 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 32 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale, 32 * Block.BasicBlock.blockSetting.blockScale, 67 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 32 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale, 30 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 25 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 25 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 21 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 0 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 96 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 0 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 7 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 7 * Block.BasicBlock.blockSetting.blockScale, 33 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 7 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 5 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 0 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
                     ["closePath"]
                 ],
                 hitAreaBackground: [
-                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    100 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    100 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    107 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    107 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    100 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    100 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    82 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    82 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    32 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    32 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale
+                    0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    100 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    100 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    107 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    107 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    100 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    100 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    82 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    82 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    32 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    32 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale
                 ]
             };
             this.blockBackgroundForForeverLoop = {
                 blockFillStyle: null,
                 pathBackground: [
-                    ["moveTo", 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 100 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 100 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 75 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 75 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 82 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 82 * Marmot.Block.blockSetting.blockScale, 83 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 82 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 80 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 32 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 32 * Marmot.Block.blockSetting.blockScale, 67 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 32 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 30 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 25 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 21 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 7 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 7 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 7 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 5 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["moveTo", 4 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 100 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 100 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 96 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 75 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 75 * Block.BasicBlock.blockSetting.blockScale, 96 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 75 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 82 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale, 82 * Block.BasicBlock.blockSetting.blockScale, 83 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 82 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale, 80 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 75 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 75 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 25 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 25 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 32 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale, 32 * Block.BasicBlock.blockSetting.blockScale, 67 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 32 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale, 30 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 25 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 25 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 21 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 0 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 96 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 0 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 7 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 7 * Block.BasicBlock.blockSetting.blockScale, 33 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 7 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 5 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 0 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
                     ["closePath"]
                 ],
                 hitAreaBackground: [
-                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    100 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    100 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    82 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    82 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    32 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    32 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale
+                    0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    100 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    100 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    82 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    82 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    32 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    32 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale
                 ]
             };
             this.blockBackgroundForIfelse1 = {
                 blockFillStyle: null,
                 pathBackground: [
-                    ["moveTo", 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 25 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 25 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 32 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 32 * Marmot.Block.blockSetting.blockScale, 17 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 32 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 30 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 25 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 25 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 21 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 46 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 7 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 7 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 7 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 5 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 0 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["moveTo", 4 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 25 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 25 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 25 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 32 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 32 * Block.BasicBlock.blockSetting.blockScale, 17 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 32 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 30 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 25 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 25 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 21 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 0 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 46 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 0 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 7 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 7 * Block.BasicBlock.blockSetting.blockScale, 33 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 7 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 5 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 0 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
                     ["closePath"]
                 ],
                 hitAreaBackground: [
-                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    32 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    32 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    25 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    7 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    0 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale
+                    0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    32 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    32 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    25 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    7 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    0 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale
                 ]
             };
             this.blockBackgroundForIfelse2 = {
                 blockFillStyle: null,
                 pathBackground: [
-                    ["moveTo", 54 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 75 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 75 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 82 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 82 * Marmot.Block.blockSetting.blockScale, 17 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 82 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 80 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 82 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 82 * Marmot.Block.blockSetting.blockScale, 67 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 82 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 80 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 75 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 75 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 71 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 50 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 50 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 50 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 57 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 57 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 57 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 55 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 50 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 50 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 54 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["moveTo", 54 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 75 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 75 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 75 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 82 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 82 * Block.BasicBlock.blockSetting.blockScale, 17 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 82 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 80 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 75 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 75 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 82 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale, 82 * Block.BasicBlock.blockSetting.blockScale, 67 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 82 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale, 80 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 75 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 75 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 71 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 50 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 50 * Block.BasicBlock.blockSetting.blockScale, 96 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 50 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 57 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 57 * Block.BasicBlock.blockSetting.blockScale, 33 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 57 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 55 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 50 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 50 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 54 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
                     ["closePath"]
                 ],
                 hitAreaBackground: [
-                    50 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    82 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    82 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    82 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    82 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    75 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    50 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    50 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    57 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    57 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    50 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    50 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale
+                    50 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    82 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    82 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    82 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    82 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    75 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    50 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    50 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    57 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    57 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    50 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    50 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale
                 ]
             };
             this.blockBackgroundForIfelse3 = {
                 blockFillStyle: null,
                 pathBackground: [
-                    ["moveTo", 104 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 125 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 125 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 125 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 132 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 132 * Marmot.Block.blockSetting.blockScale, 17 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 132 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 130 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 125 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 125 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 121 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 100 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale, 96 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 100 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 107 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale, 107 * Marmot.Block.blockSetting.blockScale, 83 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 107 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 105 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 100 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 100 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 107 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale, 107 * Marmot.Block.blockSetting.blockScale, 33 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 107 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 105 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale, 2 * Marmot.Block.blockSetting.blockScale],
-                    ["lineTo", 100 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale],
-                    ["arcTo", 100 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 104 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale, 4 * Marmot.Block.blockSetting.blockScale],
+                    ["moveTo", 104 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 125 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 125 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 125 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 132 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 132 * Block.BasicBlock.blockSetting.blockScale, 17 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 132 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 130 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 125 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 125 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 121 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 100 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale, 96 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 100 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 107 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale, 107 * Block.BasicBlock.blockSetting.blockScale, 83 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 107 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale, 105 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 100 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 100 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 107 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale, 107 * Block.BasicBlock.blockSetting.blockScale, 33 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 107 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 105 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale, 2 * Block.BasicBlock.blockSetting.blockScale],
+                    ["lineTo", 100 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale],
+                    ["arcTo", 100 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 104 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale, 4 * Block.BasicBlock.blockSetting.blockScale],
                     ["closePath"]
                 ],
                 hitAreaBackground: [
-                    200 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    225 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale,
-                    225 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    232 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    232 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    225 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    225 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    200 * Marmot.Block.blockSetting.blockScale, 100 * Marmot.Block.blockSetting.blockScale,
-                    200 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    207 * Marmot.Block.blockSetting.blockScale, 85 * Marmot.Block.blockSetting.blockScale,
-                    207 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    200 * Marmot.Block.blockSetting.blockScale, 65 * Marmot.Block.blockSetting.blockScale,
-                    200 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    207 * Marmot.Block.blockSetting.blockScale, 35 * Marmot.Block.blockSetting.blockScale,
-                    207 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    200 * Marmot.Block.blockSetting.blockScale, 15 * Marmot.Block.blockSetting.blockScale,
-                    200 * Marmot.Block.blockSetting.blockScale, 0 * Marmot.Block.blockSetting.blockScale
+                    200 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    225 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale,
+                    225 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    232 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    232 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    225 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    225 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    200 * Block.BasicBlock.blockSetting.blockScale, 100 * Block.BasicBlock.blockSetting.blockScale,
+                    200 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    207 * Block.BasicBlock.blockSetting.blockScale, 85 * Block.BasicBlock.blockSetting.blockScale,
+                    207 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    200 * Block.BasicBlock.blockSetting.blockScale, 65 * Block.BasicBlock.blockSetting.blockScale,
+                    200 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    207 * Block.BasicBlock.blockSetting.blockScale, 35 * Block.BasicBlock.blockSetting.blockScale,
+                    207 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    200 * Block.BasicBlock.blockSetting.blockScale, 15 * Block.BasicBlock.blockSetting.blockScale,
+                    200 * Block.BasicBlock.blockSetting.blockScale, 0 * Block.BasicBlock.blockSetting.blockScale
                 ]
             };
             this.textInputSetting1 = {
@@ -377,7 +377,7 @@ var Marmot;
                     pathBackground: this.blockBackground1.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                block = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                block = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -400,7 +400,7 @@ var Marmot;
                     pathBackground: this.blockBackground1.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                block = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                block = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block.initialize();
                 return block;
             }
@@ -419,7 +419,7 @@ var Marmot;
                     pathBackground: this.blockBackground1.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                var block_1 = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                var block_1 = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block_1.initialize();
                 return block_1;
             }
@@ -438,7 +438,7 @@ var Marmot;
                     pathBackground: this.blockBackground1.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                var block_2 = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                var block_2 = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block_2.initialize();
                 return block_2;
             }
@@ -463,7 +463,7 @@ var Marmot;
                     pathBackground: this.blockBackground1.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                var blockSize = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSettings, sliderSetting);
+                var blockSize = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, sliderSetting);
                 blockSize.initialize();
                 var input = blockSize.getChildByName("input");
                 var vslider_1 = blockSize.getChildByName("vslider");
@@ -495,7 +495,7 @@ var Marmot;
                     pathBackground: this.blockBackground1.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                var block_3 = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                var block_3 = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block_3.initialize();
                 return block_3;
             }
@@ -514,7 +514,7 @@ var Marmot;
                     pathBackground: this.blockBackground2.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                var block_4 = new Marmot.HeadCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                var block_4 = new HeadCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block_4.initialize();
                 return block_4;
             }
@@ -533,7 +533,7 @@ var Marmot;
                     pathBackground: this.blockBackground2.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                var block_5 = new Marmot.HeadCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                var block_5 = new HeadCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block_5.initialize();
                 return block_5;
             }
@@ -556,7 +556,7 @@ var Marmot;
                     pathBackground: this.blockBackground1.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                var block_6 = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                var block_6 = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block_6.initialize();
                 return block_6;
             }
@@ -579,7 +579,7 @@ var Marmot;
                     pathBackground: this.blockBackground1.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                var block_7 = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                var block_7 = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block_7.initialize();
                 return block_7;
             }
@@ -612,7 +612,7 @@ var Marmot;
                     pathBackground: this.blockBackgroundForForeverLoop.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                var block_8 = new Marmot.LoopCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                var block_8 = new LoopCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block_8.initialize();
                 return block_8;
             }
@@ -658,7 +658,7 @@ var Marmot;
                 backgroundSettings.push(backgroundSetting1);
                 backgroundSettings.push(backgroundSetting2);
                 backgroundSettings.push(backgroundSetting3);
-                var block_9 = new Marmot.IfelseCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
+                var block_9 = new IfelseCommandBlock(textureSettings, inputSettings, backgroundSettings, null);
                 block_9.initialize();
                 return block_9;
             }
@@ -691,7 +691,7 @@ var Marmot;
                     pathBackground: this.blockBackground1.pathBackground
                 };
                 backgroundSettings.push(backgroundSetting);
-                block = new Marmot.CommandBlock(textureSettings, inputSettings, backgroundSettings, null, comboBoxSlotSetting);
+                block = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, null, comboBoxSlotSetting);
                 block.initialize();
                 return block;
             }
@@ -774,6 +774,6 @@ var Marmot;
         };
         return BlockFactory;
     }());
-    Marmot.BlockFactory = BlockFactory;
-})(Marmot || (Marmot = {}));
+    Block.BlockFactory = BlockFactory;
+})(Block || (Block = {}));
 //# sourceMappingURL=blockfactory.js.map

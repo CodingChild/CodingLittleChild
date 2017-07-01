@@ -3,8 +3,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Marmot;
-(function (Marmot) {
+var IDE;
+(function (IDE) {
     var Tab = Laya.Tab;
     var Event = Laya.Event;
     var BlockAreaItem = (function (_super) {
@@ -16,7 +16,7 @@ var Marmot;
             return _this;
         }
         return BlockAreaItem;
-    }(Marmot.ListItem));
+    }(ListItem));
     var BlockArea = (function (_super) {
         __extends(BlockArea, _super);
         function BlockArea(blockAreaSetting, blockAreaItemSetting, blockFactory) {
@@ -56,7 +56,7 @@ var Marmot;
         BlockArea.prototype.getBlockForSelector = function (blockName) {
             var block = this.blockFactory.create(blockName);
             block.action = blockName;
-            var ide = Marmot.IDE.getIDE();
+            var ide = IDE.getIDE();
             ide.scriptArea.addChild(block);
             block.pos(ide.scriptArea.x, ide.scriptArea.y);
         };
@@ -223,7 +223,7 @@ var Marmot;
             this.tab_index.left = this.width / 2 - this.tab_index.width / 2;
         };
         return BlockArea;
-    }(Marmot.CommonList));
-    Marmot.BlockArea = BlockArea;
-})(Marmot || (Marmot = {}));
+    }(CommonList));
+    IDE.BlockArea = BlockArea;
+})(IDE || (IDE = {}));
 //# sourceMappingURL=blockArea.js.map

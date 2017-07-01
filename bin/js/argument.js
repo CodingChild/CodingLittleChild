@@ -3,15 +3,15 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Marmot;
-(function (Marmot) {
+var Block;
+(function (Block) {
     var Argument = (function (_super) {
         __extends(Argument, _super);
         function Argument() {
             return _super.call(this) || this;
         }
         return Argument;
-    }(Marmot.SyntaxElement));
-    Marmot.Argument = Argument;
-})(Marmot || (Marmot = {}));
+    }(Block.SyntaxElement));
+    Block.Argument = Argument;
+})(Block || (Block = {}));
 //# sourceMappingURL=argument.js.map

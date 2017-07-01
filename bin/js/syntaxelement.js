@@ -3,8 +3,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Marmot;
-(function (Marmot) {
+var Block;
+(function (Block) {
     var SyntaxElement = (function (_super) {
         __extends(SyntaxElement, _super);
         function SyntaxElement() {
@@ -27,7 +27,7 @@ var Marmot;
         SyntaxElement.prototype.parts = function () {
             var block = null;
             var parts = [];
-            if (this instanceof Marmot.Block) {
+            if (this instanceof Block) {
                 block = this.getNextBlockChild();
             }
             this._childs.forEach(function (child) {
@@ -39,6 +39,6 @@ var Marmot;
         };
         return SyntaxElement;
     }(Laya.Sprite));
-    Marmot.SyntaxElement = SyntaxElement;
-})(Marmot || (Marmot = {}));
+    Block.SyntaxElement = SyntaxElement;
+})(Block || (Block = {}));
 //# sourceMappingURL=syntaxelement.js.map

@@ -1,4 +1,4 @@
-module Marmot {
+module Block {
 
     export interface BlockAttributes {
         name: string;
@@ -7,30 +7,42 @@ module Marmot {
     export let blockSet: Object = {
         "motion": [
             {
-                "name": "move",
-                "path": "materials/block_move.png"
+                "name": "goForward",
+                "path": "materials/block_goForward.png"
             },
             {
                 "name": "setHeading",
                 "path": "materials/block_setHeading.png"
             },
             {
-                "name": "moveUp",
-                "path": "materials/block_moveUp.png"
+                "name": "goUp",
+                "path": "materials/block_goUp.png"
             },
             {
-                "name": "moveDown",
-                "path": "materials/block_moveDown.png"
-            }
+                "name": "goDown",
+                "path": "materials/block_goDown.png"
+            },
+            {
+                "name": "goLeft",
+                "path": "materials/block_goLeft.png"
+            },
+            {
+                "name": "goRight",
+                "path": "materials/block_goRight.png"
+            },
+            {
+                "name": "rotate_anticlockwise",
+                "path": "materials/block_rotate_anticlockwise.png"
+            },
+            {
+                "name": "rotate_clockwise",
+                "path": "materials/block_rotate_clockwise.png"
+            },
         ],
         "look": [
             {
-                "name": "show",
-                "path": "materials/block_show.png"
-            },
-            {
-                "name": "hide",
-                "path": "materials/block_hide.png"
+                "name": "toggleVisible",
+                "path": "materials/block_toggleVisible.png"
             },
             {
                 "name": "setSize",
@@ -43,17 +55,17 @@ module Marmot {
                 "path": "materials/block_wait.png"
             },
             {
-                "name": "foreverLoop",
-                "path": "materials/block_foreverLoop.png"
-            },      
-            {
-                "name": "ifelse",
-                "path": "materials/block_ifelse.png"                
+                "name": "loopforever",
+                "path": "materials/block_loopforever.png"
             },
             {
-                "name": "doStop",
-                "path": "materials/block_stop.png"                      
-            } 
+                "name": "loopfortimes",
+                "path": "materials/block_loopfortimes.png"
+            },
+            {
+                "name": "stop",
+                "path": "materials/block_stop.png"
+            }
         ],
         "event": [
             {
@@ -63,6 +75,10 @@ module Marmot {
             {
                 "name": "whenClicked",
                 "path": "materials/block_whenClicked.png"
+            },
+            {
+                "name": "whenbumpinto",
+                "path": "materials/block_whenbumpinto.png"
             }
         ],
         "pen": [
@@ -74,6 +90,10 @@ module Marmot {
         "math": [
         ],
         "sense": [
+            {
+                "name": "ifbumpinto",
+                "path": "materials/block_ifbumpinto.png"
+            }
         ]
     }
 }

@@ -3,45 +3,87 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Marmot;
-(function (Marmot) {
-    var CostumeMaterialListItem = (function (_super) {
-        __extends(CostumeMaterialListItem, _super);
-        function CostumeMaterialListItem() {
-            var _this = _super.call(this) || this;
-            if (CostumeMaterialListItem.WIDTH != undefined && CostumeMaterialListItem.HEIGHT != undefined)
-                _this.size(CostumeMaterialListItem.WIDTH, CostumeMaterialListItem.HEIGHT);
-            return _this;
-        }
-        return CostumeMaterialListItem;
-    }(Marmot.MaterialListItem));
+var IDE;
+(function (IDE) {
     var CostumeMaterialList = (function (_super) {
         __extends(CostumeMaterialList, _super);
-        function CostumeMaterialList(costumeMaterialListSetting, costumeMaterialListItemSetting) {
-            var _this = _super.call(this, costumeMaterialListSetting, costumeMaterialListItemSetting) || this;
-            CostumeMaterialListItem.WIDTH = costumeMaterialListItemSetting.width;
-            CostumeMaterialListItem.HEIGHT = costumeMaterialListItemSetting.height;
-            _this.itemRender = CostumeMaterialListItem;
+        function CostumeMaterialList(generalListSetting, generalListItemSetting) {
+            var _this = _super.call(this, generalListSetting, generalListItemSetting) || this;
+            _this.name = "costumeMaterialList";
+            _this.selectedIndex = 0;
             return _this;
         }
-        CostumeMaterialList.prototype.initializeMaterialItems = function () {
+        /**
+         * update costume list according to chosen index of sprite
+         */
+        CostumeMaterialList.prototype.update = function () {
             var _this = this;
-            var ide = Marmot.IDE.getIDE();
+            var ide = IDE.GeneralIDE.getIDE();
             this.array = [];
-            ide.currentSprite.costumes.forEach(function (costume) {
+            var list = ide.spriteMaterialArea.getChildAt(0);
+            var chosenIndex = list.selectedIndex;
+            if (chosenIndex < 0) {
+                return null;
+            }
+            ide.sprites[chosenIndex].costumes.forEach(function (costume) {
                 _this.array.push(costume.url);
             });
             this.refresh();
         };
-        CostumeMaterialList.prototype.onSelect = function (index) {
-        };
-        CostumeMaterialList.prototype.onPlusBtnClicked = function () {
-            var ide = Marmot.IDE.getIDE();
+        return CostumeMaterialList;
+    }(IDE.GeneralList));
+    IDE.CostumeMaterialList = CostumeMaterialList;
+})(IDE || (IDE = {}));
+/*
+module Marmot {
+    import Event = Laya.Event;
+    import Button = Laya.Button;
+
+    class CostumeMaterialListItem extends MaterialListItem {
+        public static WIDTH: number;
+        public static HEIGHT: number;
+        constructor() {
+            super();
+            if (CostumeMaterialListItem.WIDTH != undefined && CostumeMaterialListItem.HEIGHT != undefined)
+                this.size(CostumeMaterialListItem.WIDTH, CostumeMaterialListItem.HEIGHT);
+        }
+
+
+    }
+
+    export interface CostumeMaterialListSetting extends MaterialListSetting {
+
+    }
+
+    export interface CostumeMaterialListItemSetting extends MaterialListItemSetting {
+
+    }
+
+    export class CostumeMaterialList extends MaterialList {
+        constructor(costumeMaterialListSetting: CostumeMaterialListSetting, costumeMaterialListItemSetting: CostumeMaterialListItemSetting) {
+            super(costumeMaterialListSetting, costumeMaterialListItemSetting);
+            CostumeMaterialListItem.WIDTH = costumeMaterialListItemSetting.width;
+            CostumeMaterialListItem.HEIGHT = costumeMaterialListItemSetting.height;
+            this.itemRender = CostumeMaterialListItem;
+            
+        }
+
+        public initializeMaterialItems(): void {
+            let ide: IDE = IDE.getIDE();
+            this.array = [];
+            ide.currentSprite.costumes.forEach((costume) => {
+                this.array.push(costume.url);
+            })
+            this.refresh();
+        }
+        protected onSelect(index: number): void {
+
+        }
+        protected onPlusBtnClicked(): void {
+            let ide: IDE = IDE.getIDE();
             ide.spriteMaterialList.curClickedBtn = "addCostume";
             ide.spriteMaterialList.spriteLibraryDialog.show();
-        };
-        return CostumeMaterialList;
-    }(Marmot.MaterialList));
-    Marmot.CostumeMaterialList = CostumeMaterialList;
-})(Marmot || (Marmot = {}));
+        }
+    }
+}*/ 
 //# sourceMappingURL=costumemateriallist.js.map

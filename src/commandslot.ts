@@ -1,3 +1,4 @@
+/*
 module Marmot{
     import Event = Laya.Event;
 
@@ -35,4 +36,4 @@ module Marmot{
             }
         }
     }
-}
+}*/

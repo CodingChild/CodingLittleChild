@@ -1,4 +1,4 @@
-module Marmot{
+module Block{
     import Point = Laya.Point;
     
      export interface BlockSetting {
@@ -47,7 +47,7 @@ module Marmot{
         resourceSetting: ResourceSetting
         textInputSetting: TextInputSetting
     }
-
+/*
     export interface AttachTarget {
         attachBlock: Block;
         attachHook: AttachHook;
@@ -56,5 +56,5 @@ module Marmot{
     export interface AttachHook {
         attachCoordinate: Point;
         isHook:boolean;
-    }   
+    }   */
 }

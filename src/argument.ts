@@ -1,4 +1,4 @@
-module Marmot{
+module Block{
     export abstract class Argument extends SyntaxElement{
 
         constructor(){

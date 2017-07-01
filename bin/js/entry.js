@@ -1,16 +1,16 @@
-var Handler = Laya.Handler;
-var Marmot;
-(function (Marmot) {
+var Main;
+(function (Main) {
     var WebGL = Laya.WebGL;
     var Stage = Laya.Stage;
+    var Handler = Laya.Handler;
     var Entry = (function () {
         function Entry() {
             //初始化舞台
-            Laya.init(1920, 1080, WebGL, Laya.Log);
+            Laya.init(0, 0, WebGL);
             Laya.stage.alignV = Stage.ALIGN_CENTER;
             Laya.stage.alignH = Stage.ALIGN_MIDDLE;
             Laya.stage.scaleMode = "full";
-            Laya.stage.bgColor = "#FFFF99";
+            Laya.stage.bgColor = "#FFFFCC";
             //自动竖屏，让游戏的水平方向始终与浏览器显示屏幕的最长边保持垂直。
             Laya.stage.screenMode = "horizontal";
             //预加载资源，回调
@@ -19,15 +19,15 @@ var Marmot;
                 { url: "res/pics/bg_dadishu.jpg", type: Laya.Loader.IMAGE }], Handler.create(this, this.createIDE));
         }
         Entry.prototype.createIDE = function () {
-            var ideFactory = new Marmot.IDEFactory();
+            var ideFactory = new IDE.GeneralIDEFactory();
             var ide = ideFactory.getIDE("ide");
             Laya.stage.addChild(ide);
         };
         return Entry;
     }());
-    Marmot.Entry = Entry;
-})(Marmot || (Marmot = {}));
-new Marmot.Entry();
+    Main.Entry = Entry;
+})(Main || (Main = {}));
+new Main.Entry();
 function applyMixins(derivedCtor, baseCtors) {
     baseCtors.forEach(function (baseCtor) {
         Object.getOwnPropertyNames(baseCtor.prototype).forEach(function (name) {

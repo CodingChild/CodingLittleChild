@@ -1,18 +1,18 @@
-import Handler = Laya.Handler;
-module Marmot {
+module Main {
     import WebGL = Laya.WebGL;
     import Stage = Laya.Stage;
+    import Handler = Laya.Handler;
 
     export class Entry {
         constructor() {
             //初始化舞台
 
-            Laya.init(1920, 1080, WebGL, Laya.Log);
+            Laya.init(0, 0, WebGL);
             Laya.stage.alignV = Stage.ALIGN_CENTER;
             Laya.stage.alignH = Stage.ALIGN_MIDDLE;
 
             Laya.stage.scaleMode = "full";
-            Laya.stage.bgColor = "#FFFF99";
+            Laya.stage.bgColor = "#FFFFCC";
             //自动竖屏，让游戏的水平方向始终与浏览器显示屏幕的最长边保持垂直。
             Laya.stage.screenMode = "horizontal";
             //预加载资源，回调
@@ -21,14 +21,13 @@ module Marmot {
             { url: "res/pics/bg_dadishu.jpg", type: Laya.Loader.IMAGE }], Handler.create(this, this.createIDE));
         }
         private createIDE(): void {
-            let ideFactory = new IDEFactory();
+            let ideFactory = new IDE.GeneralIDEFactory();
             let ide = ideFactory.getIDE("ide");
             Laya.stage.addChild(ide);
-
         }
     }
 }
-new Marmot.Entry();
+new Main.Entry();
 
 function applyMixins(derivedCtor: any, baseCtors: any[]) {
     baseCtors.forEach(baseCtor => {

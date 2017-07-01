@@ -1,3 +1,4 @@
+/*
 module Marmot {
     import Button = Laya.Button;
     import Tab = Laya.Tab;
@@ -221,7 +222,7 @@ module Marmot {
             btn_play.clickHandler = Handler.create(this, this.pressStart, [btn_play], false);
             btn_play.name = "btn_play";
             box.addChild(btn_play);
-            */
+            
         }
         protected createMaterialArea(): void {
 
@@ -634,4 +635,4 @@ module Marmot {
 
         }
     }
-}
+}*/

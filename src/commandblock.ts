@@ -1,4 +1,4 @@
-module Marmot {
+module Block {
     import Event = Laya.Event;
     import TextInput = Laya.TextInput;
     import VSlider = Laya.VSlider;
@@ -9,7 +9,7 @@ module Marmot {
     import Rectangle = Laya.Rectangle;
     import Box = Laya.Box;
 
-    export class CommandBlock extends Block {
+    export class CommandBlock extends BasicBlock {
 
         constructor(textureSettings: Array<ResourceSetting>,
             inputSettings: Array<InputSettings>,
