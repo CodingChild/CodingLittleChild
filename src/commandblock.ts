@@ -15,6 +15,49 @@ module Block {
             inputSettings: Array<InputSettings>,
             backgroundSettings: Array<BackgroundSetting>,
             sliderSetting?: SliderSetting,
+            targetSettings?:Array<TargetSetting>) {
+            super(textureSettings,
+                inputSettings,
+                backgroundSettings,
+                sliderSetting,
+                targetSettings);
+
+        }
+
+        protected onDragStart(e: Event): void {
+
+        }
+
+        protected onDragEnd(e: Event): void {
+
+        }
+
+
+    }
+}		
+
+
+
+
+
+/*
+module Block {
+    import Event = Laya.Event;
+    import TextInput = Laya.TextInput;
+    import VSlider = Laya.VSlider;
+    import Sprite = Laya.Sprite;
+    import Texture = Laya.Texture;
+    import HitArea = Laya.HitArea;
+    import Point = Laya.Point;
+    import Rectangle = Laya.Rectangle;
+    import Box = Laya.Box;
+
+    export class CommandBlock extends BasicBlock {
+
+        constructor(textureSettings: Array<ResourceSetting>,
+            inputSettings: Array<InputSettings>,
+            backgroundSettings: Array<BackgroundSetting>,
+            sliderSetting?: SliderSetting,
             comboBoxSlotSetting?: ComboBoxSlotSetting) {
             super(textureSettings,
                 inputSettings,
@@ -451,4 +494,5 @@ module Block {
 
 
     }
-}		
+}
+*/

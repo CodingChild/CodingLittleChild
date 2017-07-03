@@ -70,7 +70,7 @@ module IDE {
                     blockFactory:Block.BlockFactory) {
             super(blockContentListSetting, generalListItemSetting);
             this.blockContentListSetting = blockContentListSetting;
-            //this.blockFactory = blockFactory;
+            this.blockFactory = blockFactory;
             BlockContentListItem.WIDTH = this.generalListItemSetting.width;
             BlockContentListItem.HEIGHT = this.generalListItemSetting.height;
             this.itemRender = BlockContentListItem;
@@ -188,7 +188,7 @@ module IDE {
     
         private onMouse(e: Event, index: number): void {
             if (e.type == Event.CLICK) {
-                //this.getBlockForSelector(this.array[index].name);
+                this.getBlockForSelector(this.array[index].name);
             }
 
         }

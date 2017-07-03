@@ -36,7 +36,7 @@ module IDE {
             super();
             GeneralIDE.WIDTH = width;
             GeneralIDE.HEIGHT = height;
-            GeneralIDE.ICONSIZE = 72;
+            GeneralIDE.ICONSIZE = 44;
 
             this.pos(0, 0);
             this.name = name;

@@ -123,7 +123,7 @@ module IDE {
                     backgroundHighlight: "#FFFFFF",
                     imageSize: null,
                     font: "Arial",
-                    fontSize: 60,
+                    fontSize: 36,
                     fontColor: "#000000"
                 },
                 addPageBtnSetting: {
@@ -206,8 +206,8 @@ module IDE {
                 tabY: Math.round(generalListItemSetting1.height),
                 bgColor: "#ffffff"
             }
-            //let blockFactory = new Block.BlockFactory();
-            let blockContentList = new BlockContentList(blockContentListSetting, generalListItemSetting1, null);
+            let blockFactory = new Block.BlockFactory();
+            let blockContentList = new BlockContentList(blockContentListSetting, generalListItemSetting1, blockFactory);
             blockContentList.pos(0, 0);
             vbox.addChild(blockContentList);
 

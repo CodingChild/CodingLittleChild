@@ -18,7 +18,7 @@ var ui;
         };
         return testUI;
     }(View));
-    testUI.uiView = { "type": "View", "props": { "y": 0, "x": 0, "width": 1920, "height": 1080 } };
+    testUI.uiView = { "type": "View", "props": { "y": 0, "x": 0, "width": 1920, "height": 1080 }, "child": [{ "type": "Button", "props": { "y": 646, "x": 296, "width": 74, "stateNum": "1", "skin": "materials/btn_blank.png", "height": 74 }, "child": [{ "type": "Texture", "props": { "width": 74, "skin": "materials/sp_girl.png", "height": 74 } }] }, { "type": "TextInput", "props": { "y": 507, "x": 803, "width": 100, "text": "TextInput", "skin": "materials/input.png", "height": 500 } }] };
     ui.testUI = testUI;
 })(ui || (ui = {}));
 //# sourceMappingURL=layaUI.max.all.js.map

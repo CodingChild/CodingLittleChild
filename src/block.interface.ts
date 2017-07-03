@@ -3,11 +3,14 @@ module Block{
     
      export interface BlockSetting {
         blockScale: number;
-        blockStrokeStyleNormal: string;
         blockStrokeStyleHighlight: string;
         blockLineWidthHighlight: number;
-        blockLineWidthNormal: number;
         distanceBetweenBlocks:number;
+        roundCorner:number;
+    }
+
+    export interface TargetSetting extends ResourceSetting{
+        stateNum: number;
     }
 
     export interface ResourceSetting {
@@ -44,8 +47,8 @@ module Block{
     }
 
     export interface InputSettings {
-        resourceSetting: ResourceSetting
-        textInputSetting: TextInputSetting
+        inputBoxSetting: ResourceSetting;
+        textInputSetting: TextInputSetting;
     }
 /*
     export interface AttachTarget {

@@ -1,22 +1,3 @@
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_goDown.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_goForward.png:1498874206
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_goLeft.png:1498874216
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_goRight.png:1498874206
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_gotogether.png:1498874206
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_goUp.png:1498874206
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_ifbumpinto.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_loopforever.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_loopfortimes.png:1498874232
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_play.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_rotate_anticlockwise.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_rotate_clockwise.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_setHeading.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_setSize.png:1498874251
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_stop.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_toggleVisible.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_wait.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_whenbumpinto.png:1498874182
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\block_whenClicked.png:1498874182
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\comp\bg.png:1487415764
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\comp\blank.png:1487415763
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\comp\btn_close.png:1487415764
@@ -71,6 +52,7 @@ C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\bloc
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\block_whenClicked.png:1498874260
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\btn_anchor.png:1498631457
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\btn_background.png:1498893502
+C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\btn_blank.png:1498919009
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\btn_block.png:1498631457
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\btn_cancel.png:1494242761
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\btn_circle.png:1498631457
@@ -112,7 +94,7 @@ C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\btn_
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\btn_yes.png:1494242761
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\hslider_1$bar.png:1494303487
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\hslider_1.png:1494303487
-C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\input.png:1493351450
+C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\input.png:1498977711
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\sp_changjinglu.jpg:1498631657
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\sp_dog.png:1498631657
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\sp_girl.png:1498631657
@@ -126,6 +108,7 @@ C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\tab_
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_anglepan.png:1494472692
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_down.png:1494470085
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_hide.png:1494470085
+C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_left.png:1499006286
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_loop.png:1494580653
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_loop_turnRight.png:1494580653
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_loop_turnUp.png:1494580653
@@ -133,6 +116,9 @@ C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\text
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_no.png:1494603624
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_play.png:1494470085
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_questionMark.png:1494603624
+C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_right.png:1499006286
+C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_rotate_anticlockwise.png:1499005305
+C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_rotate_clockwise.png:1499005305
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_setsize.png:1494472692
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_show.png:1494470085
 C:/Users\FoolEdward\layaairprojects\CodingLittleChild\laya\assets\materials\texture_stop.png:1494603624

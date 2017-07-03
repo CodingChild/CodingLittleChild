@@ -12,12 +12,11 @@ module Block {
     export abstract class BasicBlock extends SyntaxElement {
 
         public static blockSetting: BlockSetting = {
-            blockScale: 2,
-            blockStrokeStyleNormal: "#000000",
+            blockScale: 0.6,
             blockStrokeStyleHighlight: "#fcff00",
-            blockLineWidthHighlight: 8,
-            blockLineWidthNormal: 4,
+            blockLineWidthHighlight: 4,
             distanceBetweenBlocks: 10,
+            roundCorner: 8
         }
 
         /**
@@ -25,7 +24,7 @@ module Block {
          */
         //public isHighlight: boolean;
 
-        //public action: string;
+        public action: string;
 
         //protected static minimumHookDistance: number = 50;
 
@@ -33,7 +32,8 @@ module Block {
         protected inputSettings: Array<InputSettings>;
         protected backgroundSettings: Array<BackgroundSetting>;
         public sliderSetting: SliderSetting;
-        private spriteTarget:Button;
+        protected targetSettings: Array<TargetSetting>;
+        protected target: Button;
         //public comboBoxSlotSetting: ComboBoxSlotSetting;
         //protected lastAttachTarget: AttachTarget;
 
@@ -41,18 +41,16 @@ module Block {
         constructor(textureSettings: Array<ResourceSetting>,
             inputSettings: Array<InputSettings>,
             backgroundSettings: Array<BackgroundSetting>,
-            sliderSetting?: SliderSetting,) {
+            sliderSetting?: SliderSetting,
+            targetSettings?: Array<TargetSetting>) {
             super();
             this.textureSettings = textureSettings;
             this.inputSettings = inputSettings;
             this.backgroundSettings = backgroundSettings;
             this.sliderSetting = sliderSetting;
-            this.width = 50 * BasicBlock.blockSetting.blockScale;
-            this.height = 50 * BasicBlock.blockSetting.blockScale;
-            this.myWidth = this.width;
-            this.myHeight = this.height;
-            this.spriteTarget = new Button();
-            this.addChild(this.spriteTarget);
+            this.targetSettings = targetSettings;
+            this.target = new Button();
+            this.addChild(this.target);
         }
 
         public initialize(): void {
@@ -65,14 +63,33 @@ module Block {
                 this.drawTextures();
             }
 
-            this.drawSprite();
-            
-            
+            if (this.inputSettings.length != 0) {
+                this.drawInputs();
+            }
+
+            if (this.targetSettings != null) {
+                this.drawTargets();
+            }
+
+
             this.setEventListening();
         }
 
-        private drawSprite():void{
-            this.spriteTarget.skin;
+        private drawTargets(): void {
+            this.targetSettings.forEach((targetSetting) => {
+                this.target.skin = targetSetting.path;
+                this.target.stateNum = targetSetting.stateNum;
+                this.target.width = targetSetting.width;
+                this.target.height = targetSetting.height;
+                this.target.x = targetSetting.x;
+                this.target.y = targetSetting.y;
+                this.target.on(Event.CLICK, this, this.chooseSprite);
+            })
+        }
+
+        private chooseSprite(): void {
+            console.log("s");
+            
         }
 
         public evaluate() {
@@ -84,10 +101,6 @@ module Block {
                 this.graphics.drawPath(0, 0, backgroundSetting.pathBackground,
                     {
                         fillStyle: backgroundSetting.blockFillStyle
-                    },
-                    {
-                        "strokeStyle": BasicBlock.blockSetting.blockStrokeStyleNormal,
-                        "lineWidth": BasicBlock.blockSetting.blockLineWidthNormal
                     });
             })
         }
@@ -109,10 +122,16 @@ module Block {
             this.textureSettings.forEach((textureSetting) => {
                 let t: Texture = Laya.loader.getRes(textureSetting.path);
                 this.graphics.drawTexture(t,
-                    textureSetting.x * BasicBlock.blockSetting.blockScale,
-                    textureSetting.y * BasicBlock.blockSetting.blockScale,
-                    textureSetting.width * BasicBlock.blockSetting.blockScale,
-                    textureSetting.height * BasicBlock.blockSetting.blockScale);
+                    textureSetting.x,
+                    textureSetting.y,
+                    textureSetting.width,
+                    textureSetting.height);
+            })
+        }
+
+        protected drawInputs(): void {
+            this.inputSettings.forEach((inputSetting) => {
+                this.addChild(new LineInput(inputSetting));
             })
         }
 
@@ -135,7 +154,6 @@ module Block {
         }
 
         protected abstract onDragStart(e: Event): void;
-        protected abstract drawHook(attachPoint: Point): void;
         protected abstract onDragEnd(e: Event): void;
 
         private setEventListening(): void {

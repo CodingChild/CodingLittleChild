@@ -1,3 +1,615 @@
+
+module Block {
+    import TextInput = Laya.TextInput;
+    import VSlider = Laya.VSlider;
+
+
+    export class BlockFactory {
+
+        // share attributes
+        /*
+        private blockBackground1: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 4 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 46 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 50 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 50 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 57 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 57 * BasicBlock.blockSetting.blockScale, 17 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 57 * BasicBlock.blockSetting.blockScale, 33 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 57 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 50 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 50 * BasicBlock.blockSetting.blockScale, 46 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 50 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 46 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 4 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 46 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 0 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 5 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 7 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 7 * BasicBlock.blockSetting.blockScale, 33 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 7 * BasicBlock.blockSetting.blockScale, 17 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 7 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 5 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 0 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                50 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                50 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                57 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                57 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                57 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                50 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                7 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                7 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale
+            ]
+        }
+
+        private blockBackground2: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 4 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 46 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 50 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 50 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 57 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 57 * BasicBlock.blockSetting.blockScale, 17 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 57 * BasicBlock.blockSetting.blockScale, 33 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 57 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 50 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 50 * BasicBlock.blockSetting.blockScale, 46 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 50 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 46 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 4 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 46 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                50 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                50 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                57 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                57 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                57 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                50 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale
+            ]
+        }
+
+        private blockBackgroundForLoop: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 4 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 100 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 100 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 107 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 107 * BasicBlock.blockSetting.blockScale, 17 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 107 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 105 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 100 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 100 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 96 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 75 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 75 * BasicBlock.blockSetting.blockScale, 96 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 75 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 82 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale, 82 * BasicBlock.blockSetting.blockScale, 83 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 82 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale, 80 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 75 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 75 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 25 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 25 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 32 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale, 32 * BasicBlock.blockSetting.blockScale, 67 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 32 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale, 30 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 25 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 25 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 21 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 96 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 0 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 7 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 7 * BasicBlock.blockSetting.blockScale, 33 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 7 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 5 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 0 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                100 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                100 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                107 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                107 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                100 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                100 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+
+                75 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                82 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                82 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+                25 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+                25 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                32 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                32 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+
+                25 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                25 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                7 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                7 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                7 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+
+                7 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale
+            ]
+        }
+        private blockBackgroundForForeverLoop: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 4 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 100 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 100 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 96 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 75 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 75 * BasicBlock.blockSetting.blockScale, 96 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 75 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 82 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale, 82 * BasicBlock.blockSetting.blockScale, 83 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 82 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale, 80 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 75 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 75 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 25 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 25 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 32 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale, 32 * BasicBlock.blockSetting.blockScale, 67 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 32 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale, 30 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 25 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 25 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 21 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 96 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 0 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 7 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 7 * BasicBlock.blockSetting.blockScale, 33 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 7 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 5 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 0 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                100 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                100 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+
+                75 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                82 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                82 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+                25 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+                25 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                32 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                32 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+
+                25 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                25 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                7 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                7 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                7 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+
+                7 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale
+            ]
+        }
+
+        private blockBackgroundForIfelse1: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 4 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 25 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 25 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 25 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 32 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 32 * BasicBlock.blockSetting.blockScale, 17 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 32 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 30 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 25 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 25 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 21 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 46 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 0 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 7 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 7 * BasicBlock.blockSetting.blockScale, 33 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 7 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 5 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 0 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                25 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                25 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                32 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                32 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                25 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                25 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                7 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                7 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale
+            ]
+        }
+
+        private blockBackgroundForIfelse2: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 54 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 75 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 75 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 75 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 82 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 82 * BasicBlock.blockSetting.blockScale, 17 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 82 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 80 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 75 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 75 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 82 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale, 82 * BasicBlock.blockSetting.blockScale, 67 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 82 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale, 80 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 75 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 75 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 71 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 50 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 50 * BasicBlock.blockSetting.blockScale, 96 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 50 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 57 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 57 * BasicBlock.blockSetting.blockScale, 33 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 57 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 55 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 50 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 50 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 54 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                50 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                82 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                82 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+
+                82 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                82 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                75 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+
+                50 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                50 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                57 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                57 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                50 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                50 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale
+            ]
+        }
+
+        private blockBackgroundForIfelse3: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", 104 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 125 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 125 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 125 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 132 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 132 * BasicBlock.blockSetting.blockScale, 17 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 132 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 130 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 125 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 125 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 121 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 100 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, 96 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 100 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 107 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale, 107 * BasicBlock.blockSetting.blockScale, 83 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 107 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale, 105 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 100 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 100 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 107 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale, 107 * BasicBlock.blockSetting.blockScale, 33 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 107 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 105 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale, 2 * BasicBlock.blockSetting.blockScale],
+                ["lineTo", 100 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 100 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 104 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale, 4 * BasicBlock.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                200 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                225 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                225 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                232 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                232 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                225 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                225 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                200 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                200 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                207 * BasicBlock.blockSetting.blockScale, 85 * BasicBlock.blockSetting.blockScale,
+                207 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                200 * BasicBlock.blockSetting.blockScale, 65 * BasicBlock.blockSetting.blockScale,
+                200 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                207 * BasicBlock.blockSetting.blockScale, 35 * BasicBlock.blockSetting.blockScale,
+                207 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                200 * BasicBlock.blockSetting.blockScale, 15 * BasicBlock.blockSetting.blockScale,
+                200 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale
+            ]
+        }
+        private textInputSetting1: TextInputSetting = {
+            sizeGrid: "0,10,0,10",
+            font: "Arial",
+            fontSize: 30,
+            bold: true,
+            color: "#000000",
+            restrict: "-0-9"
+        }
+        private textInputSetting2: TextInputSetting = {
+            sizeGrid: "0,10,0,10",
+            font: "Arial",
+            fontSize: 30,
+            bold: true,
+            color: "#000000",
+            restrict: "0-9"
+        }
+        */
+        private blockBackground: BackgroundSetting = {
+            blockFillStyle: null,
+            pathBackground: [
+                ["moveTo", BasicBlock.blockSetting.roundCorner * BasicBlock.blockSetting.blockScale, 0],
+                ["arcTo", (240 + IDE.GeneralIDE.ICONSIZE) * BasicBlock.blockSetting.blockScale, 0, (240 + IDE.GeneralIDE.ICONSIZE) * BasicBlock.blockSetting.blockScale, BasicBlock.blockSetting.roundCorner * BasicBlock.blockSetting.blockScale, BasicBlock.blockSetting.roundCorner * BasicBlock.blockSetting.blockScale],
+                ["arcTo", (240 + IDE.GeneralIDE.ICONSIZE) * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, ((240 + IDE.GeneralIDE.ICONSIZE) - BasicBlock.blockSetting.roundCorner) * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale, BasicBlock.blockSetting.roundCorner * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0, 100 * BasicBlock.blockSetting.blockScale, 0, (100 - BasicBlock.blockSetting.roundCorner) * BasicBlock.blockSetting.blockScale, BasicBlock.blockSetting.roundCorner * BasicBlock.blockSetting.blockScale],
+                ["arcTo", 0, 0, BasicBlock.blockSetting.roundCorner * BasicBlock.blockSetting.blockScale, 0, BasicBlock.blockSetting.roundCorner * BasicBlock.blockSetting.blockScale],
+                ["closePath"]
+            ],
+            hitAreaBackground: [
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale,
+                Math.round((240 + IDE.GeneralIDE.ICONSIZE) * BasicBlock.blockSetting.blockScale), 0 * BasicBlock.blockSetting.blockScale,
+                Math.round((240 + IDE.GeneralIDE.ICONSIZE) * BasicBlock.blockSetting.blockScale), 100 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 100 * BasicBlock.blockSetting.blockScale,
+                0 * BasicBlock.blockSetting.blockScale, 0 * BasicBlock.blockSetting.blockScale
+            ]
+        }
+
+        private textInputSetting: TextInputSetting = {
+            sizeGrid: "0,10,0,10",
+            font: "Arial",
+            fontSize: 20,
+            bold: true,
+            color: "#000000",
+            restrict: "0-9"
+        }
+        constructor() {
+
+        }
+
+        public create(type: string): BasicBlock {
+            let textureSettings: Array<ResourceSetting> = [];
+            let inputSettings: Array<InputSettings> = [];
+            let backgroundSettings: Array<BackgroundSetting> = [];
+            let targetSettings: Array<TargetSetting> = [];
+            let block: BasicBlock;
+
+            if (type == "goUp" ||
+                type == "goDown" ||
+                type == "goLeft" ||
+                type == "goRight" ||
+                type == "goForward" ||
+                type == "rotate_anticlockwise" ||
+                type == "rotate_clockwise" ||
+                type == "wait") {
+
+                switch (type) {
+                    case "goUp":
+                        textureSettings.push(
+                            {
+                                name: "up",
+                                path: "materials/texture_up.png",
+                                x: Math.round(100 * BasicBlock.blockSetting.blockScale),
+                                y: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                                width: IDE.GeneralIDE.ICONSIZE,
+                                height: IDE.GeneralIDE.ICONSIZE
+                            }
+                        );
+                        break;
+                    case "goDown":
+                        textureSettings.push(
+                            {
+                                name: "down",
+                                path: "materials/texture_down.png",
+                                x: Math.round(100 * BasicBlock.blockSetting.blockScale),
+                                y: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                                width: IDE.GeneralIDE.ICONSIZE,
+                                height: IDE.GeneralIDE.ICONSIZE
+                            }
+                        );
+                        break;
+                    case "goLeft":
+                        textureSettings.push(
+                            {
+                                name: "left",
+                                path: "materials/texture_left.png",
+                                x: Math.round(100 * BasicBlock.blockSetting.blockScale),
+                                y: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                                width: IDE.GeneralIDE.ICONSIZE,
+                                height: IDE.GeneralIDE.ICONSIZE
+                            }
+                        );
+                        break;
+                    case "goRight":
+                        textureSettings.push(
+                            {
+                                name: "right",
+                                path: "materials/texture_right.png",
+                                x: Math.round(100 * BasicBlock.blockSetting.blockScale),
+                                y: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                                width: IDE.GeneralIDE.ICONSIZE,
+                                height: IDE.GeneralIDE.ICONSIZE
+                            }
+                        );
+                        break;
+                    case "goForward":
+                        textureSettings.push(
+                            {
+                                name: "forward",
+                                path: "materials/texture_move.png",
+                                x: Math.round(100 * BasicBlock.blockSetting.blockScale),
+                                y: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                                width: IDE.GeneralIDE.ICONSIZE,
+                                height: IDE.GeneralIDE.ICONSIZE
+                            }
+                        );
+                        break;
+                    case "rotate_anticlockwise":
+                        textureSettings.push(
+                            {
+                                name: "rotate_anticlockwise",
+                                path: "materials/texture_rotate_anticlockwise.png",
+                                x: Math.round(100 * BasicBlock.blockSetting.blockScale),
+                                y: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                                width: IDE.GeneralIDE.ICONSIZE,
+                                height: IDE.GeneralIDE.ICONSIZE
+                            }
+                        );
+                        break;
+                    case "rotate_clockwise":
+                        textureSettings.push(
+                            {
+                                name: "rotate_clockwise",
+                                path: "materials/texture_rotate_clockwise.png",
+                                x: Math.round(100 * BasicBlock.blockSetting.blockScale),
+                                y: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                                width: IDE.GeneralIDE.ICONSIZE,
+                                height: IDE.GeneralIDE.ICONSIZE
+                            }
+                        );
+                        break;
+                    case "wait":
+                        textureSettings.push(
+                            {
+                                name: "wait",
+                                path: "materials/texture_wait.png",
+                                x: Math.round(100 * BasicBlock.blockSetting.blockScale),
+                                y: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                                width: IDE.GeneralIDE.ICONSIZE,
+                                height: IDE.GeneralIDE.ICONSIZE
+                            }
+                        );
+                        break;
+                    default:
+                        break;
+                }
+                let backgroundSetting: BackgroundSetting = {
+                    blockFillStyle: this.chooseBlockFillStyle(type),
+                    hitAreaBackground: this.blockBackground.hitAreaBackground,
+                    pathBackground: this.blockBackground.pathBackground
+                };
+                backgroundSettings.push(backgroundSetting);
+                inputSettings.push(
+                    {
+                        inputBoxSetting: {
+                            name: "input1",
+                            path: "materials/input.png",
+                            x: Math.round(100 * BasicBlock.blockSetting.blockScale + IDE.GeneralIDE.ICONSIZE + (100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                            y: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE / 2) / 2),
+                            width: IDE.GeneralIDE.ICONSIZE,
+                            height: Math.round(IDE.GeneralIDE.ICONSIZE / 2)
+                        },
+                        textInputSetting: this.textInputSetting
+                    }
+                );
+                targetSettings.push(
+                    {
+                        name: "target1",
+                        path: "materials/btn_blank.png",
+                        x: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                        y: Math.round((100 * BasicBlock.blockSetting.blockScale - IDE.GeneralIDE.ICONSIZE) / 2),
+                        width: IDE.GeneralIDE.ICONSIZE,
+                        height: IDE.GeneralIDE.ICONSIZE,
+                        stateNum: 1
+                    }
+                );
+                let block = new CommandBlock(textureSettings, inputSettings, backgroundSettings, null, targetSettings);
+                block.initialize();
+                return block;
+            }
+        }
+
+        private chooseBlockFillStyle(type: string): string {
+
+            let blockSet: Array<BlockAttributes>;
+            blockSet = Block.blockSet["motion"];
+            if (blockSet.length != 0) {
+                for (let i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#f46767";
+                    }
+                }
+            }
+            blockSet = Block.blockSet["look"];
+            if (blockSet.length != 0) {
+                for (let i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#fa800a";
+                    }
+                }
+            }
+            blockSet = Block.blockSet["control"];
+            if (blockSet.length != 0) {
+                for (let i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#6bcd47";
+                    }
+                }
+            }
+            blockSet = Block.blockSet["event"];
+            if (blockSet.length != 0) {
+                for (let i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#608fee";
+                    }
+                }
+            }
+            blockSet = Block.blockSet["pen"];
+            if (blockSet.length != 0) {
+                for (let i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#68cdff";
+                    }
+                }
+            }
+            blockSet = Block.blockSet["music"];
+            if (blockSet.length != 0) {
+                for (let i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#a073ff";
+                    }
+                }
+            }
+            blockSet = Block.blockSet["variable"];
+            if (blockSet.length != 0) {
+                for (let i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#d92323";
+                    }
+                }
+            }
+            blockSet = Block.blockSet["math"];
+            if (blockSet.length != 0) {
+                for (let i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#e76cea";
+                    }
+                }
+            }
+            blockSet = Block.blockSet["sense"];
+            if (blockSet.length != 0) {
+                for (let i = 0; i < blockSet.length; i++) {
+                    if (blockSet[i].name == type) {
+                        return "#fa800a";
+                    }
+                }
+            }
+
+            return null;
+        }
+    }
+}
+/*
 module Block {
     import TextInput = Laya.TextInput;
     import VSlider = Laya.VSlider;
@@ -843,3 +1455,4 @@ module Block {
         }
     }
 }
+*/
