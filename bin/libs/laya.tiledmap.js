@@ -29,7 +29,6 @@
 			this._mapTileH=0;
 			this._mapSprite=null;
 			this._layerArray=[];
-			this._renderLayerArray=[];
 			this._gridArray=[];
 			this._showGridKey=false;
 			this._totalGridNum=0;
@@ -46,7 +45,6 @@
 			this._animationDic={};
 			this._properties=null;
 			this._tileProperties={};
-			this._tileProperties2={};
 			this._orientation="orthogonal";
 			this._renderOrder="right-down";
 			this._colorArray=["FF","00","33","66"];
@@ -64,11 +62,7 @@
 			this._pathArray=null;
 			this._limitRange=false;
 			this.autoCache=true;
-			this.autoCacheType="normal";
-			this.enableMergeLayer=false;
-			this.removeCoveredTile=false;
-			this.showGridTextureCount=false;
-			this.antiCrack=true;
+			this.autoCacheType="bitmap";
 			this._rect=new Rectangle();
 			this._paddingRect=new Rectangle();
 			this._mapRect=new GRect();
@@ -101,8 +95,7 @@
 			this._completeHandler=completeHandler;
 			if (viewRectPadding){
 				this._paddingRect.copyFrom(viewRectPadding);
-			}
-			else {
+				}else {
 				this._paddingRect.setTo(0,0,0,0);
 			}
 			if (gridSize){
@@ -113,8 +106,7 @@
 			if (tIndex >-1){
 				this._resPath=mapName.substr(0,tIndex);
 				this._pathArray=this._resPath.split("/");
-			}
-			else {
+				}else {
 				this._resPath="";
 				this._pathArray=[];
 			}
@@ -141,7 +133,7 @@
 			this._width=this._mapTileW *this._mapW;
 			this._height=this._mapTileH *this._mapH;
 			if (this._orientation=="staggered"){
-				this._height=(0.5+this._mapH *0.5)*this._mapTileH;
+				this._height=(0.5+this._mapH*0.5)*this._mapTileH;
 			}
 			this._mapLastRect.top=this._mapLastRect.bottom=this._mapLastRect.left=this._mapLastRect.right=-1;
 			var tArray=tJsonData.tilesets;
@@ -152,9 +144,7 @@
 				tileset=tArray[i];
 				tTileSet=new TileSet();
 				tTileSet.init(tileset);
-				if (tTileSet.properties && tTileSet.properties.ignore)continue ;
 				this._tileProperties[i]=tTileSet.tileproperties;
-				this.addTileProperties(tTileSet.tileproperties);
 				this._tileSetArray.push(tTileSet);
 				var tTiles=tileset.tiles;
 				if (tTiles){
@@ -201,21 +191,19 @@
 			if (tParentPathNum==0){
 				if (this._pathArray.length > 0){
 					tResultPath=resPath+"/"+relativePath;
-				}
-				else {
+					}else {
 					tResultPath=relativePath;
 				}
 				return tResultPath;
 			};
 			var tSrcNum=this._pathArray.length-tParentPathNum;
 			if (tSrcNum < 0){
-				console.log("[error]path does not exist",this._pathArray,tImageArray,resPath,relativePath);
+				console.log("[error]path does not exist");
 			}
 			for (i=0;i < tSrcNum;i++){
 				if (i==0){
 					tResultPath+=this._pathArray[i];
-				}
-				else {
+					}else {
 					tResultPath=tResultPath+"/"+this._pathArray[i];
 				}
 			}
@@ -254,8 +242,6 @@
 					tTileTexSet.offX=tTileSet.titleoffsetX;
 					tTileTexSet.offY=tTileSet.titleoffsetY-(tTileTextureH-this._mapTileH);
 					tTileTexSet.texture=Texture.createFromTexture(tTexture,tTileSet.margin+(tTileTextureW+tTileSet.spacing)*j,tTileSet.margin+(tTileTextureH+tTileSet.spacing)*i,tTileTextureW,tTileTextureH);
-					if(this.antiCrack)
-						this.adptTexture(tTileTexSet.texture);
 					this._tileTexSetArr.push(tTileTexSet);
 					tTileTexSet.gid=this._tileTexSetArr.length;
 				}
@@ -265,25 +251,10 @@
 				this._loader.once("complete",this,this.onTextureComplete);
 				var tPath=this.mergePath(this._resPath,tTileSet.image);
 				this._loader.load(tPath,/*laya.net.Loader.IMAGE*/"image",false);
-			}
-			else {
+				}else {
 				this._currTileSet=null;
 				this.initMap();
 			}
-		}
-
-		__proto.adptTexture=function(tex){
-			if (!tex)return;
-			var pX=tex.uv[0];
-			var pX1=tex.uv[2];
-			var pY=tex.uv[1];
-			var pY1=tex.uv[7];
-			var dW=1 / tex.bitmap.width;
-			var dH=1 / tex.bitmap.height;
-			tex.uv[0]=tex.uv[6]=pX+dW;
-			tex.uv[2]=tex.uv[4]=pX1-dW;
-			tex.uv[1]=tex.uv[3]=pY+dH;
-			tex.uv[5]=tex.uv[7]=pY1-dH;
 		}
 
 		/**
@@ -327,96 +298,18 @@
 				}
 			};
 			var tLayerArray=this._jsonData.layers;
-			var isFirst=true;
-			var tTarLayerID=1;
-			var tLayerTarLayerName;
-			var preLayerTarName;
-			var preLayer;
 			for (var tLayerLoop=0;tLayerLoop < tLayerArray.length;tLayerLoop++){
 				var tLayerData=tLayerArray[tLayerLoop];
 				if (tLayerData.visible==true){
 					var tMapLayer=new MapLayer();
 					tMapLayer.init(tLayerData,this);
-					if (!this.enableMergeLayer){
-						this._mapSprite.addChild(tMapLayer);
-						this._renderLayerArray.push(tMapLayer);
-						}else{
-						tLayerTarLayerName=tMapLayer.getLayerProperties("layer");
-						isFirst=isFirst || (!preLayer)|| (tLayerTarLayerName !=preLayerTarName);
-						if (isFirst){
-							isFirst=false;
-							tMapLayer.tarLayer=tMapLayer;
-							preLayer=tMapLayer;
-							this._mapSprite.addChild(tMapLayer);
-							this._renderLayerArray.push(tMapLayer);
-							}else{
-							tMapLayer.tarLayer=preLayer;
-						}
-						preLayerTarName=tLayerTarLayerName;
-					}
+					this._mapSprite.addChild(tMapLayer);
 					this._layerArray.push(tMapLayer);
 				}
-			}
-			if (this.removeCoveredTile){
-				this.adptTiledMapData();
 			}
 			this.moveViewPort(this._rect.x,this._rect.y);
 			if (this._completeHandler !=null){
 				this._completeHandler.run();
-			}
-		}
-
-		//这里应该发送消息，通知上层，地图创建完成
-		__proto.addTileProperties=function(tileDataDic){
-			var key;
-			for (key in tileDataDic){
-				this._tileProperties2[key]=tileDataDic[key];
-			}
-		}
-
-		__proto.getTileUserData=function(id,sign,defaultV){
-			if (!this._tileProperties2 || !this._tileProperties2[id] || !(sign in this._tileProperties2[id]))return defaultV;
-			return this._tileProperties2[id][sign];
-		}
-
-		__proto.adptTiledMapData=function(){
-			var i=0,len=0;
-			len=this._layerArray.length;
-			var tLayer;
-			var noNeeds={};
-			var tDatas;
-			for (i=len-1;i >=0;i--){
-				tLayer=this._layerArray[i];
-				tDatas=tLayer._mapData;
-				if (!tDatas)continue ;
-				this.removeCoverd(tDatas,noNeeds);
-				this.collectCovers(tDatas,noNeeds,i);
-			}
-		}
-
-		__proto.removeCoverd=function(datas,noNeeds){
-			var i=0,len=0;
-			len=datas.length;
-			for (i=0;i < len;i++){
-				if (noNeeds[i]){
-					datas[i]=0;
-				}
-			}
-		}
-
-		__proto.collectCovers=function(datas,noNeeds,layer){
-			var i=0,len=0;
-			len=datas.length;
-			var tTileData=0;
-			var isCover=0;
-			for (i=0;i < len;i++){
-				tTileData=datas[i];
-				if (tTileData > 0){
-					isCover=this.getTileUserData(tTileData-1,"type",0);
-					if (isCover > 0){
-						noNeeds[i]=tTileData;
-					}
-				}
 			}
 		}
 
@@ -476,8 +369,7 @@
 						tAnimationSprite.setTileTextureSet(this._index.toString(),tTileTexSet);
 						tGridSprite.addAniSprite(tAnimationSprite);
 						tGridSprite.addChild(tAnimationSprite);
-					}
-					else {
+						}else {
 						tGridSprite.graphics.drawTexture(tTileTexSet.texture,0,0,width,height);
 					}
 					tGridSprite.drawImageNum++;
@@ -518,7 +410,6 @@
 		*@param height 视口的高
 		*/
 		__proto.changeViewPort=function(moveX,moveY,width,height){
-			if (moveX==this._rect.x && moveY==this._rect.y && width==this._rect.width && height==this._rect.height)return;
 			this._x=-moveX;
 			this._y=-moveY;
 			this._rect.x=moveX;
@@ -557,18 +448,8 @@
 		__proto.updateViewPort=function(){
 			this._centerX=this._rect.x+this._rect.width *this._pivotScaleX;
 			this._centerY=this._rect.y+this._rect.height *this._pivotScaleY;
-			var posChanged=false;
-			var preValue=this._viewPortX;
-			this._viewPortX=this._centerX-this._rect.width *this._pivotScaleX / this._scale;
-			if (preValue !=this._viewPortX){
-				posChanged=true;
-				}else {
-				preValue=this._viewPortY;
-			}
+			this._viewPortX=this._centerX-this._rect.width *this._pivotScaleX/ this._scale;
 			this._viewPortY=this._centerY-this._rect.height *this._pivotScaleY / this._scale;
-			if (!posChanged && preValue !=this._viewPortY){
-				posChanged=true;
-			}
 			if (this._limitRange){
 				var tRight=this._viewPortX+this._viewPortWidth;
 				if (tRight > this._width){
@@ -590,21 +471,15 @@
 			this._mapRect.bottom=Math.floor((this._viewPortY+this._viewPortHeight+tPaddingRect.height+tPaddingRect.y)/ this._gridHeight);
 			this._mapRect.left=Math.floor((this._viewPortX-tPaddingRect.x)/ this._gridWidth);
 			this._mapRect.right=Math.floor((this._viewPortX+this._viewPortWidth+tPaddingRect.width+tPaddingRect.x)/ this._gridWidth);
-			if (this._mapRect.top !=this._mapLastRect.top || this._mapRect.bottom !=this._mapLastRect.bottom || this._mapRect.left !=this._mapLastRect.left || this._mapRect.right !=this._mapLastRect.right){
-				this.clipViewPort();
-				this._mapLastRect.top=this._mapRect.top;
-				this._mapLastRect.bottom=this._mapRect.bottom;
-				this._mapLastRect.left=this._mapRect.left;
-				this._mapLastRect.right=this._mapRect.right;
-				posChanged=true;
-			}
-			if (!posChanged)return;
+			this.clipViewPort();
+			this._mapLastRect.top=this._mapRect.top;
+			this._mapLastRect.bottom=this._mapRect.bottom;
+			this._mapLastRect.left=this._mapRect.left;
+			this._mapLastRect.right=this._mapRect.right;
 			var tMapLayer;
-			var len=this._renderLayerArray.length;
-			for (var i=0;i < len;i++){
-				tMapLayer=this._renderLayerArray[i];
-				if(tMapLayer._gridSpriteArray.length>0)
-					tMapLayer.updateGridPos();
+			for (var i=0;i < this._layerArray.length;i++){
+				tMapLayer=this._layerArray[i];
+				tMapLayer.updateGridPos();
 			}
 		}
 
@@ -627,9 +502,8 @@
 						}
 					}
 				}
-			}
-			else {
-				tAdd=Math.min(this._mapLastRect.left,this._mapRect.right+1)-this._mapRect.left;
+				}else {
+				tAdd=this._mapLastRect.left-this._mapRect.left;
 				if (tAdd > 0){
 					for (j=this._mapRect.left;j < this._mapRect.left+tAdd;j++){
 						for (i=this._mapRect.top;i <=this._mapRect.bottom;i++){
@@ -641,14 +515,13 @@
 			if (this._mapRect.right > this._mapLastRect.right){
 				tAdd=this._mapRect.right-this._mapLastRect.right;
 				if (tAdd > 0){
-					for (j=Math.max(this._mapLastRect.right+1,this._mapRect.left);j <=this._mapLastRect.right+tAdd;j++){
+					for (j=this._mapLastRect.right+1;j <=this._mapLastRect.right+tAdd;j++){
 						for (i=this._mapRect.top;i <=this._mapRect.bottom;i++){
 							this.showGrid(j,i);
 						}
 					}
 				}
-			}
-			else {
+				}else {
 				tSub=this._mapLastRect.right-this._mapRect.right
 				if (tSub > 0){
 					for (j=this._mapRect.right+1;j <=this._mapRect.right+tSub;j++){
@@ -667,9 +540,8 @@
 						}
 					}
 				}
-			}
-			else {
-				tAdd=Math.min(this._mapLastRect.top,this._mapRect.bottom+1)-this._mapRect.top;
+				}else {
+				tAdd=this._mapLastRect.top-this._mapRect.top;
 				if (tAdd > 0){
 					for (i=this._mapRect.top;i < this._mapRect.top+tAdd;i++){
 						for (j=this._mapRect.left;j <=this._mapRect.right;j++){
@@ -681,14 +553,13 @@
 			if (this._mapRect.bottom > this._mapLastRect.bottom){
 				tAdd=this._mapRect.bottom-this._mapLastRect.bottom;
 				if (tAdd > 0){
-					for (i=Math.max(this._mapLastRect.bottom+1,this._mapRect.top);i <=this._mapLastRect.bottom+tAdd;i++){
+					for (i=this._mapLastRect.bottom+1;i <=this._mapLastRect.bottom+tAdd;i++){
 						for (j=this._mapRect.left;j <=this._mapRect.right;j++){
 							this.showGrid(j,i);
 						}
 					}
 				}
-			}
-			else {
+				}else {
 				tSub=this._mapLastRect.bottom-this._mapRect.bottom
 				if (tSub > 0){
 					for (i=this._mapRect.bottom+1;i <=this._mapRect.bottom+tSub;i++){
@@ -731,8 +602,8 @@
 					case /*CLASS CONST:laya.map.TiledMap.ORIENTATION_STAGGERED*/"staggered":
 						tLeft=Math.floor(gridX *tGridWidth / this._mapTileW);
 						tRight=Math.floor((gridX *tGridWidth+tGridWidth)/ this._mapTileW);
-						tTop=Math.floor(gridY *tGridHeight / (this._mapTileH / 2));
-						tBottom=Math.floor((gridY *tGridHeight+tGridHeight)/ (this._mapTileH / 2));
+						tTop=Math.floor(gridY *tGridHeight / (this._mapTileH/2));
+						tBottom=Math.floor((gridY *tGridHeight+tGridHeight)/ (this._mapTileH/2));
 						break ;
 					case /*CLASS CONST:laya.map.TiledMap.ORIENTATION_ORTHOGONAL*/"orthogonal":
 						tLeft=Math.floor(gridX *tGridWidth / this._mapTileW);
@@ -749,25 +620,10 @@
 						break ;
 					};
 				var tLayer=null;
-				var tTGridSprite;
-				var tDrawMapLayer;
 				for (var z=0;z < this._layerArray.length;z++){
 					tLayer=this._layerArray[z];
-					if (this.enableMergeLayer){
-						if (tLayer.tarLayer !=tDrawMapLayer){
-							tTGridSprite=null;
-							tDrawMapLayer=tLayer.tarLayer;
-						}
-						if (!tTGridSprite){
-							tTGridSprite=tDrawMapLayer.getDrawSprite(gridX,gridY);
-							tTempArray.push(tTGridSprite);
-						}
-						tGridSprite=tTGridSprite;
-					}
-					else {
-						tGridSprite=tLayer.getDrawSprite(gridX,gridY);
-						tTempArray.push(tGridSprite);
-					};
+					tGridSprite=tLayer.getDrawSprite(gridX,gridY);
+					tTempArray.push(tGridSprite);
 					var tColorStr;
 					if (this._showGridKey){
 						tColorStr="#";
@@ -870,30 +726,18 @@
 					}
 					if (!tGridSprite.isHaveAnimation){
 						tGridSprite.autoSize=true;
-						if (this.autoCache)
+						if(this.autoCache)
 							tGridSprite.cacheAs=this.autoCacheType;
 						tGridSprite.autoSize=false;
 					}
-					if (!this.enableMergeLayer){
-						if (tGridSprite.drawImageNum > 0){
-							tLayer.addChild(tGridSprite);
-						}
-						if (this._showGridKey){
-							tGridSprite.graphics.drawRect(0,0,tGridWidth,tGridHeight,null,tColorStr);
-						}
-						}else{
-						if (tTGridSprite && tTGridSprite.drawImageNum > 0&&tDrawMapLayer){
-							tDrawMapLayer.addChild(tTGridSprite);
-						}
+					if (tGridSprite.drawImageNum > 0){
+						tLayer.addChild(tGridSprite);
+					}
+					if (this._showGridKey){
+						tGridSprite.graphics.drawRect(0,0,tGridWidth,tGridHeight,null,tColorStr);
 					}
 				}
-				if (this.enableMergeLayer&&this.showGridTextureCount){
-					if (tTGridSprite){
-						tTGridSprite.graphics.fillText(tTGridSprite.drawImageNum+"",20,20,null,"#ff0000");
-					}
-				}
-			}
-			else {
+				}else {
 				for (i=0;i < tTempArray.length && i < this._layerArray.length;i++){
 					var tLayerSprite=this._layerArray[i];
 					if (tLayerSprite && tTempArray[i]){
@@ -986,7 +830,6 @@
 				tLayer.clearAll();
 			}
 			this._layerArray=[];
-			this._renderLayerArray=[];
 			if (this._mapSprite){
 				this._mapSprite.destroy();
 				this._mapSprite=null;
@@ -1080,8 +923,7 @@
 		__getset(0,__proto,'scale',function(){
 			return this._scale;
 			},function(scale){
-			if (scale <=0)
-				return;
+			if (scale <=0)return;
 			this._scale=scale;
 			this._viewPortWidth=this._rect.width / scale;
 			this._viewPortHeight=this._rect.height / scale;
@@ -1568,7 +1410,6 @@
 			this._objDic=null;
 			this._dataDic=null;
 			this._properties=null;
-			this.tarLayer=null;
 			this.layerName=null;
 			MapLayer.__super.call(this);
 			this._tempMapPos=new Point();
@@ -1941,7 +1782,6 @@
 			}
 			this._properties=null;
 			this._tempMapPos=null;
-			this.tarLayer=null;
 		}
 
 		return MapLayer;

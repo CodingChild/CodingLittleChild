@@ -1,5 +1,6 @@
 module Thread{
     import Button = Laya.Button;
+    /*
     export class Thread{
 
         public timeout: number;
@@ -253,5 +254,5 @@ module Thread{
             }
         }
 
-    }
+    }*/
 }

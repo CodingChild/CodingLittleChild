@@ -15,12 +15,16 @@ module Block {
             inputSettings: Array<InputSettings>,
             backgroundSettings: Array<BackgroundSetting>,
             sliderSetting?: SliderSetting,
-            targetSettings?:Array<TargetSetting>) {
+            targetSettings?: Array<TargetSetting>,
+            generalListSetting?: IDE.GeneralListSetting,
+            ggeneralListItemSetting?: IDE.GeneralListItemSetting) {
             super(textureSettings,
                 inputSettings,
                 backgroundSettings,
                 sliderSetting,
-                targetSettings);
+                targetSettings,
+                generalListSetting,
+                ggeneralListItemSetting);
 
         }
 
@@ -34,7 +38,7 @@ module Block {
 
 
     }
-}		
+}
 
 
 

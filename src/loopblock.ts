@@ -8,7 +8,7 @@ module Block {
     import Point = Laya.Point;
     import Rectangle = Laya.Rectangle;
     import Box = Laya.Box;
-
+/*
     export class LoopBlock extends BasicBlock {
 
         public commandSlot: CommandSlot;
@@ -289,5 +289,5 @@ module Block {
         }
 
 
-    }
+    }*/
 }

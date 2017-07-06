@@ -493,7 +493,25 @@ var Block;
                     height: IDE.GeneralIDE.ICONSIZE,
                     stateNum: 1
                 });
-                var block_1 = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, null, targetSettings);
+                var generalListSetting = {
+                    width: (20 + 5 * IDE.GeneralIDE.ICONSIZE) * Block.BasicBlock.blockSetting.blockScale,
+                    height: 100 * Block.BasicBlock.blockSetting.blockScale,
+                    vScrollBarSkin: null,
+                    hScrollBarSkin: "",
+                    spaceX: 0,
+                    spaceY: 0,
+                    repeatX: 3,
+                    repeatY: 1,
+                    bgColor: "#ffffff"
+                };
+                var generalListItemSetting = {
+                    width: IDE.GeneralIDE.ICONSIZE,
+                    height: IDE.GeneralIDE.ICONSIZE,
+                    backgroundNormal: null,
+                    backgroundHighlight: "#D7D7D7",
+                    imageSize: IDE.GeneralIDE.ICONSIZE
+                };
+                var block_1 = new Block.CommandBlock(textureSettings, inputSettings, backgroundSettings, null, targetSettings, generalListSetting, generalListItemSetting);
                 block_1.initialize();
                 return block_1;
             }

@@ -87,8 +87,16 @@ module IDE {
         }
 
         protected createStageArea(): void {
-            let height = Math.round(this.height * 0.5 - GeneralIDE.ICONSIZE * 1.2);
-            let width = Math.round(height * 16 / 9);
+            let height = Math.round(this.height * 0.5 - GeneralIDE.ICONSIZE * 1.5);
+            let width = Math.round(this.width * 0.5 - GeneralIDE.ICONSIZE * 0.7)
+            let heightToWidth = height / width;
+            let standHeightToHeight = 9 / 16;
+            if(heightToWidth > standHeightToHeight){
+                height = Math.round(width * standHeightToHeight);
+            }
+            else if(heightToWidth < standHeightToHeight){
+                width = Math.round(height / standHeightToHeight);
+            }
             let setting: StageAreaSetting = {
                 normalWidth: width,
                 normalHeight: height,
@@ -112,7 +120,7 @@ module IDE {
                     hScrollBarSkin: "",
                     spaceX: 0,
                     spaceY: 0,
-                    repeatX: Math.floor((this.width * 0.5 - GeneralIDE.ICONSIZE -20) / (GeneralIDE.ICONSIZE * 2)),
+                    repeatX: Math.floor((this.width * 0.5 - GeneralIDE.ICONSIZE - 20) / (GeneralIDE.ICONSIZE * 2)),
                     repeatY: 1,
                     bgColor: "#FFFF99"
                 },
@@ -134,13 +142,13 @@ module IDE {
                     x: null,
                     y: null
                 },
-                deletePageBtnSetting:{
+                deletePageBtnSetting: {
                     width: GeneralIDE.ICONSIZE,
                     height: GeneralIDE.ICONSIZE,
                     skin: "materials/btn_delete.png",
                     stateNum: 1,
                     x: Math.round(this.width / 2 - GeneralIDE.ICONSIZE - GeneralIDE.ICONSIZE / 5),
-                    y: this.height - Math.round(GeneralIDE.ICONSIZE / 5 * 2) - GeneralIDE.ICONSIZE               
+                    y: this.height - Math.round(GeneralIDE.ICONSIZE / 5 * 2) - GeneralIDE.ICONSIZE
                 }
             }
             this.scriptArea = new ScriptArea(scriptAreaSetting);
@@ -184,9 +192,11 @@ module IDE {
             this.addChild(vbox);
             this.blockArea = vbox;
 
+            let tabHeight = 32;
+
             let generalListItemSetting1: GeneralListItemSetting = {
-                width: Math.round((vbox.height - GeneralIDE.ICONSIZE * 1.6) * 1.5),
-                height: Math.round((vbox.height - GeneralIDE.ICONSIZE * 1.6)),
+                width: Math.round(GeneralIDE.ICONSIZE * 3),
+                height: Math.round(GeneralIDE.ICONSIZE * 2),
                 backgroundNormal: null,
                 backgroundHighlight: null,
                 imageSize: GeneralIDE.ICONSIZE
@@ -199,13 +209,14 @@ module IDE {
                 spaceX: 0,
                 spaceY: 0,
                 repeatX: Math.floor(vbox.width / generalListItemSetting1.width),
-                repeatY: 1,
-                spaceOfTab_index: 20,
+                repeatY: Math.floor((vbox.height - tabHeight * 2) / generalListItemSetting1.height),
+                spaceOfTab_index: tabHeight,
                 tabstateNum: 2,
                 tabSkin: "materials/tab_index.png",
-                tabY: Math.round(generalListItemSetting1.height),
+                tabY: Math.round(vbox.height - GeneralIDE.ICONSIZE - tabHeight * 1.5),
                 bgColor: "#ffffff"
             }
+            
             let blockFactory = new Block.BlockFactory();
             let blockContentList = new BlockContentList(blockContentListSetting, generalListItemSetting1, blockFactory);
             blockContentList.pos(0, 0);
@@ -279,11 +290,11 @@ module IDE {
             this.spriteMaterialArea = vbox;
 
             let generalListItemSetting1: GeneralListItemSetting = {
-                width: Math.round(vbox.width / 4),
+                width: GeneralIDE.ICONSIZE * 3,
                 height: vbox.height - GeneralIDE.ICONSIZE,
                 backgroundNormal: null,
                 backgroundHighlight: "#D7D7D7",
-                imageSize: Math.round(vbox.height - GeneralIDE.ICONSIZE * 1.4)
+                imageSize: GeneralIDE.ICONSIZE * 2
             }
             let generalListSetting: GeneralListSetting = {
                 width: vbox.width,
@@ -292,7 +303,7 @@ module IDE {
                 hScrollBarSkin: "",
                 spaceX: 0,
                 spaceY: 0,
-                repeatX: 4,
+                repeatX: Math.floor(vbox.width / generalListItemSetting1.width),
                 repeatY: 1,
                 bgColor: "#ffffff"
             }
@@ -341,11 +352,11 @@ module IDE {
             this.backgroundMaterialArea = vbox;
 
             let generalListItemSetting1: GeneralListItemSetting = {
-                width: Math.round(vbox.width / 3),
-                height: Math.round(vbox.height - GeneralIDE.ICONSIZE),
+                width: GeneralIDE.ICONSIZE * 5,
+                height: vbox.height - GeneralIDE.ICONSIZE,
                 backgroundNormal: null,
                 backgroundHighlight: "#D7D7D7",
-                imageSize: Math.round(vbox.height - GeneralIDE.ICONSIZE * 1.4)
+                imageSize: GeneralIDE.ICONSIZE * 2
             }
             let generalListSetting: GeneralListSetting = {
                 width: vbox.width,
@@ -354,7 +365,7 @@ module IDE {
                 hScrollBarSkin: "",
                 spaceX: 0,
                 spaceY: 0,
-                repeatX: 3,
+                repeatX: Math.floor(vbox.width / generalListItemSetting1.width),
                 repeatY: 1,
                 bgColor: "#ffffff"
             }
@@ -503,15 +514,15 @@ module IDE {
                     height: Math.round(this.height - GeneralIDE.ICONSIZE),
                     vScrollBarSkin: "",
                     hScrollBarSkin: null,
-                    spaceX: GeneralIDE.ICONSIZE,
-                    spaceY: GeneralIDE.ICONSIZE,
+                    spaceX: 0,
+                    spaceY: 0,
                     repeatX: Math.floor(this.width / GeneralIDE.ICONSIZE / 3),
                     repeatY: Math.floor((this.height - GeneralIDE.ICONSIZE) / GeneralIDE.ICONSIZE / 3),
                     bgColor: "#FFFFFF"
                 },
                 generalListItemSetting: {
-                    width: GeneralIDE.ICONSIZE * 2,
-                    height: GeneralIDE.ICONSIZE * 2,
+                    width: GeneralIDE.ICONSIZE * 3,
+                    height: GeneralIDE.ICONSIZE * 3,
                     backgroundNormal: null,
                     backgroundHighlight: "#D7D7D7",
                     imageSize: GeneralIDE.ICONSIZE * 2
@@ -555,15 +566,15 @@ module IDE {
                     height: Math.round(this.height - GeneralIDE.ICONSIZE),
                     vScrollBarSkin: "",
                     hScrollBarSkin: null,
-                    spaceX: GeneralIDE.ICONSIZE,
-                    spaceY: GeneralIDE.ICONSIZE,
+                    spaceX: 0,
+                    spaceY: 0,
                     repeatX: Math.floor(this.width / (GeneralIDE.ICONSIZE * 2 * 16 / 9 + GeneralIDE.ICONSIZE)),
                     repeatY: Math.floor((this.height - GeneralIDE.ICONSIZE) / GeneralIDE.ICONSIZE / 3),
                     bgColor: "#FFFFFF"
                 },
                 generalListItemSetting: {
-                    width: Math.round(GeneralIDE.ICONSIZE * 2 * 16 / 9),
-                    height: GeneralIDE.ICONSIZE * 2,
+                    width: Math.round(GeneralIDE.ICONSIZE * 3 * 16 / 9),
+                    height: GeneralIDE.ICONSIZE * 3,
                     backgroundNormal: null,
                     backgroundHighlight: "#D7D7D7",
                     imageSize: GeneralIDE.ICONSIZE * 2
@@ -589,7 +600,7 @@ module IDE {
             this.controlBarForStage.pos(Math.round(this.width * 0.5 - GeneralIDE.ICONSIZE * 4.5),
                 Math.round(GeneralIDE.ICONSIZE / 5));
             // StageArea
-            this.stageArea.pos(Math.round((this.width * 0.5 - GeneralIDE.ICONSIZE * 0.7) / 2 - this.stageArea.width / 2 + GeneralIDE.ICONSIZE * 0.2), Math.round(GeneralIDE.ICONSIZE * 1.2));
+            this.stageArea.pos(Math.round((this.width * 0.5 - GeneralIDE.ICONSIZE * 0.7) / 2 - this.stageArea.width / 2 + GeneralIDE.ICONSIZE * 0.2), Math.round(GeneralIDE.ICONSIZE * 1.5));
             // ScriptArea
             this.scriptArea.pos(Math.round(this.width * 0.5), Math.round(GeneralIDE.ICONSIZE / 5));
             // ControlBarForMaterial

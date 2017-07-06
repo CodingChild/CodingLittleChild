@@ -1,6 +1,6 @@
 module Thread{
     import Button = Laya.Button;
-
+/*
     export class ThreadManager{
         
         public threads: Array<Thread>;
@@ -55,5 +55,5 @@ module Thread{
             })
             this.threads = remaining;
         }
-    }
+    }*/
 }

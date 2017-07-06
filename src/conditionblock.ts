@@ -7,7 +7,7 @@ module Block {
     import HitArea = Laya.HitArea;
     import Point = Laya.Point;
     import Rectangle = Laya.Rectangle;
-    import Box = Laya.Box;
+    import Box = Laya.Box;/*/
 
     export class ConditionBlock extends BasicBlock {
 
@@ -48,5 +48,5 @@ module Block {
         }
 
 
-    }
+    }*/
 }

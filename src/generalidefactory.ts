@@ -8,17 +8,10 @@ module IDE {
 
         }
 
-        public getIDE(name:string): GeneralIDE {
+        public getIDE(name: string): GeneralIDE {
             let clientWidth = Laya.Browser.clientWidth;
             let clientHeight = Laya.Browser.clientHeight;
-
-            if(Laya.Browser.onMobile){          
-                
-            }
-            else if(Laya.Browser.onSafari){
-
-            }
-            else if(Laya.Browser.onPC){
+            if (Laya.Browser.onIPad || Laya.Browser.onPC) {
                 return new PadIDE(name, clientWidth, clientHeight);
             }
 

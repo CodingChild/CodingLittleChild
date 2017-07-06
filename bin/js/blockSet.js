@@ -33,7 +33,7 @@ var Block;
             {
                 "name": "rotate_clockwise",
                 "path": "materials/block_rotate_clockwise.png"
-            },
+            }
         ],
         "look": [
             {

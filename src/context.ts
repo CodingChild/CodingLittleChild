@@ -1,4 +1,4 @@
-module Thread{
+module Thread{/*
     export class Context{
 
         public receiver: Marmot.Sprite | StagePanel;
@@ -24,5 +24,5 @@ module Thread{
         addInput(input){
             this.inputs.push(input);
         }
-    }
+    }*/
 }

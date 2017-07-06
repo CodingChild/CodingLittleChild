@@ -9,6 +9,8 @@ module Block {
     import Event = Laya.Event;
     import Button = Laya.Button;
 
+
+
     export abstract class BasicBlock extends SyntaxElement {
 
         public static blockSetting: BlockSetting = {
@@ -18,6 +20,8 @@ module Block {
             distanceBetweenBlocks: 10,
             roundCorner: 8
         }
+
+        private globalTargetList: TargetList = new TargetList(, this.generalListItemSetting);
 
         /**
          * isHighlight is true after calling drawBackgroundHighlight
@@ -33,7 +37,10 @@ module Block {
         protected backgroundSettings: Array<BackgroundSetting>;
         public sliderSetting: SliderSetting;
         protected targetSettings: Array<TargetSetting>;
-        protected target: Button;
+        public target: Button;
+        protected targetList: TargetList;
+        private generalListSetting: IDE.GeneralListSetting;
+        private generalListItemSetting: IDE.GeneralListItemSetting;
         //public comboBoxSlotSetting: ComboBoxSlotSetting;
         //protected lastAttachTarget: AttachTarget;
 
@@ -42,13 +49,17 @@ module Block {
             inputSettings: Array<InputSettings>,
             backgroundSettings: Array<BackgroundSetting>,
             sliderSetting?: SliderSetting,
-            targetSettings?: Array<TargetSetting>) {
+            targetSettings?: Array<TargetSetting>,
+            generalListSetting?: IDE.GeneralListSetting,
+            ggeneralListItemSetting?: IDE.GeneralListItemSetting) {
             super();
             this.textureSettings = textureSettings;
             this.inputSettings = inputSettings;
             this.backgroundSettings = backgroundSettings;
             this.sliderSetting = sliderSetting;
             this.targetSettings = targetSettings;
+            this.generalListSetting = generalListSetting;
+            this.generalListItemSetting = ggeneralListItemSetting;
             this.target = new Button();
             this.addChild(this.target);
         }
@@ -88,8 +99,10 @@ module Block {
         }
 
         private chooseSprite(): void {
-            console.log("s");
-            
+            let globalTargetList: TargetList = new TargetList(this.generalListSetting, this.generalListItemSetting);
+            this.addChild(globalTargetList);
+            globalTargetList.pos(this.x, this.y);
+
         }
 
         public evaluate() {
@@ -163,6 +176,7 @@ module Block {
             this.on(Event.MOUSE_DOWN, this, this.onMouseDown);
         }
     }
+
 }
 
 

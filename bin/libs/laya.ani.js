@@ -373,9 +373,6 @@
 							Matrix.TEMP.copyTo(tTestMatrix);
 							tResultMatrix=this.resultTransform.getMatrix();
 							Matrix.mul(tResultMatrix,tTestMatrix,this.resultMatrix);
-							if (this.resultTransform.scX *this.resultTransform.scY < 0){
-								this.resultMatrix.rotate(Math.PI*0.5);
-							}
 							this.resultMatrix.tx=worldX;
 							this.resultMatrix.ty=worldY;
 						}
@@ -1869,31 +1866,17 @@
 			var vx=0;
 			var vy=0;
 			var bone;
-			var len=0;
 			if (tBones==null){
 				if (!tTriangles)tTriangles=tWeights;
 				if (boneSlot.deformData)
 					tTriangles=boneSlot.deformData;
-				var parentName;
-				parentName=boneSlot.parent;
-				if (boneList){
-					len=boneList.length;
-					for (i=0;i < len;i++){
-						if (boneList[i].name=parentName){
-							bone=boneList[i];
-							break ;
-						}
-					}
-				};
+				bone=boneSlot.parent;
 				var tBoneMt;
-				if (bone){
-					tBoneMt=bone.resultMatrix;
-				}
+				tBoneMt=bone.resultMatrix;
 				if (!tBoneMt)tBoneMt=PathConstraint._tempMt;
 				var x=tBoneMt.tx;
 				var y=tBoneMt.ty;
 				var a=tBoneMt.a,bb=tBoneMt.b,c=tBoneMt.c,d=tBoneMt.d;
-				if(bone)d*=bone.d;
 				for (v=start,w=offset;w < count;v+=2,w+=2){
 					vx=tTriangles[v],vy=tTriangles[v+1];
 					worldVertices[w]=vx *a+vy *bb+x;
@@ -3872,23 +3855,13 @@
 			var tFactory;
 			tFactory=Templet.TEMPLET_DICTIONARY[this._aniPath];
 			if (tFactory){
-				if (tFactory.isParseFail){
-					this._parseFail();
-					}else{
-					if (tFactory.isParserComplete){
-						this._parseComplete();
-						}else{
-						tFactory.on(/*laya.events.Event.COMPLETE*/"complete",this,this._parseComplete);
-						tFactory.on(/*laya.events.Event.ERROR*/"error",this,this._parseFail);
-					}
-				}
+				tFactory.isParseFail ? this._parseFail():this._parseComplete();
 				}else {
 				tFactory=new Templet();
 				tFactory.url=this._aniPath;
 				Templet.TEMPLET_DICTIONARY[this._aniPath]=tFactory;
 				tFactory.on(/*laya.events.Event.COMPLETE*/"complete",this,this._parseComplete);
 				tFactory.on(/*laya.events.Event.ERROR*/"error",this,this._parseFail);
-				tFactory.isParserComplete=false;
 				tFactory.parseData(null,arraybuffer);
 			}
 		}
@@ -5163,7 +5136,6 @@
 			this.deformAniArr=[];
 			this._isDestroyed=false;
 			this._rate=30;
-			this.isParserComplete=false;
 			this.aniSectionDic={};
 			this._skBufferUrl=null;
 			this._textureDic={};
@@ -5242,7 +5214,7 @@
 				console.log("[Error] 版本不一致，请使用IDE版本配套的重新导出"+this._aniVersion+"->"+Templet.LAYA_ANIMATION_VISION);
 				this._loaded=false;
 			}
-			if (this.loaded){
+			if (this._loaded){
 				if (this._mainTexture){
 					this._parsePublicExtData();
 					}else {
@@ -5333,11 +5305,6 @@
 				tTextureName=tTextureNameArr[i *2+1];
 				if (this._mainTexture==null){
 					tTexture=this._textureDic[tSrcTexturePath];
-				}
-				if (!tTexture){
-					this.event(/*laya.events.Event.ERROR*/"error",this);
-					this.isParseFail=true;
-					return;
 				}
 				tX=tByte.getFloat32();
 				tY=tByte.getFloat32();
@@ -5690,7 +5657,6 @@
 				}
 			}
 			this.showSkinByIndex(this.boneSlotDic,0);
-			this.isParserComplete=true;
 			this.event(/*laya.events.Event.COMPLETE*/"complete",this);
 		}
 
@@ -5787,14 +5753,12 @@
 			var tTexture;
 			/*for each*/for(var $each_tTexture in this.subTextureDic){
 				tTexture=this.subTextureDic[$each_tTexture];
-				if(tTexture)
-					tTexture.destroy();
+				tTexture.destroy();
 			}
 			var $each_tTexture;
 			/*for each*/for($each_tTexture in this._textureDic){
 				tTexture=this._textureDic[$each_tTexture];
-				if(tTexture)
-					tTexture.destroy();
+				tTexture.destroy();
 			};
 			var tSkinSlotDisplayData;
 			for (var i=0,n=this.skinSlotDisplayDataArr.length;i < n;i++){

@@ -1,5 +1,5 @@
-module Marmot{
+module Util {
     export function isString(target) {
-    return typeof target === 'string' || target instanceof String;
+        return typeof target === 'string' || target instanceof String;
     }
 }

@@ -5,11 +5,31 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var IDE;
 (function (IDE) {
+    var BackgroundMaterialListItem = (function (_super) {
+        __extends(BackgroundMaterialListItem, _super);
+        function BackgroundMaterialListItem() {
+            var _this = _super.call(this) || this;
+            if (BackgroundMaterialListItem.WIDTH != undefined && BackgroundMaterialListItem.HEIGHT != undefined) {
+                _this.size(BackgroundMaterialListItem.WIDTH, BackgroundMaterialListItem.HEIGHT);
+            }
+            return _this;
+        }
+        BackgroundMaterialListItem.prototype.setImg = function (src, imageSize) {
+            this.img.skin = src;
+            this.img.pos(Math.round(this.width / 2 - imageSize * 16 / 9 / 2), Math.round(this.height / 2 - imageSize / 2));
+            this.img.size(Math.round(imageSize * 16 / 9), imageSize);
+        };
+        return BackgroundMaterialListItem;
+    }(IDE.GeneralListItem));
+    IDE.BackgroundMaterialListItem = BackgroundMaterialListItem;
     var BackgroundMaterialList = (function (_super) {
         __extends(BackgroundMaterialList, _super);
         function BackgroundMaterialList(generalListSetting, generalListItemSetting) {
             var _this = _super.call(this, generalListSetting, generalListItemSetting) || this;
             _this.name = "backgroundMaterialList";
+            BackgroundMaterialListItem.WIDTH = _this.generalListItemSetting.width;
+            BackgroundMaterialListItem.HEIGHT = _this.generalListItemSetting.height;
+            _this.itemRender = BackgroundMaterialListItem;
             _this.selectedIndex = 0;
             return _this;
         }

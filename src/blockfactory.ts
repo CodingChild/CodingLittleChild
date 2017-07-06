@@ -523,7 +523,31 @@ module Block {
                         stateNum: 1
                     }
                 );
-                let block = new CommandBlock(textureSettings, inputSettings, backgroundSettings, null, targetSettings);
+                let generalListSetting: IDE.GeneralListSetting = {
+                    width: (20 + 5 * IDE.GeneralIDE.ICONSIZE) * BasicBlock.blockSetting.blockScale,
+                    height: 100 * BasicBlock.blockSetting.blockScale,
+                    vScrollBarSkin: null,
+                    hScrollBarSkin: "",
+                    spaceX: 0,
+                    spaceY: 0,
+                    repeatX: 3,
+                    repeatY: 1,
+                    bgColor: "#ffffff"
+                }
+                let generalListItemSetting: IDE.GeneralListItemSetting = {
+                    width: IDE.GeneralIDE.ICONSIZE,
+                    height: IDE.GeneralIDE.ICONSIZE,
+                    backgroundNormal: null,
+                    backgroundHighlight: "#D7D7D7",
+                    imageSize: IDE.GeneralIDE.ICONSIZE
+                }
+                let block = new CommandBlock(textureSettings,
+                    inputSettings,
+                    backgroundSettings,
+                    null,
+                    targetSettings,
+                    generalListSetting,
+                    generalListItemSetting);
                 block.initialize();
                 return block;
             }

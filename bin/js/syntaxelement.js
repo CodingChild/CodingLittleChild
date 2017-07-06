@@ -10,33 +10,6 @@ var Block;
         function SyntaxElement() {
             return _super.call(this) || this;
         }
-        /**
-         * answer my all parts, which belongs to syntaxelement
-         */
-        SyntaxElement.prototype.inputs = function () {
-            if (this.cachedInputs == null) {
-                this.cachedInputs = this.parts().filter(function (part) {
-                    return part instanceof SyntaxElement;
-                });
-            }
-            return this.cachedInputs;
-        };
-        /**
-         * answer my all parts, except my next block child
-         */
-        SyntaxElement.prototype.parts = function () {
-            var block = null;
-            var parts = [];
-            if (this instanceof Block) {
-                block = this.getNextBlockChild();
-            }
-            this._childs.forEach(function (child) {
-                if (child != block) {
-                    parts.push(child);
-                }
-            });
-            return parts;
-        };
         return SyntaxElement;
     }(Laya.Sprite));
     Block.SyntaxElement = SyntaxElement;

@@ -2,7 +2,7 @@
     "x":0,
     "type":"View",
     "selectedBox":1,
-    "selecteID":5,
+    "selecteID":6,
     "props":{"y":0,"x":0,"width":1920,"sceneColor":"#deb8fd","height":1080},
     "nodeParent":-1,
     "label":"View",
@@ -48,6 +48,19 @@
             "isAniNode":true,
             "hasChild":false,
             "compId":5,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Tab",
+            "props":{"y":549,"x":1002,"width":79,"stateNum":2,"skin":"materials/tab_index.png","selectedIndex":1,"scaleX":1,"labels":"label1,label2","height":43},
+            "nodeParent":1,
+            "label":"Tab",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":6,
             "child":[
                 ]
         }],

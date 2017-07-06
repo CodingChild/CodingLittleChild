@@ -7,8 +7,8 @@ var Block;
 (function (Block) {
     var CommandBlock = (function (_super) {
         __extends(CommandBlock, _super);
-        function CommandBlock(textureSettings, inputSettings, backgroundSettings, sliderSetting, targetSettings) {
-            return _super.call(this, textureSettings, inputSettings, backgroundSettings, sliderSetting, targetSettings) || this;
+        function CommandBlock(textureSettings, inputSettings, backgroundSettings, sliderSetting, targetSettings, generalListSetting, ggeneralListItemSetting) {
+            return _super.call(this, textureSettings, inputSettings, backgroundSettings, sliderSetting, targetSettings, generalListSetting, ggeneralListItemSetting) || this;
         }
         CommandBlock.prototype.onDragStart = function (e) {
         };

@@ -14,7 +14,7 @@ module IDE {
     }
 
     export class StageArea extends Laya.Panel {
-        public threadManager: Thread.ThreadManager;
+        //public threadManager: Thread.ThreadManager;
         public costumes: Array<Sprite.Costume>;
         public costume: Sprite.Costume;
         public stageAreaSetting: StageAreaSetting;
@@ -26,7 +26,7 @@ module IDE {
             this.stageAreaSetting = stageAreaSetting;
             this.costumes = [];
             this.costume = null;
-            this.threadManager = new Thread.ThreadManager();
+            //this.threadManager = new Thread.ThreadManager();
             this.graphics.drawRect(0, 0, this.stageAreaSetting.normalWidth, this.stageAreaSetting.normalHeight, "#ffffff");
         }
 
@@ -61,7 +61,7 @@ module IDE {
 
         public firePlayButton() {
             let ide = GeneralIDE.getIDE();
-            let threadManager = this.threadManager;
+            //let threadManager = this.threadManager;
             let objects: any[] = ide.sprites;
             /*
             objects = objects.concat(this);

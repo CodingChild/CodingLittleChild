@@ -22,7 +22,7 @@ module Block{
 
         /**
          * answer my all parts, which belongs to syntaxelement
-         */
+         *//*
         public inputs() {
             if(this.cachedInputs == null){
                 this.cachedInputs = this.parts().filter((part)=>{
@@ -30,7 +30,7 @@ module Block{
                 });
             }
             return this.cachedInputs;
-        }
+        }*/
 
         /**
          * compute my value
@@ -41,7 +41,7 @@ module Block{
         /**
          * answer my all parts, except my next block child
          */
-
+/*
         protected parts():Array<SyntaxElement>{
             let block:Block = null;
             let parts:Array<SyntaxElement> = [];
@@ -54,6 +54,6 @@ module Block{
                 }
             })
             return parts;
-        }
+        }*/
     }
 }

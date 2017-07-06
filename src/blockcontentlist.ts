@@ -100,7 +100,7 @@ module IDE {
         }
 
         private switchIndex(index: number) {
-            this.startIndex = index * this.blockContentListSetting.repeatX;
+            this.startIndex = index * this.blockContentListSetting.repeatX * this.repeatY;
         }
         private buildContent() {
             this.buildBackground();
@@ -252,7 +252,7 @@ module IDE {
 
         private updateIndex(): void {
 
-            let numOfIndex = Math.ceil(this.length / this.blockContentListSetting.repeatX);
+            let numOfIndex = Math.ceil(this.length / (this.blockContentListSetting.repeatX * this.blockContentListSetting.repeatY));
             if (numOfIndex == 0) {
                 this.tab_index.labels = "";
                 this.totalPage = 0;

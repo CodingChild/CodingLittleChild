@@ -651,11 +651,7 @@
 			return this.contextWidth;
 			},function(value){
 			var changed=false;
-			if (value===0){
-				changed=value !=this._width;
-				}else{
-				changed=value !=this.width;
-			}
+			changed=value !=this.width;
 			_super.prototype._$set_width.call(this,value);
 			if(changed)
 				this.layout();

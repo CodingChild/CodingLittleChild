@@ -1,9 +1,30 @@
 module IDE {
+    export class BackgroundMaterialListItem extends GeneralListItem {
+
+        public static WIDTH: number;
+        public static HEIGHT: number;
+
+        constructor() {
+            super();
+            if (BackgroundMaterialListItem.WIDTH != undefined && BackgroundMaterialListItem.HEIGHT != undefined) {
+                this.size(BackgroundMaterialListItem.WIDTH, BackgroundMaterialListItem.HEIGHT);
+            }
+        }
+
+        public setImg(src: string, imageSize: number): void {
+            this.img.skin = src;
+            this.img.pos(Math.round(this.width / 2 - imageSize * 16 / 9 / 2), Math.round(this.height / 2 - imageSize / 2));
+            this.img.size(Math.round(imageSize * 16 / 9), imageSize);
+        }
+    }
     export class BackgroundMaterialList extends GeneralList {
 
         constructor(generalListSetting: GeneralListSetting, generalListItemSetting: GeneralListItemSetting) {
             super(generalListSetting, generalListItemSetting);
             this.name = "backgroundMaterialList";
+            BackgroundMaterialListItem.WIDTH = this.generalListItemSetting.width;
+            BackgroundMaterialListItem.HEIGHT = this.generalListItemSetting.height;
+            this.itemRender = BackgroundMaterialListItem;
             this.selectedIndex = 0;
         }
 

@@ -7,7 +7,7 @@ module Block {
     import HitArea = Laya.HitArea;
     import Point = Laya.Point;
     import Rectangle = Laya.Rectangle;
-
+/*
     export class HeadBlock extends BasicBlock {
 
         constructor(textureSettings: Array<ResourceSetting>,
@@ -177,5 +177,5 @@ module Block {
         }
 
 
-    }
+    }*/
 }		
